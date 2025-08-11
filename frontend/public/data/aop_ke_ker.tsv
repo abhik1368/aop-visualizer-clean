@@ -1,0 +1,2887 @@
+Aop:1	Event:294	Event:57	Relationship:324	adjacent	2	
+Aop:1	Event:57	Event:142	Relationship:69	adjacent	2	
+Aop:1	Event:142	Event:334	Relationship:158	adjacent	1	
+Aop:3	Event:177	Event:890	Relationship:908	non-adjacent	2	3
+Aop:3	Event:888	Event:887	Relationship:933	adjacent	1	3
+Aop:3	Event:887	Event:177	Relationship:934	adjacent	1	2
+Aop:3	Event:177	Event:889	Relationship:904	adjacent	2	3
+Aop:3	Event:889	Event:890	Relationship:905	adjacent	1	2
+Aop:3	Event:890	Event:896	Relationship:910	adjacent	1	1
+Aop:3	Event:890	Event:188	Relationship:907	adjacent	2	2
+Aop:3	Event:188	Event:890	Relationship:906	adjacent	2	2
+Aop:4	Event:103	Event:1264	Relationship:1343	adjacent	1	3
+Aop:4	Event:1264	Event:1265	Relationship:1344	adjacent	1	3
+Aop:4	Event:1265	Event:988	Relationship:1345	adjacent	2	3
+Aop:4	Event:988	Event:1266	Relationship:1346	adjacent	2	3
+Aop:4	Event:1266	Event:1267	Relationship:1347	adjacent	2	3
+Aop:4	Event:1267	Event:1268	Relationship:1348	adjacent	2	3
+Aop:4	Event:1268	Event:993	Relationship:1349	adjacent	2	3
+Aop:4	Event:993	Event:990	Relationship:1010	adjacent	2	3
+Aop:4	Event:990	Event:350	Relationship:1002	adjacent	1	1
+Aop:6	Event:998	Event:1000	Relationship:1023	adjacent	1	2
+Aop:6	Event:1000	Event:858	Relationship:1024	adjacent	1	2
+Aop:6	Event:858	Event:1528	Relationship:1748	adjacent	1	1
+Aop:6	Event:858	Event:861	Relationship:880	adjacent	2	2
+Aop:6	Event:1528	Event:861	Relationship:1749	adjacent	2	3
+Aop:6	Event:861	Event:862	Relationship:883	adjacent	1	2
+Aop:6	Event:862	Event:863	Relationship:884	adjacent	2	3
+Aop:6	Event:863	Event:864	Relationship:885	adjacent	1	1
+Aop:7	Event:219	Event:405	Relationship:392	adjacent	1	
+Aop:7	Event:3	Event:219	Relationship:5	adjacent	1	
+Aop:7	Event:405	Event:406	Relationship:394	non-adjacent	2	
+Aop:7	Event:408	Event:3	Relationship:396	adjacent	2	
+Aop:8	Event:239	Event:295	Relationship:2482	adjacent		
+Aop:8	Event:295	Event:961	Relationship:2478	adjacent		
+Aop:8	Event:961	Event:281	Relationship:2270	adjacent		
+Aop:8	Event:281	Event:280	Relationship:312	adjacent		
+Aop:8	Event:280	Event:756	Relationship:746	adjacent		
+Aop:8	Event:756	Event:757	Relationship:747	adjacent		
+Aop:8	Event:757	Event:758	Relationship:749	adjacent		
+Aop:8	Event:758	Event:319	Relationship:2484	adjacent		
+Aop:10	Event:667	Event:64	Relationship:666	adjacent	1	1
+Aop:10	Event:64	Event:669	Relationship:667	adjacent	1	1
+Aop:10	Event:669	Event:682	Relationship:683	adjacent	1	2
+Aop:10	Event:682	Event:616	Relationship:684	adjacent	2	2
+Aop:10	Event:616	Event:613	Relationship:630	adjacent	1	2
+Aop:12	Event:201	Event:195	Relationship:229	adjacent	1	
+Aop:12	Event:195	Event:52	Relationship:213	adjacent	2	
+Aop:12	Event:52	Event:381	Relationship:347	adjacent	3	
+Aop:12	Event:381	Event:55	Relationship:353	adjacent	3	
+Aop:12	Event:55	Event:188	Relationship:365	adjacent	2	
+Aop:12	Event:188	Event:352	Relationship:208	adjacent	3	
+Aop:12	Event:352	Event:341	Relationship:1069	adjacent	1	
+Aop:12	Event:352	Event:188	Relationship:207	adjacent	2	
+Aop:13	Event:201	Event:195	Relationship:229	adjacent	1	
+Aop:13	Event:195	Event:52	Relationship:213	adjacent	2	
+Aop:13	Event:385	Event:386	Relationship:358	adjacent	3	
+Aop:13	Event:52	Event:381	Relationship:347	adjacent	3	3
+Aop:13	Event:381	Event:382	Relationship:348	adjacent	1	3
+Aop:13	Event:381	Event:383	Relationship:354	adjacent	3	3
+Aop:13	Event:55	Event:385	Relationship:355	adjacent	3	
+Aop:13	Event:382	Event:385	Relationship:356	adjacent	3	
+Aop:13	Event:386	Event:341	Relationship:359	adjacent	3	
+Aop:13	Event:381	Event:55	Relationship:353	adjacent	3	
+Aop:13	Event:383	Event:385	Relationship:357	adjacent	3	
+Aop:14	Event:122	Event:145	Relationship:385	adjacent		
+Aop:14	Event:145	Event:202	Relationship:386	adjacent		
+Aop:14	Event:202	Event:152	Relationship:387	adjacent		
+Aop:14	Event:152	Event:168	Relationship:388	adjacent		
+Aop:14	Event:168	Event:403	Relationship:390	adjacent		
+Aop:15	Event:97	Event:155	Relationship:24	adjacent	1	2
+Aop:15	Event:155	Event:185	Relationship:164	adjacent	1	2
+Aop:15	Event:97	Event:185	Relationship:25	non-adjacent	1	2
+Aop:15	Event:97	Event:336	Relationship:23	non-adjacent	1	2
+Aop:15	Event:185	Event:336	Relationship:202	adjacent	1	2
+Aop:16	Event:12	Event:39	Relationship:451	non-adjacent		
+Aop:16	Event:12	Event:10	Relationship:11	adjacent	1	2
+Aop:16	Event:10	Event:39	Relationship:456	adjacent	1	3
+Aop:16	Event:12	Event:445	Relationship:450	non-adjacent	2	3
+Aop:16	Event:39	Event:445	Relationship:457	adjacent	1	3
+Aop:16	Event:12	Event:1703	Relationship:2007	non-adjacent		
+Aop:16	Event:39	Event:1703	Relationship:2005	adjacent	1	1
+Aop:16	Event:1703	Event:445	Relationship:2006	adjacent	3	3
+Aop:16	Event:445	Event:351	Relationship:433	adjacent	1	3
+Aop:16	Event:12	Event:351	Relationship:452	non-adjacent	1	2
+Aop:16	Event:351	Event:360	Relationship:2013	adjacent	2	2
+Aop:16	Event:12	Event:360	Relationship:2016	non-adjacent	3	3
+Aop:17	Event:1487	Event:1538	Relationship:1765	adjacent	2	2
+Aop:17	Event:1538	Event:1392	Relationship:1766	adjacent	1	1
+Aop:17	Event:1392	Event:1488	Relationship:1685	adjacent	3	3
+Aop:17	Event:1488	Event:55	Relationship:1686	adjacent	1	2
+Aop:17	Event:55	Event:188	Relationship:365	adjacent	2	
+Aop:17	Event:55	Event:1492	Relationship:1718	adjacent	2	
+Aop:17	Event:188	Event:55	Relationship:1687	adjacent	2	
+Aop:17	Event:1493	Event:55	Relationship:1719	adjacent	2	
+Aop:17	Event:55	Event:386	Relationship:1688	adjacent	2	
+Aop:17	Event:386	Event:341	Relationship:359	adjacent	1	
+Aop:17	Event:1392	Event:55	Relationship:1690	non-adjacent	1	1
+Aop:18	Event:266	Event:447	Relationship:436	adjacent	2	
+Aop:18	Event:447	Event:413	Relationship:438	adjacent	2	
+Aop:18	Event:413	Event:1690	Relationship:2125	adjacent	1	
+Aop:18	Event:227	Event:266	Relationship:369	non-adjacent	2	
+Aop:18	Event:289	Event:447	Relationship:437	adjacent	3	
+Aop:18	Event:227	Event:289	Relationship:370	non-adjacent	3	
+Aop:18	Event:348	Event:406	Relationship:405	adjacent	1	
+Aop:18	Event:1690	Event:348	Relationship:3205	non-adjacent	1	
+Aop:19	Event:26	Event:310	Relationship:3397	adjacent		
+Aop:19	Event:26	Event:286	Relationship:2201	adjacent		
+Aop:19	Event:286	Event:310	Relationship:317	adjacent		
+Aop:19	Event:286	Event:240	Relationship:316	adjacent		
+Aop:19	Event:310	Event:240	Relationship:338	adjacent		
+Aop:19	Event:240	Event:337	Relationship:266	adjacent		
+Aop:21	Event:18	Event:947	Relationship:984	non-adjacent	1	2
+Aop:21	Event:18	Event:944	Relationship:972	adjacent	1	2
+Aop:21	Event:944	Event:1269	Relationship:1350	adjacent	1	2
+Aop:21	Event:1269	Event:317	Relationship:1351	adjacent	2	2
+Aop:21	Event:317	Event:947	Relationship:1567	adjacent	1	3
+Aop:23	Event:25	Event:129	Relationship:31	adjacent	3	3
+Aop:23	Event:129	Event:274	Relationship:143	adjacent	1	3
+Aop:23	Event:274	Event:3	Relationship:302	adjacent	1	3
+Aop:23	Event:3	Event:219	Relationship:5	adjacent	1	3
+Aop:23	Event:219	Event:285	Relationship:252	adjacent	1	2
+Aop:23	Event:285	Event:221	Relationship:315	adjacent	1	2
+Aop:23	Event:221	Event:309	Relationship:255	adjacent	2	3
+Aop:23	Event:309	Event:78	Relationship:337	adjacent	2	2
+Aop:23	Event:78	Event:360	Relationship:94	adjacent	2	2
+Aop:23	Event:25	Event:274	Relationship:32	non-adjacent	2	3
+Aop:23	Event:25	Event:3	Relationship:1384	non-adjacent	2	3
+Aop:23	Event:25	Event:285	Relationship:1385	non-adjacent	1	3
+Aop:23	Event:219	Event:221	Relationship:1386	non-adjacent	1	2
+Aop:25	Event:36	Event:3	Relationship:45	adjacent	1	2
+Aop:25	Event:3	Event:219	Relationship:5	adjacent	1	2
+Aop:25	Event:219	Event:285	Relationship:252	adjacent	1	2
+Aop:25	Event:78	Event:360	Relationship:94	adjacent	2	2
+Aop:25	Event:309	Event:78	Relationship:337	adjacent	2	2
+Aop:25	Event:221	Event:309	Relationship:255	adjacent	2	3
+Aop:25	Event:285	Event:221	Relationship:315	adjacent	1	2
+Aop:25	Event:219	Event:221	Relationship:1386	non-adjacent	1	2
+Aop:26	Event:51	Event:50	Relationship:61	adjacent	1	
+Aop:26	Event:50	Event:178	Relationship:60	adjacent	2	
+Aop:26	Event:178	Event:40	Relationship:188	adjacent	2	
+Aop:26	Event:178	Event:1115	Relationship:3493	adjacent	2	
+Aop:26	Event:193	Event:166	Relationship:212	adjacent	2	
+Aop:26	Event:1115	Event:193	Relationship:3494	adjacent	3	
+Aop:26	Event:1115	Event:1392	Relationship:2009	adjacent	1	
+Aop:27	Event:214	Event:288	Relationship:248	adjacent	1	
+Aop:27	Event:288	Event:357	Relationship:319	adjacent	1	
+Aop:27	Event:87	Event:149	Relationship:108	adjacent	1	
+Aop:27	Event:1115	Event:209	Relationship:3509	adjacent	1	
+Aop:27	Event:41	Event:214	Relationship:927	adjacent	1	
+Aop:27	Event:214	Event:87	Relationship:928	adjacent	1	
+Aop:27	Event:149	Event:357	Relationship:929	adjacent	2	
+Aop:27	Event:209	Event:357	Relationship:932	adjacent	2	
+Aop:27	Event:214	Event:1115	Relationship:3510	adjacent	1	
+Aop:28	Event:79	Event:243	Relationship:95	adjacent	2	
+Aop:28	Event:243	Event:119	Relationship:268	adjacent	5	
+Aop:28	Event:119	Event:49	Relationship:136	adjacent	5	
+Aop:28	Event:49	Event:106	Relationship:59	adjacent	2	
+Aop:28	Event:106	Event:253	Relationship:123	adjacent	1	
+Aop:29	Event:111	Event:364	Relationship:127	adjacent	1	
+Aop:29	Event:252	Event:339	Relationship:280	adjacent	1	
+Aop:29	Event:111	Event:307	Relationship:128	adjacent	1	
+Aop:29	Event:220	Event:252	Relationship:254	adjacent	1	
+Aop:29	Event:111	Event:363	Relationship:126	adjacent	1	
+Aop:29	Event:307	Event:220	Relationship:336	adjacent	1	
+Aop:30	Event:112	Event:285	Relationship:129	adjacent	1	3
+Aop:30	Event:285	Event:221	Relationship:315	adjacent	1	2
+Aop:30	Event:221	Event:309	Relationship:255	adjacent	2	3
+Aop:30	Event:309	Event:78	Relationship:337	adjacent	2	2
+Aop:30	Event:78	Event:360	Relationship:94	adjacent	2	2
+Aop:31	Event:213	Event:1392	Relationship:3323	adjacent	2	
+Aop:31	Event:213	Event:250	Relationship:245	adjacent	1	
+Aop:31	Event:213	Event:118	Relationship:243	adjacent	1	
+Aop:31	Event:250	Event:246	Relationship:279	adjacent	2	
+Aop:31	Event:250	Event:173	Relationship:278	adjacent	1	
+Aop:31	Event:250	Event:161	Relationship:277	adjacent	1	
+Aop:31	Event:213	Event:21	Relationship:242	non-adjacent	3	
+Aop:31	Event:173	Event:321	Relationship:182	adjacent	1	
+Aop:31	Event:246	Event:173	Relationship:272	adjacent	2	
+Aop:31	Event:1392	Event:131	Relationship:3324	adjacent	3	
+Aop:31	Event:1392	Event:250	Relationship:3325	adjacent	1	
+Aop:31	Event:161	Event:173	Relationship:169	adjacent	2	
+Aop:32	Event:77	Event:164	Relationship:93	adjacent	1	
+Aop:32	Event:164	Event:147	Relationship:170	adjacent	1	
+Aop:32	Event:147	Event:270	Relationship:159	adjacent	1	
+Aop:32	Event:270	Event:269	Relationship:299	adjacent	1	
+Aop:32	Event:269	Event:347	Relationship:298	adjacent	1	
+Aop:33	Event:9	Event:294	Relationship:750	non-adjacent	3	3
+Aop:33	Event:294	Event:759	Relationship:751	non-adjacent	3	3
+Aop:34	Event:167	Event:54	Relationship:173	adjacent	5	
+Aop:34	Event:54	Event:115	Relationship:66	adjacent	5	
+Aop:34	Event:167	Event:66	Relationship:174	adjacent	5	
+Aop:34	Event:167	Event:264	Relationship:177	adjacent	5	
+Aop:34	Event:167	Event:116	Relationship:175	adjacent	5	
+Aop:34	Event:167	Event:258	Relationship:176	adjacent	5	
+Aop:34	Event:258	Event:89	Relationship:284	adjacent	5	
+Aop:34	Event:66	Event:89	Relationship:77	adjacent	5	
+Aop:34	Event:264	Event:89	Relationship:294	adjacent	5	
+Aop:34	Event:116	Event:89	Relationship:133	adjacent	5	
+Aop:34	Event:89	Event:291	Relationship:110	adjacent	5	
+Aop:34	Event:115	Event:291	Relationship:132	adjacent	5	
+Aop:34	Event:291	Event:177	Relationship:3162	adjacent	5	
+Aop:34	Event:228	Event:54	Relationship:411	adjacent	2	
+Aop:36	Event:231	Event:140	Relationship:257	adjacent	2	
+Aop:36	Event:179	Event:327	Relationship:190	adjacent	1	
+Aop:36	Event:8	Event:179	Relationship:9	adjacent	1	
+Aop:36	Event:140	Event:8	Relationship:154	adjacent	1	
+Aop:36	Event:232	Event:140	Relationship:259	adjacent	2	
+Aop:36	Event:233	Event:140	Relationship:260	adjacent	2	
+Aop:36	Event:327	Event:459	Relationship:515	adjacent	1	
+Aop:37	Event:227	Event:1170	Relationship:1229	adjacent	1	1
+Aop:37	Event:1170	Event:716	Relationship:1230	adjacent	1	2
+Aop:37	Event:716	Event:1171	Relationship:1239	adjacent	1	2
+Aop:37	Event:1171	Event:719	Relationship:1232	adjacent	1	2
+Aop:37	Event:227	Event:716	Relationship:2252	non-adjacent	1	1
+Aop:37	Event:227	Event:719	Relationship:2253	non-adjacent	1	1
+Aop:37	Event:716	Event:719	Relationship:2254	non-adjacent	1	1
+Aop:38	Event:244	Event:55	Relationship:269	adjacent	2	
+Aop:38	Event:55	Event:1492	Relationship:1718	adjacent	1	
+Aop:38	Event:1492	Event:1493	Relationship:1763	adjacent	1	
+Aop:38	Event:1493	Event:265	Relationship:1764	adjacent	1	
+Aop:38	Event:265	Event:68	Relationship:295	adjacent	1	
+Aop:38	Event:68	Event:344	Relationship:82	adjacent	1	
+Aop:38	Event:55	Event:265	Relationship:68	non-adjacent	1	
+Aop:39	Event:396	Event:1496	Relationship:2649	adjacent	1	5
+Aop:39	Event:396	Event:313	Relationship:2650	non-adjacent	1	3
+Aop:39	Event:396	Event:398	Relationship:377	adjacent	1	5
+Aop:39	Event:1496	Event:398	Relationship:2651	adjacent	3	3
+Aop:39	Event:398	Event:272	Relationship:379	adjacent	1	5
+Aop:39	Event:272	Event:313	Relationship:1701	adjacent	1	5
+Aop:40	Event:396	Event:826	Relationship:833	adjacent	1	
+Aop:40	Event:396	Event:398	Relationship:377	adjacent	1	
+Aop:40	Event:826	Event:398	Relationship:834	adjacent	2	
+Aop:40	Event:398	Event:272	Relationship:379	adjacent	1	
+Aop:40	Event:272	Event:827	Relationship:835	adjacent	1	
+Aop:41	Event:165	Event:853	Relationship:874	adjacent	1	1
+Aop:41	Event:165	Event:139	Relationship:172	non-adjacent	1	1
+Aop:41	Event:165	Event:854	Relationship:875	non-adjacent	1	1
+Aop:41	Event:165	Event:856	Relationship:876	non-adjacent	1	1
+Aop:41	Event:853	Event:139	Relationship:995	adjacent		
+Aop:41	Event:139	Event:854	Relationship:996	adjacent		
+Aop:41	Event:854	Event:856	Relationship:997	adjacent		
+Aop:42	Event:279	Event:277	Relationship:309	adjacent	1	3
+Aop:42	Event:277	Event:281	Relationship:305	adjacent	1	2
+Aop:42	Event:279	Event:281	Relationship:366	non-adjacent	1	2
+Aop:42	Event:281	Event:280	Relationship:312	adjacent	2	2
+Aop:42	Event:280	Event:756	Relationship:746	adjacent	2	3
+Aop:42	Event:756	Event:757	Relationship:747	adjacent	2	3
+Aop:42	Event:757	Event:758	Relationship:749	adjacent	2	3
+Aop:42	Event:758	Event:402	Relationship:748	adjacent	1	2
+Aop:42	Event:281	Event:756	Relationship:1387	non-adjacent	1	3
+Aop:42	Event:281	Event:757	Relationship:1388	non-adjacent	1	3
+Aop:42	Event:281	Event:758	Relationship:1389	non-adjacent	2	3
+Aop:42	Event:281	Event:402	Relationship:403	non-adjacent	1	2
+Aop:43	Event:305	Event:28	Relationship:335	adjacent	1	1
+Aop:43	Event:28	Event:110	Relationship:36	adjacent	1	2
+Aop:43	Event:110	Event:298	Relationship:125	non-adjacent	2	3
+Aop:43	Event:298	Event:1001	Relationship:1036	non-adjacent	1	2
+Aop:46	Event:376	Event:378	Relationship:346	non-adjacent	2	3
+Aop:46	Event:376	Event:491	Relationship:549	adjacent	2	2
+Aop:46	Event:491	Event:378	Relationship:550	adjacent	2	2
+Aop:46	Event:493	Event:376	Relationship:547	adjacent	2	
+Aop:46	Event:373	Event:491	Relationship:551	non-adjacent	1	1
+Aop:46	Event:373	Event:378	Relationship:345	non-adjacent	2	2
+Aop:46	Event:409	Event:373	Relationship:402	adjacent	1	
+Aop:46	Event:373	Event:493	Relationship:548	adjacent		
+Aop:48	Event:388	Event:389	Relationship:361	adjacent	2	
+Aop:48	Event:55	Event:352	Relationship:364	adjacent	2	
+Aop:48	Event:188	Event:352	Relationship:208	adjacent	2	
+Aop:48	Event:352	Event:188	Relationship:207	adjacent	2	
+Aop:48	Event:875	Event:388	Relationship:919	adjacent	1	
+Aop:48	Event:389	Event:177	Relationship:362	adjacent	1	2
+Aop:48	Event:177	Event:55	Relationship:363	adjacent	2	3
+Aop:48	Event:55	Event:188	Relationship:365	adjacent	3	3
+Aop:48	Event:618	Event:341	Relationship:634	adjacent	2	3
+Aop:48	Event:352	Event:618	Relationship:647	adjacent	3	
+Aop:51	Event:416	Event:415	Relationship:398	adjacent	2	
+Aop:51	Event:413	Event:1690	Relationship:2125	adjacent	1	
+Aop:51	Event:447	Event:413	Relationship:438	adjacent	2	
+Aop:51	Event:1690	Event:414	Relationship:3206	non-adjacent	2	
+Aop:51	Event:414	Event:416	Relationship:461	non-adjacent	2	
+Aop:51	Event:415	Event:406	Relationship:462	non-adjacent	2	
+Aop:54	Event:424	Event:425	Relationship:442	adjacent	1	1
+Aop:54	Event:425	Event:277	Relationship:872	adjacent	1	1
+Aop:54	Event:277	Event:281	Relationship:305	adjacent	1	2
+Aop:54	Event:281	Event:280	Relationship:312	adjacent	2	3
+Aop:54	Event:280	Event:381	Relationship:444	adjacent	2	3
+Aop:54	Event:381	Event:851	Relationship:870	adjacent	2	3
+Aop:54	Event:851	Event:385	Relationship:871	adjacent	2	3
+Aop:54	Event:385	Event:386	Relationship:358	adjacent	3	3
+Aop:54	Event:386	Event:341	Relationship:359	adjacent	1	3
+Aop:54	Event:424	Event:341	Relationship:1503	non-adjacent	2	3
+Aop:54	Event:277	Event:341	Relationship:1506	non-adjacent	1	2
+Aop:54	Event:277	Event:381	Relationship:1504	non-adjacent	3	3
+Aop:54	Event:277	Event:851	Relationship:1505	non-adjacent	3	3
+Aop:54	Event:381	Event:385	Relationship:448	non-adjacent	2	3
+Aop:54	Event:381	Event:341	Relationship:1507	non-adjacent	2	2
+Aop:57	Event:450	Event:459	Relationship:3216	adjacent	1	1
+Aop:57	Event:18	Event:451	Relationship:473	non-adjacent	2	2
+Aop:57	Event:291	Event:459	Relationship:2265	adjacent	1	1
+Aop:57	Event:451	Event:327	Relationship:475	adjacent	1	1
+Aop:57	Event:18	Event:54	Relationship:495	adjacent	1	1
+Aop:57	Event:18	Event:216	Relationship:499	adjacent	1	1
+Aop:57	Event:54	Event:465	Relationship:501	adjacent	1	
+Aop:57	Event:327	Event:459	Relationship:515	adjacent	1	1
+Aop:57	Event:216	Event:327	Relationship:503	non-adjacent		
+Aop:57	Event:465	Event:327	Relationship:505	adjacent		
+Aop:57	Event:18	Event:466	Relationship:506	adjacent	1	
+Aop:57	Event:466	Event:467	Relationship:507	adjacent		
+Aop:57	Event:467	Event:327	Relationship:508	adjacent		
+Aop:57	Event:18	Event:450	Relationship:509	non-adjacent		
+Aop:57	Event:18	Event:80	Relationship:19	adjacent	1	
+Aop:57	Event:18	Event:462	Relationship:1656	adjacent	2	
+Aop:57	Event:462	Event:291	Relationship:1657	adjacent	1	
+Aop:58	Event:456	Event:167	Relationship:476	adjacent	1	1
+Aop:58	Event:456	Event:228	Relationship:477	adjacent	1	1
+Aop:58	Event:167	Event:457	Relationship:479	adjacent	1	1
+Aop:58	Event:167	Event:66	Relationship:174	adjacent	1	1
+Aop:58	Event:66	Event:458	Relationship:483	adjacent	1	1
+Aop:58	Event:454	Event:459	Relationship:486	adjacent	1	1
+Aop:58	Event:228	Event:457	Relationship:487	adjacent	2	2
+Aop:58	Event:457	Event:462	Relationship:489	adjacent	1	1
+Aop:58	Event:167	Event:54	Relationship:173	adjacent	1	1
+Aop:58	Event:167	Event:463	Relationship:490	adjacent	1	1
+Aop:58	Event:167	Event:462	Relationship:491	adjacent	1	1
+Aop:58	Event:463	Event:458	Relationship:492	adjacent	1	1
+Aop:58	Event:462	Event:454	Relationship:493	adjacent	1	1
+Aop:58	Event:167	Event:468	Relationship:510	non-adjacent		
+Aop:58	Event:468	Event:451	Relationship:511	adjacent	1	
+Aop:58	Event:458	Event:327	Relationship:512	adjacent	1	
+Aop:58	Event:327	Event:454	Relationship:514	adjacent		
+Aop:58	Event:327	Event:459	Relationship:515	adjacent		
+Aop:58	Event:451	Event:327	Relationship:475	adjacent		
+Aop:58	Event:167	Event:470	Relationship:516	adjacent	1	
+Aop:58	Event:470	Event:458	Relationship:517	non-adjacent	1	
+Aop:58	Event:228	Event:465	Relationship:1659	adjacent	2	2
+Aop:58	Event:54	Event:465	Relationship:501	adjacent	1	1
+Aop:58	Event:465	Event:327	Relationship:505	adjacent	1	
+Aop:60	Event:54	Event:465	Relationship:501	adjacent	1	
+Aop:60	Event:474	Event:477	Relationship:524	adjacent	1	
+Aop:60	Event:245	Event:471	Relationship:518	adjacent	1	
+Aop:60	Event:472	Event:179	Relationship:520	adjacent	1	
+Aop:60	Event:245	Event:54	Relationship:529	adjacent	3	
+Aop:60	Event:245	Event:462	Relationship:526	adjacent	3	
+Aop:60	Event:471	Event:474	Relationship:523	adjacent	1	
+Aop:60	Event:471	Event:472	Relationship:519	adjacent	1	
+Aop:60	Event:462	Event:454	Relationship:493	adjacent	1	
+Aop:60	Event:454	Event:459	Relationship:486	adjacent	1	
+Aop:60	Event:465	Event:454	Relationship:1658	adjacent	1	
+Aop:60	Event:465	Event:327	Relationship:505	adjacent	1	
+Aop:60	Event:179	Event:327	Relationship:190	adjacent	1	
+Aop:60	Event:477	Event:327	Relationship:1660	non-adjacent	2	
+Aop:60	Event:327	Event:459	Relationship:515	adjacent	1	
+Aop:61	Event:478	Event:479	Relationship:532	adjacent		
+Aop:61	Event:479	Event:480	Relationship:533	adjacent		
+Aop:61	Event:479	Event:227	Relationship:534	adjacent		
+Aop:61	Event:227	Event:483	Relationship:535	adjacent		
+Aop:61	Event:482	Event:451	Relationship:537	adjacent		
+Aop:61	Event:451	Event:459	Relationship:538	adjacent		
+Aop:61	Event:480	Event:878	Relationship:896	adjacent		
+Aop:61	Event:483	Event:458	Relationship:1606	adjacent		
+Aop:61	Event:458	Event:459	Relationship:1607	non-adjacent		
+Aop:62	Event:486	Event:484	Relationship:541	non-adjacent		
+Aop:62	Event:484	Event:457	Relationship:1661	non-adjacent		
+Aop:62	Event:457	Event:459	Relationship:1662	non-adjacent		
+Aop:63	Event:685	Event:488	Relationship:685	adjacent	2	3
+Aop:63	Event:488	Event:675	Relationship:687	adjacent	1	2
+Aop:63	Event:79	Event:685	Relationship:686	adjacent		
+Aop:63	Event:675	Event:360	Relationship:675	adjacent	2	3
+Aop:64	Event:494	Event:496	Relationship:1645	adjacent		
+Aop:64	Event:494	Event:495	Relationship:1646	adjacent		
+Aop:64	Event:496	Event:413	Relationship:1647	adjacent		
+Aop:64	Event:495	Event:413	Relationship:1648	adjacent		
+Aop:64	Event:413	Event:1690	Relationship:2125	adjacent		
+Aop:64	Event:1690	Event:520	Relationship:3225	adjacent		
+Aop:64	Event:520	Event:406	Relationship:1650	adjacent		
+Aop:65	Event:424	Event:277	Relationship:552	adjacent	1	2
+Aop:65	Event:277	Event:281	Relationship:305	adjacent	1	2
+Aop:65	Event:281	Event:280	Relationship:312	adjacent	2	3
+Aop:65	Event:281	Event:402	Relationship:403	non-adjacent	1	2
+Aop:65	Event:186	Event:192	Relationship:203	adjacent	2	3
+Aop:65	Event:192	Event:402	Relationship:384	adjacent	2	3
+Aop:72	Event:228	Event:1028	Relationship:1608	adjacent		
+Aop:72	Event:1028	Event:1449	Relationship:1609	adjacent		
+Aop:72	Event:1448	Event:1028	Relationship:1610	adjacent		
+Aop:72	Event:1448	Event:1449	Relationship:1611	adjacent		
+Aop:72	Event:1449	Event:1447	Relationship:1612	non-adjacent		
+Aop:72	Event:1454	Event:1450	Relationship:1613	adjacent		
+Aop:72	Event:1450	Event:1451	Relationship:1614	adjacent		
+Aop:72	Event:1451	Event:1452	Relationship:1615	adjacent		
+Aop:72	Event:1451	Event:1453	Relationship:1616	adjacent		
+Aop:72	Event:1451	Event:1450	Relationship:1617	adjacent		
+Aop:72	Event:1452	Event:1447	Relationship:1618	non-adjacent		
+Aop:72	Event:1453	Event:1447	Relationship:1619	non-adjacent		
+Aop:72	Event:1452	Event:1450	Relationship:1620	non-adjacent		
+Aop:72	Event:1453	Event:1450	Relationship:1621	non-adjacent		
+Aop:77	Event:559	Event:177	Relationship:581	adjacent		
+Aop:77	Event:341	Event:560	Relationship:583	adjacent		
+Aop:77	Event:560	Event:1107	Relationship:1144	adjacent		
+Aop:77	Event:1107	Event:563	Relationship:1145	adjacent		
+Aop:77	Event:559	Event:341	Relationship:1146	non-adjacent		
+Aop:77	Event:177	Event:1243	Relationship:1311	adjacent		
+Aop:77	Event:1243	Event:341	Relationship:1310	adjacent		
+Aop:78	Event:559	Event:177	Relationship:581	adjacent		
+Aop:78	Event:177	Event:386	Relationship:582	adjacent		
+Aop:78	Event:386	Event:341	Relationship:359	adjacent		
+Aop:78	Event:341	Event:564	Relationship:564	adjacent		
+Aop:78	Event:564	Event:565	Relationship:565	adjacent		
+Aop:78	Event:565	Event:566	Relationship:566	adjacent		
+Aop:78	Event:566	Event:563	Relationship:563	adjacent		
+Aop:79	Event:559	Event:177	Relationship:581	adjacent		
+Aop:79	Event:177	Event:568	Relationship:1152	adjacent		
+Aop:79	Event:568	Event:1107	Relationship:1153	adjacent		
+Aop:79	Event:1107	Event:563	Relationship:1145	adjacent		
+Aop:80	Event:559	Event:177	Relationship:581	adjacent		
+Aop:80	Event:177	Event:664	Relationship:660	adjacent		
+Aop:80	Event:664	Event:570	Relationship:661	adjacent		
+Aop:80	Event:570	Event:571	Relationship:662	adjacent		
+Aop:80	Event:571	Event:572	Relationship:663	adjacent		
+Aop:80	Event:572	Event:568	Relationship:573	adjacent		
+Aop:80	Event:568	Event:563	Relationship:574	adjacent		
+Aop:81	Event:573	Event:574	Relationship:567	adjacent		
+Aop:81	Event:574	Event:560	Relationship:568	adjacent		
+Aop:81	Event:560	Event:572	Relationship:569	adjacent		
+Aop:81	Event:572	Event:563	Relationship:559	adjacent		
+Aop:82	Event:564	Event:565	Relationship:565	adjacent		
+Aop:82	Event:565	Event:566	Relationship:566	adjacent		
+Aop:82	Event:566	Event:563	Relationship:563	adjacent		
+Aop:84	Event:403	Event:576	Relationship:570	adjacent		
+Aop:84	Event:576	Event:577	Relationship:571	adjacent		
+Aop:84	Event:577	Event:572	Relationship:572	adjacent		
+Aop:84	Event:572	Event:568	Relationship:573	adjacent		
+Aop:84	Event:568	Event:563	Relationship:574	adjacent		
+Aop:85	Event:403	Event:576	Relationship:570	adjacent		
+Aop:85	Event:576	Event:560	Relationship:575	adjacent		
+Aop:85	Event:560	Event:572	Relationship:569	adjacent		
+Aop:85	Event:572	Event:563	Relationship:559	adjacent		
+Aop:86	Event:578	Event:579	Relationship:576	adjacent		
+Aop:86	Event:579	Event:580	Relationship:577	adjacent		
+Aop:86	Event:580	Event:564	Relationship:578	adjacent		
+Aop:86	Event:564	Event:561	Relationship:579	adjacent		
+Aop:86	Event:561	Event:566	Relationship:562	adjacent		
+Aop:86	Event:566	Event:563	Relationship:563	adjacent		
+Aop:87	Event:559	Event:177	Relationship:581	adjacent		
+Aop:87	Event:341	Event:560	Relationship:583	adjacent		
+Aop:87	Event:1107	Event:563	Relationship:1145	adjacent		
+Aop:87	Event:559	Event:341	Relationship:1146	non-adjacent		
+Aop:87	Event:560	Event:1108	Relationship:1150	adjacent		
+Aop:87	Event:1108	Event:1107	Relationship:1151	adjacent		
+Aop:87	Event:177	Event:1243	Relationship:1311	adjacent		
+Aop:87	Event:1243	Event:341	Relationship:1310	adjacent		
+Aop:88	Event:559	Event:663	Relationship:658	adjacent		
+Aop:88	Event:341	Event:560	Relationship:583	adjacent		
+Aop:88	Event:560	Event:1107	Relationship:1144	adjacent		
+Aop:88	Event:1107	Event:563	Relationship:1145	adjacent		
+Aop:88	Event:559	Event:341	Relationship:1146	non-adjacent		
+Aop:88	Event:663	Event:1243	Relationship:1309	adjacent		
+Aop:88	Event:1243	Event:341	Relationship:1310	adjacent		
+Aop:89	Event:559	Event:663	Relationship:658	adjacent		
+Aop:89	Event:663	Event:1243	Relationship:1309	adjacent		
+Aop:89	Event:1243	Event:341	Relationship:1310	adjacent		
+Aop:89	Event:341	Event:560	Relationship:583	adjacent		
+Aop:89	Event:560	Event:1108	Relationship:1150	adjacent		
+Aop:89	Event:1108	Event:1107	Relationship:1151	adjacent		
+Aop:89	Event:1107	Event:563	Relationship:1145	adjacent		
+Aop:89	Event:559	Event:341	Relationship:1146	non-adjacent		
+Aop:90	Event:559	Event:663	Relationship:658	adjacent		
+Aop:90	Event:663	Event:386	Relationship:659	adjacent		
+Aop:90	Event:386	Event:341	Relationship:359	adjacent		
+Aop:90	Event:341	Event:564	Relationship:564	adjacent		
+Aop:90	Event:564	Event:565	Relationship:565	adjacent		
+Aop:90	Event:565	Event:566	Relationship:566	adjacent		
+Aop:90	Event:566	Event:563	Relationship:563	adjacent		
+Aop:91	Event:584	Event:585	Relationship:585	adjacent	1	
+Aop:91	Event:585	Event:586	Relationship:586	non-adjacent	2	
+Aop:91	Event:586	Event:587	Relationship:587	adjacent		
+Aop:91	Event:586	Event:588	Relationship:588	adjacent		
+Aop:91	Event:587	Event:588	Relationship:589	non-adjacent		
+Aop:91	Event:588	Event:592	Relationship:595	adjacent		
+Aop:91	Event:587	Event:592	Relationship:596	non-adjacent		
+Aop:93	Event:584	Event:585	Relationship:585	adjacent	1	
+Aop:93	Event:585	Event:586	Relationship:586	non-adjacent	2	
+Aop:93	Event:586	Event:588	Relationship:588	non-adjacent	2	
+Aop:94	Event:444	Event:445	Relationship:591	adjacent	2	
+Aop:94	Event:445	Event:590	Relationship:592	adjacent		
+Aop:94	Event:590	Event:591	Relationship:593	non-adjacent	2	
+Aop:94	Event:584	Event:585	Relationship:585	adjacent	1	
+Aop:94	Event:585	Event:444	Relationship:594	adjacent	2	
+Aop:95	Event:585	Event:586	Relationship:586	non-adjacent	3	
+Aop:95	Event:586	Event:587	Relationship:587	non-adjacent		
+Aop:95	Event:586	Event:588	Relationship:588	non-adjacent		
+Aop:95	Event:587	Event:588	Relationship:589	non-adjacent		
+Aop:95	Event:588	Event:592	Relationship:595	adjacent	1	
+Aop:95	Event:593	Event:585	Relationship:597	adjacent	1	
+Aop:96	Event:598	Event:599	Relationship:603	adjacent		
+Aop:96	Event:599	Event:600	Relationship:604	adjacent		
+Aop:96	Event:600	Event:601	Relationship:605	non-adjacent		
+Aop:96	Event:601	Event:602	Relationship:606	adjacent		
+Aop:96	Event:602	Event:351	Relationship:607	adjacent		
+Aop:97	Event:1143	Event:623	Relationship:1185	adjacent		
+Aop:97	Event:622	Event:623	Relationship:638	adjacent		
+Aop:97	Event:1139	Event:1142	Relationship:1223	adjacent	2	
+Aop:97	Event:1142	Event:623	Relationship:1227	adjacent		
+Aop:97	Event:619	Event:625	Relationship:1316	non-adjacent		
+Aop:97	Event:619	Event:1142	Relationship:1317	non-adjacent		
+Aop:97	Event:1142	Event:1139	Relationship:1174	adjacent		
+Aop:97	Event:625	Event:624	Relationship:642	adjacent		
+Aop:97	Event:1139	Event:624	Relationship:1175	adjacent		
+Aop:97	Event:625	Event:622	Relationship:641	adjacent		
+Aop:97	Event:1142	Event:1143	Relationship:1173	adjacent		
+Aop:97	Event:622	Event:1143	Relationship:1177	adjacent		
+Aop:97	Event:624	Event:1143	Relationship:1176	adjacent		
+Aop:97	Event:626	Event:1142	Relationship:1327	adjacent		
+Aop:97	Event:619	Event:626	Relationship:643	adjacent		
+Aop:97	Event:626	Event:625	Relationship:1332	adjacent		
+Aop:97	Event:623	Event:360	Relationship:2634	adjacent		
+Aop:98	Event:626	Event:627	Relationship:644	non-adjacent		
+Aop:98	Event:627	Event:629	Relationship:645	non-adjacent		
+Aop:98	Event:619	Event:626	Relationship:643	adjacent		
+Aop:98	Event:629	Event:588	Relationship:646	non-adjacent		
+Aop:99	Event:633	Event:634	Relationship:649	non-adjacent		
+Aop:99	Event:634	Event:635	Relationship:650	non-adjacent		
+Aop:99	Event:635	Event:588	Relationship:651	non-adjacent		
+Aop:99	Event:588	Event:636	Relationship:654	adjacent		
+Aop:99	Event:638	Event:633	Relationship:1061	adjacent		
+Aop:99	Event:633	Event:341	Relationship:1643	non-adjacent		
+Aop:99	Event:341	Event:635	Relationship:1644	non-adjacent		
+Aop:100	Event:79	Event:672	Relationship:670	adjacent	3	3
+Aop:100	Event:671	Event:673	Relationship:672	adjacent	1	3
+Aop:100	Event:674	Event:675	Relationship:674	adjacent	2	3
+Aop:100	Event:675	Event:360	Relationship:675	adjacent	1	1
+Aop:100	Event:673	Event:674	Relationship:673	adjacent	2	3
+Aop:100	Event:672	Event:671	Relationship:671	adjacent	2	3
+Aop:101	Event:678	Event:674	Relationship:679	adjacent	2	3
+Aop:101	Event:674	Event:675	Relationship:674	adjacent	1	2
+Aop:101	Event:79	Event:681	Relationship:681	adjacent	3	3
+Aop:101	Event:681	Event:671	Relationship:682	adjacent	1	3
+Aop:101	Event:671	Event:678	Relationship:678	adjacent	1	3
+Aop:101	Event:675	Event:360	Relationship:675	adjacent	2	3
+Aop:102	Event:79	Event:687	Relationship:689	adjacent	2	3
+Aop:102	Event:687	Event:689	Relationship:690	adjacent	1	3
+Aop:102	Event:689	Event:690	Relationship:691	adjacent	1	2
+Aop:102	Event:690	Event:691	Relationship:692	adjacent	1	3
+Aop:102	Event:691	Event:692	Relationship:693	adjacent	1	3
+Aop:102	Event:692	Event:693	Relationship:694	adjacent	2	3
+Aop:102	Event:693	Event:694	Relationship:696	adjacent	1	3
+Aop:102	Event:694	Event:675	Relationship:697	adjacent	1	3
+Aop:102	Event:675	Event:360	Relationship:675	adjacent	2	3
+Aop:103	Event:79	Event:687	Relationship:689	adjacent	2	3
+Aop:103	Event:687	Event:689	Relationship:690	adjacent	1	3
+Aop:103	Event:689	Event:690	Relationship:691	adjacent	1	2
+Aop:103	Event:690	Event:691	Relationship:692	adjacent	1	3
+Aop:103	Event:691	Event:692	Relationship:693	adjacent	1	3
+Aop:103	Event:692	Event:695	Relationship:698	adjacent	3	3
+Aop:103	Event:695	Event:696	Relationship:699	adjacent	2	3
+Aop:103	Event:696	Event:675	Relationship:700	adjacent	1	2
+Aop:103	Event:675	Event:360	Relationship:675	adjacent	2	3
+Aop:104	Event:697	Event:698	Relationship:701	adjacent		
+Aop:104	Event:698	Event:699	Relationship:702	adjacent		
+Aop:104	Event:699	Event:351	Relationship:703	adjacent		
+Aop:105	Event:714	Event:708	Relationship:706	adjacent		
+Aop:105	Event:708	Event:709	Relationship:707	adjacent		
+Aop:105	Event:709	Event:710	Relationship:708	adjacent		
+Aop:105	Event:710	Event:767	Relationship:760	adjacent		
+Aop:105	Event:767	Event:713	Relationship:761	adjacent		
+Aop:106	Event:718	Event:720	Relationship:714	adjacent	1	
+Aop:106	Event:720	Event:721	Relationship:715	adjacent	2	
+Aop:106	Event:721	Event:752	Relationship:737	adjacent	2	
+Aop:106	Event:752	Event:723	Relationship:738	adjacent	3	
+Aop:106	Event:723	Event:728	Relationship:723	adjacent	1	
+Aop:106	Event:718	Event:723	Relationship:724	non-adjacent	1	
+Aop:107	Event:715	Event:1214	Relationship:1268	adjacent	1	2
+Aop:107	Event:1214	Event:716	Relationship:1269	adjacent	1	2
+Aop:107	Event:716	Event:774	Relationship:773	adjacent	1	2
+Aop:107	Event:774	Event:719	Relationship:774	adjacent	1	5
+Aop:108	Event:724	Event:726	Relationship:716	adjacent		
+Aop:108	Event:726	Event:769	Relationship:762	adjacent		
+Aop:108	Event:769	Event:209	Relationship:763	adjacent		
+Aop:108	Event:209	Event:768	Relationship:765	adjacent		
+Aop:108	Event:768	Event:719	Relationship:766	adjacent		
+Aop:109	Event:733	Event:734	Relationship:726	adjacent		
+Aop:109	Event:734	Event:735	Relationship:727	adjacent		
+Aop:109	Event:735	Event:736	Relationship:728	adjacent		
+Aop:109	Event:770	Event:733	Relationship:767	adjacent		
+Aop:110	Event:424	Event:277	Relationship:552	adjacent		
+Aop:110	Event:277	Event:281	Relationship:305	adjacent		
+Aop:110	Event:281	Event:1023	Relationship:2422	adjacent		
+Aop:110	Event:1023	Event:739	Relationship:2424	adjacent		
+Aop:110	Event:739	Event:740	Relationship:742	adjacent		
+Aop:110	Event:740	Event:741	Relationship:743	adjacent		
+Aop:111	Event:1614	Event:743	Relationship:3451	adjacent		
+Aop:111	Event:744	Event:745	Relationship:731	adjacent		
+Aop:111	Event:743	Event:754	Relationship:744	adjacent		
+Aop:111	Event:754	Event:744	Relationship:745	adjacent		
+Aop:112	Event:746	Event:747	Relationship:732	adjacent		
+Aop:112	Event:747	Event:111	Relationship:3524	adjacent		
+Aop:112	Event:111	Event:749	Relationship:3525	adjacent		
+Aop:112	Event:772	Event:773	Relationship:771	adjacent		
+Aop:112	Event:749	Event:772	Relationship:772	adjacent		
+Aop:113	Event:760	Event:761	Relationship:752	adjacent		
+Aop:113	Event:763	Event:764	Relationship:755	non-adjacent		
+Aop:113	Event:351	Event:765	Relationship:756	adjacent		
+Aop:113	Event:764	Event:351	Relationship:757	non-adjacent		
+Aop:113	Event:761	Event:763	Relationship:758	adjacent		
+Aop:114	Event:766	Event:775	Relationship:775	adjacent		
+Aop:114	Event:775	Event:776	Relationship:776	adjacent		
+Aop:114	Event:776	Event:777	Relationship:777	adjacent		
+Aop:114	Event:777	Event:778	Relationship:778	adjacent		
+Aop:114	Event:778	Event:779	Relationship:779	adjacent		
+Aop:115	Event:780	Event:149	Relationship:780	adjacent		
+Aop:115	Event:149	Event:781	Relationship:781	adjacent		
+Aop:115	Event:781	Event:782	Relationship:782	adjacent		
+Aop:115	Event:782	Event:779	Relationship:783	adjacent		
+Aop:116	Event:783	Event:710	Relationship:784	adjacent		
+Aop:116	Event:710	Event:784	Relationship:785	adjacent		
+Aop:116	Event:784	Event:713	Relationship:786	adjacent		
+Aop:117	Event:25	Event:716	Relationship:3450	adjacent		
+Aop:117	Event:716	Event:774	Relationship:773	adjacent		
+Aop:117	Event:774	Event:719	Relationship:774	adjacent		
+Aop:118	Event:786	Event:787	Relationship:788	adjacent		
+Aop:118	Event:787	Event:774	Relationship:789	adjacent		
+Aop:118	Event:774	Event:719	Relationship:774	adjacent		
+Aop:119	Event:279	Event:277	Relationship:309	adjacent		
+Aop:119	Event:277	Event:281	Relationship:305	adjacent		
+Aop:119	Event:281	Event:1023	Relationship:2422	adjacent		
+Aop:119	Event:1023	Event:739	Relationship:2424	adjacent		
+Aop:119	Event:739	Event:740	Relationship:742	adjacent		
+Aop:119	Event:740	Event:741	Relationship:743	adjacent		
+Aop:120	Event:1617	Event:1690	Relationship:3452	adjacent		
+Aop:120	Event:1690	Event:791	Relationship:3227	adjacent		
+Aop:120	Event:791	Event:744	Relationship:794	adjacent		
+Aop:120	Event:744	Event:745	Relationship:731	adjacent		
+Aop:121	Event:793	Event:794	Relationship:795	adjacent		
+Aop:121	Event:794	Event:795	Relationship:796	adjacent		
+Aop:121	Event:795	Event:796	Relationship:797	adjacent		
+Aop:121	Event:796	Event:797	Relationship:798	adjacent		
+Aop:122	Event:798	Event:799	Relationship:799	adjacent	1	3
+Aop:122	Event:799	Event:800	Relationship:800	adjacent	2	3
+Aop:122	Event:800	Event:3	Relationship:801	adjacent	1	2
+Aop:122	Event:3	Event:219	Relationship:5	adjacent	1	2
+Aop:122	Event:219	Event:285	Relationship:252	adjacent	1	2
+Aop:122	Event:285	Event:221	Relationship:315	adjacent	1	1
+Aop:122	Event:221	Event:309	Relationship:255	adjacent	2	
+Aop:122	Event:309	Event:78	Relationship:337	adjacent		
+Aop:122	Event:78	Event:360	Relationship:94	adjacent		
+Aop:123	Event:801	Event:802	Relationship:802	adjacent		
+Aop:123	Event:802	Event:799	Relationship:803	adjacent	3	3
+Aop:123	Event:799	Event:800	Relationship:800	adjacent	3	
+Aop:123	Event:800	Event:3	Relationship:801	adjacent		
+Aop:123	Event:3	Event:219	Relationship:5	adjacent		
+Aop:123	Event:219	Event:285	Relationship:252	adjacent		
+Aop:123	Event:285	Event:221	Relationship:315	adjacent		
+Aop:123	Event:221	Event:309	Relationship:255	adjacent		
+Aop:123	Event:309	Event:78	Relationship:337	adjacent		
+Aop:123	Event:78	Event:360	Relationship:94	adjacent		
+Aop:124	Event:804	Event:805	Relationship:804	adjacent	1	
+Aop:124	Event:805	Event:807	Relationship:805	adjacent		
+Aop:124	Event:809	Event:330	Relationship:808	adjacent		
+Aop:124	Event:807	Event:1690	Relationship:3201	non-adjacent		
+Aop:124	Event:1690	Event:809	Relationship:3202	non-adjacent		
+Aop:128	Event:277	Event:281	Relationship:305	adjacent	1	
+Aop:128	Event:281	Event:818	Relationship:2473	adjacent	3	
+Aop:128	Event:281	Event:823	Relationship:2474	adjacent	3	
+Aop:128	Event:281	Event:824	Relationship:2475	adjacent	3	
+Aop:128	Event:277	Event:813	Relationship:810	adjacent	1	
+Aop:128	Event:813	Event:818	Relationship:813	adjacent	3	
+Aop:128	Event:813	Event:823	Relationship:814	adjacent	3	
+Aop:128	Event:813	Event:824	Relationship:816	adjacent	3	
+Aop:128	Event:818	Event:819	Relationship:817	non-adjacent	3	
+Aop:128	Event:818	Event:820	Relationship:818	non-adjacent	3	
+Aop:128	Event:818	Event:821	Relationship:819	non-adjacent	3	
+Aop:128	Event:818	Event:825	Relationship:820	non-adjacent	3	
+Aop:128	Event:823	Event:819	Relationship:821	non-adjacent	3	
+Aop:128	Event:823	Event:820	Relationship:822	non-adjacent	3	
+Aop:128	Event:823	Event:821	Relationship:823	non-adjacent	3	
+Aop:128	Event:823	Event:825	Relationship:824	non-adjacent	3	
+Aop:128	Event:824	Event:819	Relationship:825	non-adjacent	3	
+Aop:128	Event:824	Event:820	Relationship:826	non-adjacent	3	
+Aop:128	Event:824	Event:821	Relationship:827	non-adjacent	3	
+Aop:128	Event:824	Event:825	Relationship:828	non-adjacent	3	
+Aop:128	Event:819	Event:814	Relationship:829	adjacent	1	
+Aop:128	Event:820	Event:814	Relationship:830	adjacent	1	
+Aop:128	Event:821	Event:814	Relationship:831	adjacent	1	
+Aop:128	Event:825	Event:814	Relationship:832	adjacent	1	
+Aop:130	Event:828	Event:829	Relationship:836	adjacent	1	
+Aop:130	Event:828	Event:831	Relationship:837	adjacent	1	
+Aop:130	Event:828	Event:177	Relationship:3154	adjacent	1	
+Aop:130	Event:829	Event:833	Relationship:839	adjacent	3	
+Aop:130	Event:829	Event:835	Relationship:840	adjacent	3	
+Aop:130	Event:829	Event:836	Relationship:841	adjacent	3	
+Aop:130	Event:829	Event:837	Relationship:842	adjacent	3	
+Aop:130	Event:831	Event:833	Relationship:843	adjacent	3	
+Aop:130	Event:831	Event:835	Relationship:844	adjacent	3	
+Aop:130	Event:831	Event:836	Relationship:845	adjacent	3	
+Aop:130	Event:831	Event:837	Relationship:846	adjacent	3	
+Aop:130	Event:177	Event:833	Relationship:3155	adjacent	3	
+Aop:130	Event:177	Event:835	Relationship:3156	adjacent	3	
+Aop:130	Event:177	Event:836	Relationship:3158	adjacent	3	
+Aop:130	Event:177	Event:837	Relationship:3157	adjacent	3	
+Aop:130	Event:833	Event:838	Relationship:851	adjacent	3	
+Aop:130	Event:833	Event:839	Relationship:852	adjacent	3	
+Aop:130	Event:835	Event:838	Relationship:853	adjacent	3	
+Aop:130	Event:835	Event:839	Relationship:854	adjacent	3	
+Aop:130	Event:836	Event:838	Relationship:855	adjacent	3	
+Aop:130	Event:836	Event:839	Relationship:856	adjacent	3	
+Aop:130	Event:837	Event:838	Relationship:857	adjacent	3	
+Aop:130	Event:837	Event:839	Relationship:858	adjacent	3	
+Aop:130	Event:838	Event:840	Relationship:859	adjacent	1	
+Aop:130	Event:839	Event:840	Relationship:860	adjacent	1	
+Aop:131	Event:18	Event:850	Relationship:869	adjacent	1	1
+Aop:131	Event:850	Event:844	Relationship:868	adjacent	2	3
+Aop:131	Event:844	Event:845	Relationship:865	adjacent	2	3
+Aop:131	Event:845	Event:846	Relationship:1070	adjacent	2	2
+Aop:131	Event:846	Event:369	Relationship:866	adjacent	1	1
+Aop:134	Event:424	Event:425	Relationship:442	adjacent	1	1
+Aop:134	Event:425	Event:277	Relationship:872	adjacent	1	1
+Aop:134	Event:277	Event:281	Relationship:305	adjacent	1	1
+Aop:134	Event:281	Event:280	Relationship:312	adjacent	1	3
+Aop:134	Event:280	Event:756	Relationship:746	adjacent	2	3
+Aop:134	Event:756	Event:757	Relationship:747	adjacent	2	3
+Aop:134	Event:757	Event:758	Relationship:749	adjacent	2	3
+Aop:134	Event:758	Event:402	Relationship:748	adjacent	2	3
+Aop:134	Event:281	Event:402	Relationship:403	non-adjacent	1	3
+Aop:136	Event:867	Event:768	Relationship:886	adjacent	2	1
+Aop:136	Event:768	Event:868	Relationship:887	adjacent	2	2
+Aop:136	Event:868	Event:869	Relationship:888	adjacent	2	2
+Aop:136	Event:869	Event:870	Relationship:889	adjacent	2	2
+Aop:136	Event:870	Event:876	Relationship:893	non-adjacent	1	3
+Aop:136	Event:876	Event:872	Relationship:894	adjacent	1	2
+Aop:136	Event:870	Event:872	Relationship:895	non-adjacent	1	1
+Aop:138	Event:877	Event:1096	Relationship:1131	adjacent	1	1
+Aop:138	Event:1096	Event:1102	Relationship:1132	adjacent	1	1
+Aop:138	Event:1102	Event:1097	Relationship:1133	non-adjacent	2	
+Aop:138	Event:1097	Event:1098	Relationship:1134	adjacent	2	
+Aop:138	Event:1098	Event:1106	Relationship:1140	adjacent		
+Aop:138	Event:1106	Event:351	Relationship:1141	adjacent		
+Aop:138	Event:1097	Event:1096	Relationship:1156	adjacent		
+Aop:138	Event:1096	Event:1392	Relationship:3263	non-adjacent		
+Aop:138	Event:1392	Event:1097	Relationship:3264	non-adjacent		
+Aop:139	Event:97	Event:155	Relationship:24	adjacent	1	2
+Aop:139	Event:155	Event:185	Relationship:164	non-adjacent	1	2
+Aop:139	Event:185	Event:885	Relationship:899	non-adjacent	2	3
+Aop:139	Event:97	Event:185	Relationship:25	non-adjacent	1	2
+Aop:139	Event:97	Event:885	Relationship:901	non-adjacent	2	3
+Aop:141	Event:155	Event:185	Relationship:164	adjacent	1	2
+Aop:141	Event:185	Event:885	Relationship:899	non-adjacent	2	3
+Aop:144	Event:1539	Event:898	Relationship:1775	adjacent	1	
+Aop:144	Event:898	Event:177	Relationship:993	adjacent	1	
+Aop:144	Event:177	Event:55	Relationship:363	adjacent	2	3
+Aop:144	Event:55	Event:1493	Relationship:1776	adjacent	1	
+Aop:144	Event:1493	Event:1494	Relationship:1777	adjacent	1	
+Aop:144	Event:1494	Event:265	Relationship:1778	adjacent	1	
+Aop:144	Event:265	Event:68	Relationship:295	adjacent	1	
+Aop:144	Event:68	Event:344	Relationship:82	adjacent	1	
+Aop:148	Event:941	Event:2117	Relationship:2857	adjacent	1	1
+Aop:148	Event:941	Event:962	Relationship:986	adjacent	1	1
+Aop:148	Event:2117	Event:962	Relationship:2858	adjacent	1	2
+Aop:148	Event:962	Event:1250	Relationship:2859	adjacent	2	2
+Aop:149	Event:209	Event:935	Relationship:980	adjacent	2	3
+Aop:149	Event:927	Event:932	Relationship:955	adjacent	1	2
+Aop:149	Event:935	Event:934	Relationship:952	adjacent	1	1
+Aop:149	Event:934	Event:932	Relationship:953	adjacent	1	1
+Aop:149	Event:932	Event:933	Relationship:956	adjacent	1	1
+Aop:149	Event:933	Event:937	Relationship:958	adjacent	1	2
+Aop:149	Event:937	Event:951	Relationship:982	adjacent	2	3
+Aop:149	Event:951	Event:952	Relationship:983	adjacent	2	3
+Aop:149	Event:973	Event:933	Relationship:988	adjacent	1	1
+Aop:149	Event:209	Event:973	Relationship:992	adjacent	1	2
+Aop:149	Event:209	Event:927	Relationship:1698	adjacent	2	3
+Aop:150	Event:18	Event:944	Relationship:972	adjacent	1	2
+Aop:150	Event:944	Event:945	Relationship:973	adjacent	2	3
+Aop:150	Event:945	Event:948	Relationship:974	adjacent	2	2
+Aop:150	Event:948	Event:110	Relationship:975	adjacent	1	3
+Aop:150	Event:110	Event:317	Relationship:976	adjacent	2	3
+Aop:150	Event:317	Event:947	Relationship:1567	adjacent	1	3
+Aop:150	Event:18	Event:947	Relationship:984	non-adjacent	1	2
+Aop:151	Event:18	Event:944	Relationship:972	adjacent		
+Aop:151	Event:944	Event:945	Relationship:973	adjacent		
+Aop:151	Event:945	Event:948	Relationship:974	adjacent		
+Aop:151	Event:948	Event:1891	Relationship:2407	adjacent		
+Aop:151	Event:1891	Event:1892	Relationship:2408	adjacent		
+Aop:151	Event:1892	Event:1893	Relationship:2409	adjacent		
+Aop:152	Event:957	Event:958	Relationship:2245	adjacent	2	3
+Aop:152	Event:958	Event:959	Relationship:2246	adjacent	2	3
+Aop:152	Event:959	Event:961	Relationship:2272	adjacent	2	3
+Aop:152	Event:961	Event:281	Relationship:2270	adjacent	2	3
+Aop:154	Event:980	Event:979	Relationship:1508	adjacent	2	2
+Aop:154	Event:979	Event:981	Relationship:1017	adjacent	1	1
+Aop:154	Event:981	Event:1202	Relationship:1509	adjacent	1	1
+Aop:154	Event:1202	Event:984	Relationship:1510	adjacent	1	1
+Aop:155	Event:1002	Event:1003	Relationship:1026	adjacent	2	3
+Aop:155	Event:1003	Event:1004	Relationship:1027	adjacent	2	3
+Aop:155	Event:1004	Event:1005	Relationship:1028	adjacent	2	3
+Aop:155	Event:1005	Event:351	Relationship:2212	adjacent	2	3
+Aop:155	Event:351	Event:360	Relationship:2013	adjacent	2	2
+Aop:155	Event:1002	Event:1004	Relationship:1042	non-adjacent	2	3
+Aop:155	Event:1004	Event:351	Relationship:2213	non-adjacent	1	3
+Aop:156	Event:1002	Event:1003	Relationship:1026	adjacent	2	3
+Aop:156	Event:1003	Event:1007	Relationship:1035	adjacent	2	2
+Aop:156	Event:1007	Event:1005	Relationship:1034	adjacent	2	3
+Aop:156	Event:1005	Event:351	Relationship:2212	adjacent	2	3
+Aop:156	Event:351	Event:360	Relationship:2013	adjacent	2	2
+Aop:157	Event:1009	Event:1003	Relationship:1037	adjacent	3	3
+Aop:157	Event:1003	Event:1004	Relationship:1027	adjacent	2	3
+Aop:157	Event:1004	Event:1005	Relationship:1028	adjacent	2	3
+Aop:157	Event:1005	Event:351	Relationship:2212	adjacent	2	3
+Aop:157	Event:351	Event:360	Relationship:2013	adjacent	2	2
+Aop:157	Event:1009	Event:1004	Relationship:1044	non-adjacent	2	3
+Aop:157	Event:1004	Event:351	Relationship:2213	non-adjacent	1	3
+Aop:158	Event:1009	Event:1003	Relationship:1037	adjacent	3	3
+Aop:158	Event:1003	Event:1007	Relationship:1035	adjacent	2	2
+Aop:158	Event:1007	Event:1005	Relationship:1034	adjacent	2	3
+Aop:158	Event:1005	Event:351	Relationship:2212	adjacent	2	3
+Aop:158	Event:351	Event:360	Relationship:2013	adjacent	2	2
+Aop:159	Event:279	Event:277	Relationship:309	adjacent	1	3
+Aop:159	Event:277	Event:281	Relationship:305	adjacent	2	3
+Aop:159	Event:281	Event:1003	Relationship:2038	adjacent	2	2
+Aop:159	Event:1003	Event:1007	Relationship:1035	adjacent	2	2
+Aop:159	Event:1007	Event:1005	Relationship:1034	adjacent	2	3
+Aop:159	Event:1005	Event:351	Relationship:2212	adjacent	2	3
+Aop:159	Event:351	Event:360	Relationship:2013	adjacent	2	2
+Aop:159	Event:279	Event:281	Relationship:366	non-adjacent	1	3
+Aop:159	Event:281	Event:1007	Relationship:1039	non-adjacent	2	2
+Aop:160	Event:1014	Event:351	Relationship:1050	adjacent		
+Aop:160	Event:762	Event:761	Relationship:1051	adjacent		
+Aop:160	Event:761	Event:1015	Relationship:1052	adjacent		
+Aop:160	Event:1015	Event:1012	Relationship:1053	adjacent		
+Aop:160	Event:1012	Event:1014	Relationship:1054	adjacent		
+Aop:160	Event:1014	Event:1016	Relationship:1055	adjacent		
+Aop:160	Event:1016	Event:351	Relationship:1056	adjacent		
+Aop:161	Event:1015	Event:1012	Relationship:1053	adjacent		
+Aop:161	Event:1016	Event:351	Relationship:1056	adjacent		
+Aop:161	Event:1018	Event:761	Relationship:1057	adjacent		
+Aop:161	Event:761	Event:1015	Relationship:1052	adjacent		
+Aop:161	Event:1012	Event:1019	Relationship:1058	adjacent		
+Aop:161	Event:1019	Event:1016	Relationship:1059	adjacent		
+Aop:162	Event:295	Event:961	Relationship:2478	adjacent		
+Aop:162	Event:961	Event:281	Relationship:2270	adjacent		
+Aop:162	Event:281	Event:1023	Relationship:2422	adjacent		
+Aop:162	Event:1023	Event:739	Relationship:2424	adjacent		
+Aop:162	Event:739	Event:740	Relationship:742	adjacent		
+Aop:162	Event:740	Event:741	Relationship:743	adjacent		
+Aop:163	Event:1028	Event:1029	Relationship:1071	non-adjacent	1	
+Aop:163	Event:1028	Event:1032	Relationship:1072	non-adjacent	2	
+Aop:163	Event:1029	Event:1032	Relationship:1073	adjacent	1	
+Aop:163	Event:1032	Event:1033	Relationship:1074	adjacent	1	
+Aop:163	Event:1032	Event:1034	Relationship:1075	adjacent	1	
+Aop:163	Event:1033	Event:1035	Relationship:1076	adjacent	1	
+Aop:163	Event:1033	Event:1036	Relationship:1077	adjacent	1	
+Aop:163	Event:1033	Event:1037	Relationship:1078	adjacent	1	
+Aop:164	Event:1038	Event:1039	Relationship:1079	adjacent	1	
+Aop:164	Event:1039	Event:1040	Relationship:1080	adjacent	1	
+Aop:164	Event:1040	Event:1042	Relationship:1081	non-adjacent	1	
+Aop:164	Event:1042	Event:1043	Relationship:1082	adjacent	1	
+Aop:164	Event:1043	Event:1044	Relationship:1083	non-adjacent	1	
+Aop:165	Event:1045	Event:1056	Relationship:1085	adjacent	1	
+Aop:165	Event:1046	Event:1056	Relationship:1086	non-adjacent	1	
+Aop:165	Event:1056	Event:1047	Relationship:1087	adjacent	1	
+Aop:165	Event:1047	Event:1049	Relationship:1088	adjacent	1	
+Aop:165	Event:1047	Event:1050	Relationship:1089	adjacent	1	
+Aop:165	Event:1049	Event:1051	Relationship:1090	non-adjacent	2	
+Aop:165	Event:1049	Event:1052	Relationship:1091	non-adjacent	2	
+Aop:165	Event:1050	Event:1051	Relationship:1092	non-adjacent	1	
+Aop:165	Event:1052	Event:1053	Relationship:1093	non-adjacent	1	
+Aop:165	Event:1051	Event:1054	Relationship:1094	non-adjacent	1	
+Aop:166	Event:1057	Event:1058	Relationship:1095	non-adjacent	2	
+Aop:166	Event:1057	Event:1059	Relationship:1096	non-adjacent	2	
+Aop:166	Event:1057	Event:1060	Relationship:1097	non-adjacent	3	
+Aop:166	Event:1061	Event:1062	Relationship:1098	adjacent	1	
+Aop:166	Event:1062	Event:1063	Relationship:1099	non-adjacent	1	
+Aop:166	Event:1059	Event:1061	Relationship:1100	non-adjacent		
+Aop:166	Event:1058	Event:1059	Relationship:1101	adjacent		
+Aop:167	Event:1065	Event:1066	Relationship:1103	non-adjacent	1	
+Aop:167	Event:1066	Event:1067	Relationship:1104	adjacent	1	
+Aop:167	Event:1067	Event:1068	Relationship:1105	adjacent	1	
+Aop:167	Event:1068	Event:1069	Relationship:1106	adjacent	1	
+Aop:167	Event:1069	Event:1070	Relationship:1107	non-adjacent	1	
+Aop:168	Event:1071	Event:1072	Relationship:1108	adjacent	1	
+Aop:168	Event:1072	Event:1074	Relationship:1109	adjacent	1	
+Aop:168	Event:1072	Event:1075	Relationship:1110	non-adjacent	1	
+Aop:168	Event:1075	Event:1076	Relationship:1111	adjacent	1	
+Aop:168	Event:1075	Event:1077	Relationship:1112	adjacent	2	
+Aop:168	Event:1076	Event:1078	Relationship:1113	non-adjacent	1	
+Aop:168	Event:1077	Event:1078	Relationship:1114	adjacent	1	
+Aop:168	Event:1078	Event:1080	Relationship:1115	non-adjacent	1	
+Aop:168	Event:1078	Event:1079	Relationship:1116	non-adjacent	1	
+Aop:168	Event:1080	Event:1079	Relationship:1117	non-adjacent	2	
+Aop:169	Event:1071	Event:1072	Relationship:1108	adjacent	1	
+Aop:169	Event:1072	Event:1075	Relationship:1110	non-adjacent	1	
+Aop:169	Event:1072	Event:1074	Relationship:1109	adjacent	1	
+Aop:169	Event:1075	Event:1076	Relationship:1111	adjacent	1	
+Aop:169	Event:1074	Event:1076	Relationship:1118	non-adjacent	1	
+Aop:169	Event:1076	Event:1081	Relationship:1119	adjacent	1	
+Aop:169	Event:1081	Event:1082	Relationship:1120	non-adjacent	1	
+Aop:170	Event:1083	Event:1084	Relationship:1121	non-adjacent	1	
+Aop:170	Event:1084	Event:1085	Relationship:1122	adjacent	1	
+Aop:170	Event:1085	Event:1080	Relationship:1123	non-adjacent	2	
+Aop:170	Event:1085	Event:1079	Relationship:1124	non-adjacent	2	
+Aop:170	Event:1080	Event:1079	Relationship:1117	non-adjacent	2	
+Aop:171	Event:1086	Event:1087	Relationship:1125	adjacent	1	
+Aop:171	Event:1086	Event:1392	Relationship:3261	adjacent	1	
+Aop:171	Event:1087	Event:1032	Relationship:1127	non-adjacent	2	
+Aop:171	Event:1392	Event:1032	Relationship:3262	non-adjacent	2	
+Aop:171	Event:1032	Event:1089	Relationship:1129	adjacent	1	
+Aop:171	Event:1089	Event:1090	Relationship:1130	non-adjacent	1	
+Aop:173	Event:1495	Event:1496	Relationship:1702	adjacent	2	2
+Aop:173	Event:1496	Event:1497	Relationship:1703	adjacent	2	3
+Aop:173	Event:1497	Event:1498	Relationship:1704	adjacent	2	2
+Aop:173	Event:1498	Event:1499	Relationship:1705	adjacent	2	3
+Aop:173	Event:1499	Event:1500	Relationship:1706	adjacent	1	3
+Aop:173	Event:1500	Event:68	Relationship:2652	adjacent	1	1
+Aop:173	Event:68	Event:1458	Relationship:1629	adjacent	1	3
+Aop:175	Event:279	Event:277	Relationship:309	adjacent	1	2
+Aop:175	Event:277	Event:281	Relationship:305	adjacent	1	2
+Aop:175	Event:279	Event:281	Relationship:366	non-adjacent	1	1
+Aop:175	Event:281	Event:1101	Relationship:2168	non-adjacent	1	1
+Aop:176	Event:424	Event:425	Relationship:442	adjacent	1	2
+Aop:176	Event:424	Event:281	Relationship:2232	non-adjacent	2	2
+Aop:176	Event:425	Event:277	Relationship:872	adjacent	1	2
+Aop:176	Event:281	Event:1101	Relationship:2168	non-adjacent	1	1
+Aop:176	Event:277	Event:281	Relationship:305	adjacent	1	1
+Aop:177	Event:1104	Event:1105	Relationship:1138	adjacent	5	
+Aop:177	Event:1097	Event:1098	Relationship:1134	adjacent	1	
+Aop:177	Event:1103	Event:1104	Relationship:1137	adjacent		
+Aop:177	Event:1098	Event:1106	Relationship:1140	adjacent		
+Aop:177	Event:1106	Event:351	Relationship:1141	adjacent		
+Aop:177	Event:1105	Event:1392	Relationship:3265	adjacent		
+Aop:177	Event:1392	Event:1097	Relationship:3264	adjacent		
+Aop:177	Event:1097	Event:1096	Relationship:1156	adjacent	1	
+Aop:177	Event:1096	Event:1102	Relationship:1132	adjacent	1	
+Aop:177	Event:1102	Event:1097	Relationship:1133	adjacent		
+Aop:177	Event:1096	Event:1392	Relationship:3263	adjacent		
+Aop:178	Event:177	Event:1107	Relationship:1154	adjacent		
+Aop:178	Event:1107	Event:563	Relationship:1145	adjacent		
+Aop:179	Event:1109	Event:1107	Relationship:1155	adjacent		
+Aop:179	Event:1107	Event:563	Relationship:1145	adjacent		
+Aop:180	Event:560	Event:1107	Relationship:1144	adjacent		
+Aop:180	Event:1107	Event:563	Relationship:1145	adjacent		
+Aop:181	Event:1107	Event:563	Relationship:1145	adjacent		
+Aop:182	Event:560	Event:1107	Relationship:1144	adjacent		
+Aop:182	Event:1107	Event:563	Relationship:1145	adjacent		
+Aop:183	Event:1110	Event:560	Relationship:1157	adjacent		
+Aop:183	Event:560	Event:1107	Relationship:1144	adjacent		
+Aop:183	Event:1107	Event:563	Relationship:1145	adjacent		
+Aop:184	Event:1108	Event:1107	Relationship:1151	adjacent		
+Aop:184	Event:1107	Event:563	Relationship:1145	adjacent		
+Aop:185	Event:1107	Event:563	Relationship:1145	adjacent		
+Aop:186	Event:1114	Event:1115	Relationship:1161	adjacent		
+Aop:186	Event:1115	Event:1392	Relationship:2009	adjacent		
+Aop:186	Event:1097	Event:1098	Relationship:1134	adjacent		
+Aop:186	Event:1098	Event:1106	Relationship:1140	adjacent		
+Aop:186	Event:1106	Event:351	Relationship:1141	adjacent		
+Aop:186	Event:1392	Event:1097	Relationship:3264	non-adjacent		
+Aop:187	Event:1131	Event:1133	Relationship:1165	non-adjacent	1	1
+Aop:187	Event:1133	Event:1122	Relationship:1166	adjacent	1	1
+Aop:187	Event:1134	Event:1131	Relationship:1167	adjacent	1	1
+Aop:187	Event:1122	Event:1130	Relationship:1168	adjacent	1	1
+Aop:187	Event:1130	Event:1132	Relationship:1169	adjacent	1	1
+Aop:187	Event:1132	Event:1135	Relationship:1170	non-adjacent	2	1
+Aop:187	Event:1135	Event:1136	Relationship:1171	non-adjacent	3	3
+Aop:188	Event:1152	Event:425	Relationship:1197	adjacent	3	3
+Aop:188	Event:425	Event:277	Relationship:872	adjacent	1	2
+Aop:188	Event:1152	Event:281	Relationship:2476	non-adjacent	2	2
+Aop:188	Event:277	Event:281	Relationship:305	adjacent	1	1
+Aop:188	Event:281	Event:1101	Relationship:2168	non-adjacent	1	1
+Aop:189	Event:1009	Event:1116	Relationship:1198	adjacent	2	3
+Aop:189	Event:1116	Event:1101	Relationship:1164	adjacent	1	2
+Aop:190	Event:1002	Event:1116	Relationship:1199	adjacent	2	3
+Aop:190	Event:1828	Event:1101	Relationship:2241	non-adjacent	2	3
+Aop:190	Event:1116	Event:1023	Relationship:2238	adjacent	2	3
+Aop:190	Event:1828	Event:1829	Relationship:2242	non-adjacent	2	3
+Aop:190	Event:1116	Event:1829	Relationship:2239	adjacent	2	3
+Aop:190	Event:1023	Event:1828	Relationship:2240	adjacent	2	3
+Aop:191	Event:1153	Event:1154	Relationship:1200	adjacent	3	3
+Aop:191	Event:1154	Event:1829	Relationship:2243	adjacent	2	3
+Aop:191	Event:1829	Event:1101	Relationship:2244	adjacent	2	3
+Aop:192	Event:1155	Event:277	Relationship:1202	adjacent	3	3
+Aop:192	Event:281	Event:1101	Relationship:2168	non-adjacent	1	1
+Aop:192	Event:277	Event:281	Relationship:305	adjacent	1	1
+Aop:193	Event:1156	Event:277	Relationship:1203	adjacent	2	3
+Aop:193	Event:281	Event:1101	Relationship:2168	non-adjacent	1	1
+Aop:193	Event:277	Event:281	Relationship:305	adjacent	1	1
+Aop:194	Event:1157	Event:1158	Relationship:1204	adjacent	2	3
+Aop:194	Event:1157	Event:295	Relationship:1205	adjacent	2	3
+Aop:194	Event:281	Event:1101	Relationship:2168	non-adjacent	1	1
+Aop:194	Event:1158	Event:281	Relationship:2237	adjacent	2	3
+Aop:194	Event:295	Event:961	Relationship:2478	adjacent	2	3
+Aop:194	Event:961	Event:281	Relationship:2270	adjacent	2	3
+Aop:194	Event:1158	Event:961	Relationship:2479	adjacent	2	3
+Aop:195	Event:626	Event:1161	Relationship:1212	adjacent		
+Aop:195	Event:1163	Event:1164	Relationship:1215	adjacent		
+Aop:195	Event:619	Event:626	Relationship:643	adjacent		
+Aop:195	Event:626	Event:1142	Relationship:1327	adjacent		
+Aop:195	Event:1161	Event:1255	Relationship:1328	adjacent		
+Aop:195	Event:1142	Event:1255	Relationship:1320	adjacent		
+Aop:195	Event:1255	Event:1163	Relationship:1325	adjacent		
+Aop:195	Event:619	Event:621	Relationship:1318	non-adjacent		
+Aop:195	Event:621	Event:1255	Relationship:1321	adjacent		
+Aop:195	Event:626	Event:621	Relationship:1333	adjacent		
+Aop:195	Event:619	Event:1161	Relationship:1337	non-adjacent		
+Aop:196	Event:1215	Event:1218	Relationship:1271	adjacent	1	1
+Aop:196	Event:1218	Event:1220	Relationship:1274	adjacent	1	1
+Aop:196	Event:1220	Event:1222	Relationship:1575	adjacent	1	2
+Aop:196	Event:1220	Event:1433	Relationship:1578	adjacent	2	2
+Aop:196	Event:1220	Event:1435	Relationship:1583	adjacent	2	3
+Aop:196	Event:1222	Event:1226	Relationship:1772	adjacent	2	2
+Aop:196	Event:1433	Event:1226	Relationship:1587	adjacent	2	2
+Aop:196	Event:1435	Event:1226	Relationship:1773	adjacent	2	2
+Aop:196	Event:1226	Event:1223	Relationship:1770	adjacent	2	2
+Aop:196	Event:1220	Event:1434	Relationship:1582	adjacent	2	2
+Aop:197	Event:584	Event:1176	Relationship:1242	adjacent		
+Aop:197	Event:1176	Event:1179	Relationship:1244	adjacent		
+Aop:200	Event:111	Event:1187	Relationship:3528	adjacent	1	1
+Aop:200	Event:1182	Event:1192	Relationship:1247	adjacent	1	1
+Aop:200	Event:1183	Event:1192	Relationship:1248	adjacent	1	1
+Aop:200	Event:111	Event:1188	Relationship:3529	adjacent	1	1
+Aop:200	Event:1187	Event:1182	Relationship:1250	adjacent	1	1
+Aop:200	Event:1188	Event:1182	Relationship:1251	adjacent	1	1
+Aop:200	Event:1192	Event:1193	Relationship:1252	adjacent	1	1
+Aop:200	Event:1189	Event:1213	Relationship:1266	adjacent	1	1
+Aop:200	Event:1190	Event:1213	Relationship:1267	adjacent	1	1
+Aop:200	Event:111	Event:1191	Relationship:3530	adjacent	2	1
+Aop:200	Event:1191	Event:1188	Relationship:1295	adjacent	1	1
+Aop:200	Event:1187	Event:1239	Relationship:1296	adjacent	1	1
+Aop:200	Event:1188	Event:1239	Relationship:1297	adjacent	1	1
+Aop:200	Event:1239	Event:1240	Relationship:1298	adjacent	1	1
+Aop:200	Event:1240	Event:1392	Relationship:3266	adjacent	1	1
+Aop:200	Event:1392	Event:1194	Relationship:3267	adjacent	1	1
+Aop:200	Event:1194	Event:1239	Relationship:1301	adjacent	1	1
+Aop:200	Event:1191	Event:1239	Relationship:1302	adjacent	1	1
+Aop:200	Event:1240	Event:1189	Relationship:1303	adjacent	1	1
+Aop:200	Event:1240	Event:1183	Relationship:1304	adjacent	1	1
+Aop:200	Event:1240	Event:1241	Relationship:1305	adjacent	2	2
+Aop:200	Event:1241	Event:1196	Relationship:1306	adjacent	2	2
+Aop:200	Event:111	Event:1242	Relationship:3531	adjacent	2	2
+Aop:200	Event:1242	Event:1191	Relationship:1308	adjacent	2	2
+Aop:201	Event:1205	Event:1206	Relationship:1261	adjacent		
+Aop:201	Event:1206	Event:1209	Relationship:1262	adjacent		
+Aop:201	Event:1209	Event:1208	Relationship:1263	adjacent		
+Aop:201	Event:1208	Event:361	Relationship:1264	adjacent		
+Aop:201	Event:361	Event:1210	Relationship:1265	non-adjacent		
+Aop:202	Event:1252	Event:1461	Relationship:1634	adjacent	1	5
+Aop:202	Event:1461	Event:1253	Relationship:1635	adjacent	1	5
+Aop:202	Event:1253	Event:1254	Relationship:1331	adjacent	1	5
+Aop:203	Event:619	Event:1142	Relationship:1317	non-adjacent		
+Aop:203	Event:619	Event:621	Relationship:1318	non-adjacent		
+Aop:203	Event:619	Event:1256	Relationship:1319	non-adjacent		
+Aop:203	Event:1256	Event:1257	Relationship:1322	adjacent		
+Aop:203	Event:1257	Event:1141	Relationship:1323	adjacent		
+Aop:203	Event:1142	Event:1257	Relationship:1334	adjacent		
+Aop:203	Event:621	Event:1257	Relationship:1335	adjacent		
+Aop:203	Event:626	Event:1142	Relationship:1327	adjacent		
+Aop:203	Event:626	Event:621	Relationship:1333	adjacent		
+Aop:203	Event:626	Event:1256	Relationship:1336	adjacent		
+Aop:203	Event:619	Event:626	Relationship:643	adjacent		
+Aop:203	Event:1141	Event:360	Relationship:2635	adjacent		
+Aop:204	Event:619	Event:1142	Relationship:1317	non-adjacent		
+Aop:204	Event:619	Event:621	Relationship:1318	non-adjacent		
+Aop:204	Event:619	Event:1256	Relationship:1319	non-adjacent		
+Aop:204	Event:1256	Event:1257	Relationship:1322	adjacent		
+Aop:204	Event:1163	Event:1164	Relationship:1215	adjacent		
+Aop:204	Event:1257	Event:1163	Relationship:1326	adjacent		
+Aop:204	Event:619	Event:626	Relationship:643	adjacent		
+Aop:204	Event:626	Event:1142	Relationship:1327	adjacent		
+Aop:204	Event:1142	Event:1257	Relationship:1334	adjacent		
+Aop:204	Event:621	Event:1257	Relationship:1335	adjacent		
+Aop:204	Event:626	Event:1256	Relationship:1336	adjacent		
+Aop:204	Event:626	Event:621	Relationship:1333	adjacent		
+Aop:205	Event:1260	Event:177	Relationship:3145	adjacent	1	5
+Aop:205	Event:1258	Event:177	Relationship:3147	non-adjacent	2	5
+Aop:205	Event:177	Event:1262	Relationship:3146	adjacent	1	5
+Aop:205	Event:1259	Event:177	Relationship:3148	non-adjacent	2	5
+Aop:205	Event:177	Event:1263	Relationship:3149	non-adjacent	1	5
+Aop:206	Event:1270	Event:1271	Relationship:1353	adjacent		
+Aop:206	Event:149	Event:1457	Relationship:1724	adjacent		
+Aop:206	Event:1275	Event:1276	Relationship:1359	adjacent		
+Aop:206	Event:1271	Event:149	Relationship:1721	adjacent		
+Aop:206	Event:1457	Event:1275	Relationship:1779	adjacent		
+Aop:207	Event:1174	Event:1115	Relationship:3511	adjacent	1	
+Aop:207	Event:1279	Event:1115	Relationship:3512	adjacent	1	
+Aop:207	Event:1279	Event:1281	Relationship:1362	adjacent	1	
+Aop:207	Event:1279	Event:177	Relationship:3166	adjacent	1	
+Aop:207	Event:1279	Event:1280	Relationship:1364	adjacent	1	
+Aop:207	Event:1280	Event:1262	Relationship:1365	adjacent	1	
+Aop:207	Event:1281	Event:1262	Relationship:1366	adjacent	1	
+Aop:207	Event:177	Event:1262	Relationship:3146	adjacent	1	
+Aop:207	Event:1262	Event:1277	Relationship:1368	adjacent	1	
+Aop:208	Event:1282	Event:1283	Relationship:1369	adjacent		
+Aop:208	Event:1283	Event:1277	Relationship:1370	adjacent		
+Aop:209	Event:1284	Event:1285	Relationship:1371	adjacent		
+Aop:209	Event:1285	Event:1289	Relationship:1372	adjacent		
+Aop:209	Event:1286	Event:1287	Relationship:1373	adjacent		
+Aop:209	Event:1287	Event:1288	Relationship:1374	adjacent		
+Aop:209	Event:1288	Event:1289	Relationship:1375	adjacent		
+Aop:209	Event:1286	Event:1290	Relationship:1376	adjacent		
+Aop:209	Event:1289	Event:1291	Relationship:1377	adjacent		
+Aop:209	Event:1290	Event:1291	Relationship:1378	adjacent		
+Aop:210	Event:209	Event:1292	Relationship:1379	adjacent		
+Aop:210	Event:1292	Event:1293	Relationship:1380	adjacent		
+Aop:210	Event:1293	Event:1294	Relationship:1381	adjacent		
+Aop:210	Event:1294	Event:1295	Relationship:1382	adjacent		
+Aop:210	Event:1295	Event:1277	Relationship:1383	adjacent		
+Aop:212	Event:1502	Event:1503	Relationship:1709	adjacent	1	2
+Aop:212	Event:1503	Event:1505	Relationship:1997	adjacent	2	2
+Aop:212	Event:1505	Event:1262	Relationship:1712	adjacent	2	2
+Aop:212	Event:1502	Event:1505	Relationship:1715	non-adjacent	1	2
+Aop:212	Event:1262	Event:1515	Relationship:1735	adjacent	1	5
+Aop:212	Event:1502	Event:1262	Relationship:1716	non-adjacent	2	2
+Aop:212	Event:1515	Event:1506	Relationship:1734	adjacent	1	5
+Aop:212	Event:1502	Event:1515	Relationship:2010	non-adjacent	2	2
+Aop:212	Event:1502	Event:1506	Relationship:1717	non-adjacent	2	2
+Aop:213	Event:1490	Event:1305	Relationship:1692	adjacent	1	1
+Aop:213	Event:1305	Event:459	Relationship:1694	adjacent	1	1
+Aop:213	Event:459	Event:1115	Relationship:1695	adjacent	1	3
+Aop:213	Event:1115	Event:1491	Relationship:1696	adjacent	1	3
+Aop:213	Event:1491	Event:1489	Relationship:1697	adjacent	1	3
+Aop:214	Event:1317	Event:1321	Relationship:1426	adjacent		
+Aop:214	Event:1317	Event:1322	Relationship:1427	adjacent		
+Aop:214	Event:1317	Event:1318	Relationship:1428	adjacent		
+Aop:214	Event:1317	Event:1319	Relationship:1429	adjacent		
+Aop:214	Event:1317	Event:1320	Relationship:1430	adjacent		
+Aop:214	Event:1317	Event:1323	Relationship:1431	adjacent		
+Aop:214	Event:1323	Event:1324	Relationship:1432	adjacent		
+Aop:214	Event:1324	Event:1325	Relationship:1433	adjacent		
+Aop:214	Event:1325	Event:1347	Relationship:1434	adjacent		
+Aop:214	Event:1347	Event:1326	Relationship:1435	adjacent		
+Aop:214	Event:1347	Event:1328	Relationship:1436	adjacent		
+Aop:214	Event:1347	Event:1336	Relationship:1437	adjacent		
+Aop:214	Event:1336	Event:1337	Relationship:1438	adjacent		
+Aop:214	Event:1337	Event:1338	Relationship:1439	adjacent		
+Aop:214	Event:1338	Event:1339	Relationship:1440	adjacent		
+Aop:214	Event:1339	Event:1340	Relationship:1441	adjacent		
+Aop:214	Event:1340	Event:1341	Relationship:1442	adjacent		
+Aop:214	Event:1341	Event:1342	Relationship:1443	adjacent		
+Aop:214	Event:1342	Event:1343	Relationship:1444	adjacent		
+Aop:214	Event:1326	Event:1344	Relationship:1445	adjacent		
+Aop:214	Event:1328	Event:1329	Relationship:1446	adjacent		
+Aop:214	Event:1329	Event:1330	Relationship:1447	adjacent		
+Aop:214	Event:1330	Event:1345	Relationship:1448	adjacent		
+Aop:214	Event:1330	Event:1346	Relationship:1449	adjacent		
+Aop:214	Event:1334	Event:122	Relationship:1450	adjacent		
+Aop:214	Event:122	Event:1335	Relationship:1451	adjacent		
+Aop:215	Event:1349	Event:1350	Relationship:1452	adjacent		
+Aop:215	Event:1350	Event:1351	Relationship:1453	adjacent		
+Aop:215	Event:1351	Event:1321	Relationship:1454	adjacent		
+Aop:215	Event:1321	Event:1352	Relationship:1455	adjacent		
+Aop:215	Event:1354	Event:1353	Relationship:1456	adjacent		
+Aop:215	Event:1352	Event:1355	Relationship:1457	adjacent		
+Aop:215	Event:1355	Event:1362	Relationship:1458	adjacent		
+Aop:215	Event:1362	Event:1348	Relationship:1459	adjacent		
+Aop:215	Event:1348	Event:1363	Relationship:1460	adjacent		
+Aop:215	Event:1360	Event:1361	Relationship:1461	adjacent		
+Aop:215	Event:1361	Event:1359	Relationship:1462	adjacent		
+Aop:215	Event:1357	Event:1359	Relationship:1463	adjacent		
+Aop:215	Event:1359	Event:1322	Relationship:1464	adjacent		
+Aop:215	Event:1322	Event:1356	Relationship:1465	adjacent		
+Aop:216	Event:1686	Event:1635	Relationship:1977	adjacent	1	
+Aop:216	Event:1635	Event:1444	Relationship:2587	adjacent		
+Aop:216	Event:1444	Event:1366	Relationship:1597	adjacent		
+Aop:216	Event:1366	Event:78	Relationship:2588	adjacent		
+Aop:216	Event:78	Event:360	Relationship:94	adjacent		
+Aop:217	Event:1376	Event:1367	Relationship:1473	adjacent		
+Aop:217	Event:1375	Event:1367	Relationship:1474	adjacent		
+Aop:217	Event:1380	Event:1367	Relationship:1475	adjacent		
+Aop:217	Event:1379	Event:1385	Relationship:1476	adjacent		
+Aop:217	Event:1378	Event:1379	Relationship:1477	adjacent		
+Aop:217	Event:1370	Event:1377	Relationship:1478	adjacent		
+Aop:217	Event:1370	Event:1376	Relationship:1479	adjacent		
+Aop:217	Event:1369	Event:1375	Relationship:1480	adjacent		
+Aop:217	Event:1369	Event:1374	Relationship:1481	adjacent		
+Aop:217	Event:1369	Event:1373	Relationship:1482	adjacent		
+Aop:217	Event:1369	Event:1372	Relationship:1483	adjacent		
+Aop:217	Event:1372	Event:1380	Relationship:1484	adjacent		
+Aop:217	Event:1373	Event:1380	Relationship:1485	adjacent		
+Aop:217	Event:1374	Event:1380	Relationship:1486	adjacent		
+Aop:217	Event:1384	Event:1382	Relationship:1487	adjacent		
+Aop:217	Event:1383	Event:1382	Relationship:1488	adjacent		
+Aop:217	Event:1381	Event:1380	Relationship:1489	adjacent		
+Aop:218	Event:1386	Event:1387	Relationship:1493	adjacent	1	2
+Aop:218	Event:1386	Event:1389	Relationship:1494	non-adjacent	3	3
+Aop:218	Event:1387	Event:1389	Relationship:1495	non-adjacent	1	2
+Aop:218	Event:1387	Event:1388	Relationship:1496	adjacent	3	3
+Aop:218	Event:1388	Event:1389	Relationship:1497	adjacent	1	2
+Aop:218	Event:1389	Event:1141	Relationship:1500	adjacent		
+Aop:218	Event:1141	Event:360	Relationship:2635	adjacent		
+Aop:219	Event:1386	Event:1387	Relationship:1493	adjacent		
+Aop:219	Event:1387	Event:1390	Relationship:1498	non-adjacent		
+Aop:219	Event:1387	Event:1388	Relationship:1496	adjacent		
+Aop:219	Event:1390	Event:1141	Relationship:1499	adjacent		
+Aop:219	Event:1388	Event:1390	Relationship:1502	adjacent		
+Aop:219	Event:1141	Event:360	Relationship:2635	adjacent		
+Aop:220	Event:1391	Event:1392	Relationship:1512	adjacent	1	5
+Aop:220	Event:1392	Event:1393	Relationship:1513	adjacent	1	5
+Aop:220	Event:1393	Event:1394	Relationship:1514	adjacent	1	5
+Aop:220	Event:1391	Event:1393	Relationship:1515	non-adjacent	1	5
+Aop:220	Event:1392	Event:1395	Relationship:1516	non-adjacent	2	5
+Aop:220	Event:1393	Event:1395	Relationship:1517	non-adjacent	2	5
+Aop:220	Event:1394	Event:1395	Relationship:1518	non-adjacent	2	5
+Aop:221	Event:1396	Event:1335	Relationship:1522	adjacent		
+Aop:221	Event:1335	Event:1330	Relationship:1523	adjacent		
+Aop:221	Event:1330	Event:1346	Relationship:1449	adjacent		
+Aop:221	Event:1347	Event:1328	Relationship:1436	adjacent		
+Aop:221	Event:1317	Event:1320	Relationship:1430	adjacent		
+Aop:221	Event:1317	Event:1323	Relationship:1431	adjacent		
+Aop:221	Event:1323	Event:1324	Relationship:1432	adjacent		
+Aop:221	Event:1324	Event:1325	Relationship:1433	adjacent		
+Aop:221	Event:1325	Event:1347	Relationship:1434	adjacent		
+Aop:222	Event:1396	Event:1335	Relationship:1522	adjacent		
+Aop:222	Event:1329	Event:1330	Relationship:1447	adjacent		
+Aop:222	Event:1330	Event:1345	Relationship:1448	adjacent		
+Aop:222	Event:1328	Event:1335	Relationship:1511	adjacent		
+Aop:222	Event:1347	Event:1328	Relationship:1436	adjacent		
+Aop:222	Event:1317	Event:1320	Relationship:1430	adjacent		
+Aop:222	Event:1317	Event:1323	Relationship:1431	adjacent		
+Aop:222	Event:1323	Event:1324	Relationship:1432	adjacent		
+Aop:222	Event:1324	Event:1325	Relationship:1433	adjacent		
+Aop:222	Event:1325	Event:1347	Relationship:1434	adjacent		
+Aop:223	Event:1397	Event:1398	Relationship:1524	adjacent		
+Aop:223	Event:1398	Event:1399	Relationship:1525	adjacent		
+Aop:223	Event:1399	Event:1400	Relationship:1526	adjacent		
+Aop:223	Event:1400	Event:1320	Relationship:1527	adjacent		
+Aop:223	Event:1397	Event:1347	Relationship:1528	adjacent		
+Aop:223	Event:1320	Event:1401	Relationship:1529	adjacent		
+Aop:223	Event:1401	Event:1344	Relationship:1530	adjacent		
+Aop:224	Event:1330	Event:1346	Relationship:1449	adjacent		
+Aop:224	Event:1329	Event:1330	Relationship:1447	adjacent		
+Aop:224	Event:1328	Event:1329	Relationship:1446	adjacent		
+Aop:224	Event:1347	Event:1328	Relationship:1436	adjacent		
+Aop:224	Event:1397	Event:1347	Relationship:1528	adjacent		
+Aop:224	Event:1397	Event:1398	Relationship:1524	adjacent		
+Aop:224	Event:1398	Event:1399	Relationship:1525	adjacent		
+Aop:224	Event:1399	Event:1400	Relationship:1526	adjacent		
+Aop:224	Event:1400	Event:1320	Relationship:1527	adjacent		
+Aop:225	Event:1347	Event:1328	Relationship:1436	adjacent		
+Aop:225	Event:1328	Event:1329	Relationship:1446	adjacent		
+Aop:225	Event:1329	Event:1330	Relationship:1447	adjacent		
+Aop:225	Event:1330	Event:1345	Relationship:1448	adjacent		
+Aop:225	Event:1397	Event:1398	Relationship:1524	adjacent		
+Aop:225	Event:1398	Event:1399	Relationship:1525	adjacent		
+Aop:225	Event:1399	Event:1400	Relationship:1526	adjacent		
+Aop:225	Event:1400	Event:1320	Relationship:1527	adjacent		
+Aop:225	Event:1397	Event:1347	Relationship:1528	adjacent		
+Aop:226	Event:1317	Event:1323	Relationship:1431	adjacent		
+Aop:226	Event:1323	Event:1324	Relationship:1432	adjacent		
+Aop:226	Event:1324	Event:1325	Relationship:1433	adjacent		
+Aop:226	Event:1325	Event:1347	Relationship:1434	adjacent		
+Aop:226	Event:1317	Event:1320	Relationship:1430	adjacent		
+Aop:226	Event:1320	Event:1336	Relationship:1531	adjacent		
+Aop:226	Event:1336	Event:1337	Relationship:1438	adjacent		
+Aop:226	Event:1337	Event:1338	Relationship:1439	adjacent		
+Aop:226	Event:1338	Event:1339	Relationship:1440	adjacent		
+Aop:226	Event:1339	Event:1340	Relationship:1441	adjacent		
+Aop:226	Event:1340	Event:1341	Relationship:1442	adjacent		
+Aop:226	Event:1341	Event:1342	Relationship:1443	adjacent		
+Aop:226	Event:1342	Event:1343	Relationship:1444	adjacent		
+Aop:227	Event:1402	Event:1403	Relationship:1532	adjacent		
+Aop:227	Event:1403	Event:1385	Relationship:1533	adjacent		
+Aop:227	Event:1402	Event:1404	Relationship:1534	adjacent		
+Aop:227	Event:1404	Event:1405	Relationship:1535	adjacent		
+Aop:227	Event:1405	Event:1385	Relationship:1536	adjacent		
+Aop:227	Event:1402	Event:1406	Relationship:1537	adjacent		
+Aop:227	Event:1406	Event:1405	Relationship:1538	adjacent		
+Aop:227	Event:1402	Event:1407	Relationship:1539	adjacent		
+Aop:227	Event:1407	Event:1405	Relationship:1540	adjacent		
+Aop:228	Event:1408	Event:1409	Relationship:1541	adjacent		
+Aop:228	Event:1409	Event:1385	Relationship:1542	adjacent		
+Aop:228	Event:1408	Event:1410	Relationship:1543	adjacent		
+Aop:228	Event:1410	Event:1411	Relationship:1544	adjacent		
+Aop:228	Event:1411	Event:1385	Relationship:1545	adjacent		
+Aop:229	Event:1412	Event:1384	Relationship:1546	adjacent		
+Aop:229	Event:1384	Event:1382	Relationship:1487	adjacent		
+Aop:229	Event:1383	Event:1382	Relationship:1488	adjacent		
+Aop:229	Event:1382	Event:1405	Relationship:1547	adjacent		
+Aop:229	Event:1405	Event:1385	Relationship:1536	adjacent		
+Aop:230	Event:1349	Event:1350	Relationship:1452	adjacent		
+Aop:230	Event:1350	Event:1351	Relationship:1453	adjacent		
+Aop:230	Event:1351	Event:1321	Relationship:1454	adjacent		
+Aop:230	Event:1321	Event:1352	Relationship:1455	adjacent		
+Aop:230	Event:1352	Event:1355	Relationship:1457	adjacent		
+Aop:230	Event:1355	Event:1362	Relationship:1458	adjacent		
+Aop:230	Event:1362	Event:1344	Relationship:1549	adjacent		
+Aop:230	Event:1344	Event:1363	Relationship:1550	adjacent		
+Aop:230	Event:1354	Event:1353	Relationship:1456	adjacent		
+Aop:231	Event:1413	Event:1414	Relationship:1551	adjacent		
+Aop:231	Event:1414	Event:1415	Relationship:1552	adjacent		
+Aop:231	Event:1415	Event:1416	Relationship:1553	adjacent		
+Aop:231	Event:1416	Event:1355	Relationship:1554	adjacent		
+Aop:231	Event:1355	Event:1362	Relationship:1458	adjacent		
+Aop:231	Event:1362	Event:1344	Relationship:1549	adjacent		
+Aop:231	Event:1344	Event:1363	Relationship:1550	adjacent		
+Aop:231	Event:1357	Event:1415	Relationship:1555	adjacent		
+Aop:232	Event:1417	Event:1419	Relationship:1556	adjacent		
+Aop:232	Event:1419	Event:1420	Relationship:1557	adjacent		
+Aop:232	Event:1420	Event:1421	Relationship:1558	adjacent		
+Aop:232	Event:1421	Event:1422	Relationship:1559	adjacent		
+Aop:232	Event:1422	Event:1423	Relationship:1560	adjacent		
+Aop:232	Event:1423	Event:1424	Relationship:1561	adjacent		
+Aop:232	Event:1424	Event:459	Relationship:3215	adjacent		
+Aop:233	Event:1425	Event:1426	Relationship:1563	adjacent	1	5
+Aop:233	Event:1426	Event:1427	Relationship:1564	adjacent	1	5
+Aop:233	Event:1427	Event:763	Relationship:1565	adjacent	1	5
+Aop:233	Event:763	Event:1428	Relationship:1566	non-adjacent	1	5
+Aop:234	Event:1425	Event:1426	Relationship:1563	adjacent	1	
+Aop:234	Event:1426	Event:1429	Relationship:1568	adjacent	1	
+Aop:234	Event:1429	Event:1430	Relationship:1569	adjacent	1	
+Aop:234	Event:1430	Event:1428	Relationship:1570	non-adjacent	1	
+Aop:235	Event:1431	Event:1426	Relationship:1571	adjacent	1	
+Aop:235	Event:1426	Event:1427	Relationship:1564	adjacent	1	
+Aop:235	Event:1427	Event:763	Relationship:1565	adjacent	1	
+Aop:235	Event:763	Event:1432	Relationship:1572	non-adjacent	1	
+Aop:236	Event:1431	Event:1426	Relationship:1571	adjacent	1	
+Aop:236	Event:1426	Event:1429	Relationship:1568	adjacent	1	
+Aop:236	Event:1429	Event:1430	Relationship:1569	adjacent	1	
+Aop:236	Event:1430	Event:1432	Relationship:1573	non-adjacent	1	
+Aop:237	Event:1495	Event:1496	Relationship:1702	adjacent	1	3
+Aop:237	Event:1495	Event:1438	Relationship:2958	non-adjacent	1	2
+Aop:237	Event:1496	Event:1438	Relationship:2053	adjacent	1	2
+Aop:237	Event:1495	Event:1439	Relationship:2959	non-adjacent	1	2
+Aop:237	Event:1496	Event:1439	Relationship:3052	non-adjacent	1	2
+Aop:237	Event:1438	Event:1439	Relationship:1589	adjacent	1	2
+Aop:237	Event:1495	Event:1443	Relationship:2960	non-adjacent	1	2
+Aop:237	Event:1439	Event:1443	Relationship:2860	adjacent	1	1
+Aop:238	Event:1686	Event:1635	Relationship:1977	adjacent		
+Aop:238	Event:1635	Event:1775	Relationship:2589	adjacent		
+Aop:238	Event:1775	Event:1366	Relationship:2104	adjacent		
+Aop:238	Event:1366	Event:78	Relationship:2588	adjacent		
+Aop:238	Event:78	Event:360	Relationship:94	adjacent		
+Aop:241	Event:68	Event:1458	Relationship:1629	adjacent	1	
+Aop:241	Event:1468	Event:1469	Relationship:1651	adjacent	1	
+Aop:241	Event:1469	Event:1456	Relationship:1652	adjacent	1	
+Aop:241	Event:1469	Event:1457	Relationship:1653	adjacent	1	
+Aop:241	Event:1456	Event:68	Relationship:1654	adjacent	1	
+Aop:241	Event:1457	Event:68	Relationship:1655	adjacent	1	
+Aop:242	Event:1462	Event:1463	Relationship:1636	adjacent	3	
+Aop:242	Event:1463	Event:1464	Relationship:1637	adjacent	1	
+Aop:242	Event:1464	Event:1465	Relationship:1638	adjacent	3	
+Aop:242	Event:1465	Event:1466	Relationship:1639	adjacent	3	
+Aop:242	Event:1466	Event:1005	Relationship:1640	adjacent	3	
+Aop:242	Event:1005	Event:1467	Relationship:1641	adjacent	3	
+Aop:242	Event:1005	Event:636	Relationship:1642	adjacent	3	
+Aop:245	Event:1471	Event:1472	Relationship:1663	adjacent	1	
+Aop:245	Event:1472	Event:1473	Relationship:1664	adjacent	3	
+Aop:245	Event:1473	Event:1474	Relationship:1665	adjacent	1	
+Aop:245	Event:1474	Event:1475	Relationship:1666	adjacent	1	
+Aop:245	Event:1475	Event:1476	Relationship:1667	adjacent	2	
+Aop:245	Event:1476	Event:1477	Relationship:1668	adjacent	1	
+Aop:245	Event:1477	Event:40	Relationship:1669	adjacent	1	
+Aop:245	Event:40	Event:1478	Relationship:1670	adjacent	2	
+Aop:245	Event:1478	Event:1479	Relationship:1671	adjacent	1	
+Aop:245	Event:1479	Event:1521	Relationship:2283	adjacent		
+Aop:256	Event:1481	Event:1482	Relationship:1673	adjacent	2	3
+Aop:256	Event:1482	Event:177	Relationship:3133	adjacent	1	3
+Aop:256	Event:177	Event:709	Relationship:3134	adjacent	1	3
+Aop:256	Event:709	Event:814	Relationship:1676	adjacent	1	2
+Aop:257	Event:1486	Event:831	Relationship:1677	adjacent	1	3
+Aop:257	Event:831	Event:898	Relationship:1678	adjacent	1	3
+Aop:257	Event:898	Event:709	Relationship:1679	adjacent	1	3
+Aop:257	Event:709	Event:814	Relationship:1676	adjacent	1	2
+Aop:258	Event:244	Event:177	Relationship:3135	adjacent	5	3
+Aop:258	Event:177	Event:40	Relationship:2822	adjacent	1	3
+Aop:258	Event:40	Event:709	Relationship:1682	adjacent	1	3
+Aop:258	Event:709	Event:814	Relationship:1676	adjacent	1	2
+Aop:260	Event:1508	Event:1392	Relationship:3309	adjacent	2	2
+Aop:260	Event:1392	Event:1511	Relationship:3310	adjacent	1	1
+Aop:260	Event:1511	Event:1509	Relationship:1728	adjacent	1	1
+Aop:260	Event:1509	Event:1512	Relationship:1729	adjacent	2	2
+Aop:260	Event:1392	Event:1512	Relationship:3311	adjacent	2	2
+Aop:260	Event:1511	Event:1513	Relationship:1731	adjacent	1	1
+Aop:260	Event:1512	Event:1513	Relationship:1732	adjacent	1	1
+Aop:260	Event:1513	Event:1514	Relationship:1733	adjacent	1	1
+Aop:261	Event:1529	Event:1530	Relationship:1755	adjacent	1	1
+Aop:261	Event:1530	Event:1531	Relationship:1756	adjacent	1	1
+Aop:261	Event:1531	Event:1532	Relationship:1757	adjacent	1	1
+Aop:261	Event:1532	Event:1533	Relationship:1758	adjacent	1	1
+Aop:261	Event:1533	Event:1535	Relationship:1759	adjacent	1	1
+Aop:261	Event:1530	Event:1536	Relationship:1760	adjacent	1	2
+Aop:261	Event:1536	Event:1537	Relationship:1761	adjacent	2	3
+Aop:261	Event:1537	Event:1532	Relationship:1762	adjacent	1	3
+Aop:263	Event:1446	Event:1771	Relationship:2203	adjacent	1	1
+Aop:263	Event:1771	Event:1821	Relationship:2204	adjacent	2	2
+Aop:263	Event:1821	Event:1521	Relationship:2205	adjacent	2	2
+Aop:264	Event:1446	Event:1771	Relationship:2203	adjacent	2	5
+Aop:264	Event:1771	Event:55	Relationship:2768	adjacent	2	5
+Aop:264	Event:55	Event:1521	Relationship:2767	adjacent	2	5
+Aop:265	Event:1446	Event:2064	Relationship:2763	adjacent	2	5
+Aop:265	Event:2064	Event:55	Relationship:2766	adjacent	2	5
+Aop:265	Event:55	Event:1521	Relationship:2767	adjacent	2	5
+Aop:266	Event:1446	Event:1771	Relationship:2203	adjacent		
+Aop:266	Event:1771	Event:1562	Relationship:2786	adjacent		
+Aop:266	Event:1562	Event:1527	Relationship:2787	adjacent		
+Aop:266	Event:1527	Event:55	Relationship:2788	adjacent		
+Aop:266	Event:55	Event:1521	Relationship:2767	adjacent		
+Aop:267	Event:1446	Event:2070	Relationship:2793	adjacent		
+Aop:267	Event:2070	Event:2071	Relationship:2794	adjacent		
+Aop:267	Event:2071	Event:1821	Relationship:2795	adjacent		
+Aop:267	Event:1821	Event:1521	Relationship:2205	adjacent		
+Aop:268	Event:1446	Event:2072	Relationship:2796	adjacent		
+Aop:268	Event:2072	Event:55	Relationship:2797	adjacent		
+Aop:268	Event:55	Event:1521	Relationship:2767	adjacent		
+Aop:271	Event:279	Event:277	Relationship:309	adjacent	1	1
+Aop:271	Event:277	Event:219	Relationship:1768	adjacent		
+Aop:271	Event:219	Event:221	Relationship:1386	adjacent	1	1
+Aop:271	Event:221	Event:78	Relationship:1769	adjacent	1	1
+Aop:272	Event:1686	Event:1635	Relationship:1977	adjacent	1	1
+Aop:272	Event:1686	Event:185	Relationship:1981	non-adjacent	1	1
+Aop:272	Event:1686	Event:1636	Relationship:1982	non-adjacent	1	1
+Aop:272	Event:1635	Event:155	Relationship:1911	adjacent	2	2
+Aop:272	Event:1686	Event:1556	Relationship:1983	non-adjacent	2	2
+Aop:272	Event:155	Event:185	Relationship:164	adjacent	2	2
+Aop:272	Event:1635	Event:185	Relationship:1931	non-adjacent	1	3
+Aop:272	Event:1635	Event:1636	Relationship:1939	non-adjacent	1	3
+Aop:272	Event:155	Event:1636	Relationship:1912	adjacent	1	3
+Aop:272	Event:185	Event:1556	Relationship:1984	non-adjacent	1	3
+Aop:272	Event:185	Event:870	Relationship:1978	adjacent	1	3
+Aop:272	Event:1636	Event:1556	Relationship:1985	non-adjacent	2	2
+Aop:272	Event:1636	Event:870	Relationship:1979	adjacent	2	3
+Aop:272	Event:870	Event:1556	Relationship:1980	adjacent	1	3
+Aop:273	Event:1542	Event:1545	Relationship:1781	adjacent	1	1
+Aop:273	Event:1543	Event:1545	Relationship:1782	adjacent	1	1
+Aop:273	Event:1544	Event:1545	Relationship:1783	adjacent	1	1
+Aop:273	Event:1548	Event:1549	Relationship:1789	adjacent	1	1
+Aop:273	Event:888	Event:887	Relationship:933	adjacent	5	5
+Aop:273	Event:887	Event:1545	Relationship:1940	adjacent	5	5
+Aop:273	Event:889	Event:55	Relationship:1943	adjacent	5	5
+Aop:273	Event:55	Event:1548	Relationship:1830	adjacent	5	5
+Aop:273	Event:1653	Event:1542	Relationship:1944	adjacent	5	5
+Aop:273	Event:1654	Event:1543	Relationship:1945	adjacent	5	5
+Aop:273	Event:1655	Event:1544	Relationship:1946	adjacent	5	5
+Aop:273	Event:1545	Event:177	Relationship:1956	adjacent	5	5
+Aop:273	Event:1115	Event:177	Relationship:3496	adjacent	1	1
+Aop:273	Event:177	Event:1115	Relationship:3141	adjacent	1	1
+Aop:273	Event:177	Event:889	Relationship:904	adjacent	5	5
+Aop:274	Event:1502	Event:1557	Relationship:1802	adjacent	5	5
+Aop:274	Event:1502	Event:1558	Relationship:1805	non-adjacent	5	5
+Aop:274	Event:1557	Event:1558	Relationship:1803	adjacent	5	5
+Aop:274	Event:1558	Event:1559	Relationship:1804	adjacent	5	5
+Aop:275	Event:1502	Event:1503	Relationship:1709	adjacent	5	5
+Aop:275	Event:1503	Event:1239	Relationship:1806	adjacent	5	5
+Aop:275	Event:1239	Event:1560	Relationship:1807	adjacent	5	5
+Aop:275	Event:1560	Event:1561	Relationship:1808	adjacent	5	5
+Aop:276	Event:888	Event:887	Relationship:933	adjacent	5	5
+Aop:276	Event:887	Event:1477	Relationship:1809	adjacent	5	5
+Aop:276	Event:1477	Event:1562	Relationship:1810	adjacent	5	5
+Aop:276	Event:1562	Event:1563	Relationship:1811	adjacent	5	5
+Aop:276	Event:1563	Event:1564	Relationship:1812	adjacent	5	5
+Aop:277	Event:1700	Event:202	Relationship:2002	adjacent	1	2
+Aop:277	Event:202	Event:1702	Relationship:2003	adjacent	1	2
+Aop:277	Event:1702	Event:984	Relationship:2928	adjacent	1	1
+Aop:278	Event:1574	Event:202	Relationship:1827	adjacent	1	1
+Aop:278	Event:55	Event:1576	Relationship:1831	non-adjacent	2	2
+Aop:278	Event:202	Event:1575	Relationship:1828	adjacent	2	2
+Aop:278	Event:1575	Event:55	Relationship:1829	adjacent	1	1
+Aop:278	Event:55	Event:1548	Relationship:1830	adjacent	1	1
+Aop:278	Event:1548	Event:1549	Relationship:1789	adjacent	1	1
+Aop:278	Event:1576	Event:1579	Relationship:1832	adjacent	1	1
+Aop:279	Event:1580	Event:1581	Relationship:1833	adjacent	5	5
+Aop:279	Event:1581	Event:1582	Relationship:1834	adjacent	5	5
+Aop:279	Event:1582	Event:1583	Relationship:1835	adjacent	5	5
+Aop:280	Event:1584	Event:1585	Relationship:1836	adjacent	5	5
+Aop:280	Event:1585	Event:1586	Relationship:1837	adjacent	5	5
+Aop:280	Event:1586	Event:149	Relationship:1838	adjacent	5	5
+Aop:280	Event:149	Event:1457	Relationship:1724	adjacent	5	5
+Aop:280	Event:149	Event:1587	Relationship:1839	adjacent	5	5
+Aop:280	Event:1457	Event:1587	Relationship:1840	adjacent	5	5
+Aop:280	Event:1587	Event:1588	Relationship:1841	adjacent	5	5
+Aop:281	Event:12	Event:10	Relationship:11	adjacent	1	2
+Aop:281	Event:10	Event:1602	Relationship:1857	adjacent	2	1
+Aop:281	Event:1602	Event:1623	Relationship:1889	adjacent	2	3
+Aop:281	Event:1623	Event:1350	Relationship:1890	adjacent	2	3
+Aop:281	Event:1350	Event:388	Relationship:1859	adjacent	2	1
+Aop:281	Event:388	Event:1788	Relationship:2781	adjacent	2	3
+Aop:281	Event:1788	Event:1350	Relationship:2782	adjacent	2	3
+Aop:281	Event:388	Event:389	Relationship:361	adjacent	1	2
+Aop:281	Event:1788	Event:389	Relationship:2783	adjacent	1	3
+Aop:281	Event:389	Event:55	Relationship:1862	adjacent	1	3
+Aop:281	Event:55	Event:352	Relationship:364	adjacent	1	3
+Aop:282	Event:1115	Event:1594	Relationship:3513	adjacent	1	3
+Aop:282	Event:1115	Event:1595	Relationship:3514	adjacent	1	3
+Aop:282	Event:1594	Event:1599	Relationship:1850	adjacent	1	3
+Aop:282	Event:1595	Event:1599	Relationship:1851	adjacent	1	3
+Aop:285	Event:1604	Event:1605	Relationship:1864	adjacent	5	5
+Aop:285	Event:1605	Event:1512	Relationship:1865	adjacent	5	5
+Aop:285	Event:1512	Event:1262	Relationship:1866	adjacent	5	5
+Aop:285	Event:1262	Event:1606	Relationship:1867	adjacent	5	5
+Aop:285	Event:1606	Event:1549	Relationship:1868	adjacent	5	5
+Aop:285	Event:1262	Event:1549	Relationship:1869	adjacent	5	5
+Aop:286	Event:1542	Event:1771	Relationship:2230	adjacent		
+Aop:286	Event:1771	Event:1821	Relationship:2204	adjacent		
+Aop:286	Event:1821	Event:1521	Relationship:2205	adjacent		
+Aop:288	Event:1609	Event:1610	Relationship:1878	adjacent	1	
+Aop:288	Event:1609	Event:1611	Relationship:1879	adjacent	1	
+Aop:288	Event:1610	Event:1690	Relationship:3228	adjacent	1	1
+Aop:288	Event:1611	Event:1690	Relationship:3229	adjacent	1	1
+Aop:288	Event:1690	Event:1613	Relationship:2126	adjacent	1	1
+Aop:288	Event:1613	Event:1614	Relationship:1935	adjacent	1	1
+Aop:288	Event:1690	Event:1614	Relationship:2131	adjacent	1	1
+Aop:288	Event:1614	Event:1615	Relationship:1937	adjacent	2	2
+Aop:288	Event:1615	Event:1616	Relationship:1938	adjacent	1	1
+Aop:289	Event:1617	Event:1613	Relationship:1880	adjacent	1	1
+Aop:289	Event:1613	Event:219	Relationship:1881	adjacent	3	3
+Aop:289	Event:219	Event:221	Relationship:1386	adjacent	1	1
+Aop:289	Event:221	Event:78	Relationship:1769	adjacent	1	1
+Aop:289	Event:78	Event:360	Relationship:94	adjacent	1	1
+Aop:290	Event:1785	Event:1771	Relationship:2229	adjacent		
+Aop:290	Event:1771	Event:1821	Relationship:2204	adjacent		
+Aop:290	Event:1821	Event:1521	Relationship:2205	adjacent		
+Aop:291	Event:1785	Event:1771	Relationship:2229	adjacent		
+Aop:291	Event:1771	Event:1825	Relationship:2214	adjacent		
+Aop:291	Event:1825	Event:1521	Relationship:2215	adjacent		
+Aop:292	Event:1627	Event:1628	Relationship:1891	adjacent	1	1
+Aop:292	Event:1628	Event:1629	Relationship:1892	adjacent	1	1
+Aop:292	Event:1629	Event:1630	Relationship:1893	adjacent	1	1
+Aop:292	Event:1630	Event:1631	Relationship:1894	adjacent	1	1
+Aop:292	Event:1631	Event:360	Relationship:1895	adjacent	2	3
+Aop:293	Event:1194	Event:185	Relationship:1897	adjacent	1	5
+Aop:293	Event:185	Event:1182	Relationship:1896	adjacent	2	5
+Aop:293	Event:1182	Event:185	Relationship:1907	adjacent	5	5
+Aop:293	Event:1182	Event:1192	Relationship:1247	adjacent	5	5
+Aop:293	Event:1192	Event:1193	Relationship:1252	adjacent	1	5
+Aop:293	Event:1632	Event:1492	Relationship:1906	adjacent	2	5
+Aop:293	Event:1632	Event:1194	Relationship:1904	adjacent	1	5
+Aop:293	Event:1492	Event:1493	Relationship:1763	adjacent	2	5
+Aop:293	Event:1493	Event:1494	Relationship:1777	adjacent	2	5
+Aop:293	Event:1493	Event:1632	Relationship:1903	adjacent	1	5
+Aop:293	Event:1494	Event:1632	Relationship:1905	adjacent	1	5
+Aop:293	Event:1194	Event:1492	Relationship:1898	adjacent	2	5
+Aop:293	Event:1493	Event:1182	Relationship:1908	adjacent	2	5
+Aop:293	Event:1493	Event:1193	Relationship:1902	adjacent	2	5
+Aop:294	Event:1632	Event:1194	Relationship:1904	adjacent	1	5
+Aop:294	Event:1194	Event:185	Relationship:1897	adjacent	1	5
+Aop:294	Event:185	Event:1182	Relationship:1896	adjacent	2	5
+Aop:294	Event:1182	Event:185	Relationship:1907	adjacent	1	5
+Aop:294	Event:1182	Event:1192	Relationship:1247	adjacent	5	5
+Aop:294	Event:1192	Event:1193	Relationship:1252	adjacent	1	5
+Aop:294	Event:1632	Event:1492	Relationship:1906	adjacent	2	5
+Aop:294	Event:1194	Event:1492	Relationship:1898	adjacent	2	5
+Aop:294	Event:1492	Event:1493	Relationship:1763	adjacent	2	5
+Aop:294	Event:1493	Event:1494	Relationship:1777	adjacent	2	5
+Aop:294	Event:1494	Event:1632	Relationship:1905	adjacent	1	5
+Aop:294	Event:1493	Event:1632	Relationship:1903	adjacent	1	5
+Aop:294	Event:1493	Event:1182	Relationship:1908	adjacent	2	5
+Aop:294	Event:1493	Event:1193	Relationship:1902	adjacent	2	5
+Aop:296	Event:1634	Event:155	Relationship:1909	adjacent	1	3
+Aop:296	Event:1634	Event:1635	Relationship:1913	non-adjacent	2	3
+Aop:296	Event:155	Event:1635	Relationship:1910	adjacent	1	3
+Aop:296	Event:1634	Event:185	Relationship:1914	non-adjacent	1	3
+Aop:296	Event:1635	Event:155	Relationship:1911	adjacent	1	3
+Aop:296	Event:1635	Event:185	Relationship:1931	non-adjacent	1	3
+Aop:296	Event:155	Event:185	Relationship:164	adjacent	1	3
+Aop:296	Event:155	Event:1636	Relationship:1912	adjacent	1	3
+Aop:296	Event:1635	Event:1636	Relationship:1939	non-adjacent	1	3
+Aop:297	Event:1637	Event:1641	Relationship:1915	adjacent	1	
+Aop:297	Event:1641	Event:1642	Relationship:1916	adjacent	1	
+Aop:297	Event:1642	Event:1640	Relationship:1917	adjacent	1	
+Aop:297	Event:1640	Event:1643	Relationship:1918	adjacent	2	2
+Aop:297	Event:1643	Event:360	Relationship:2143	adjacent	3	3
+Aop:298	Event:1115	Event:1754	Relationship:3505	adjacent	2	2
+Aop:298	Event:1753	Event:1754	Relationship:2069	adjacent	2	2
+Aop:298	Event:1754	Event:1755	Relationship:2070	adjacent	2	2
+Aop:298	Event:1755	Event:1457	Relationship:3199	adjacent	2	2
+Aop:298	Event:1457	Event:1651	Relationship:3200	adjacent	2	2
+Aop:299	Event:1686	Event:1115	Relationship:2548	adjacent		
+Aop:299	Event:1115	Event:1634	Relationship:3490	adjacent		
+Aop:299	Event:1634	Event:1444	Relationship:2591	adjacent		
+Aop:299	Event:1444	Event:1366	Relationship:1597	adjacent		
+Aop:299	Event:1366	Event:78	Relationship:2588	adjacent		
+Aop:299	Event:78	Event:360	Relationship:94	adjacent		
+Aop:300	Event:1656	Event:756	Relationship:1947	adjacent	2	3
+Aop:300	Event:1656	Event:402	Relationship:1948	non-adjacent	2	3
+Aop:300	Event:756	Event:757	Relationship:747	adjacent	2	3
+Aop:300	Event:757	Event:758	Relationship:749	adjacent	2	3
+Aop:300	Event:758	Event:402	Relationship:748	adjacent	1	2
+Aop:301	Event:1657	Event:1661	Relationship:1949	adjacent	1	3
+Aop:301	Event:1661	Event:1665	Relationship:1959	adjacent	1	2
+Aop:301	Event:1665	Event:1666	Relationship:1960	adjacent	2	3
+Aop:301	Event:1666	Event:1667	Relationship:1961	adjacent	2	3
+Aop:302	Event:1672	Event:1673	Relationship:1969	adjacent		
+Aop:302	Event:1672	Event:1250	Relationship:2370	non-adjacent		
+Aop:302	Event:1673	Event:1677	Relationship:1974	adjacent		
+Aop:302	Event:1673	Event:1250	Relationship:2371	non-adjacent		
+Aop:302	Event:1673	Event:1498	Relationship:2284	adjacent		
+Aop:302	Event:1498	Event:1250	Relationship:2372	non-adjacent		
+Aop:302	Event:1677	Event:1250	Relationship:2367	adjacent		
+Aop:302	Event:1498	Event:1672	Relationship:2368	adjacent		
+Aop:302	Event:1498	Event:1677	Relationship:2369	adjacent		
+Aop:303	Event:1668	Event:87	Relationship:1962	adjacent		
+Aop:303	Event:87	Event:1497	Relationship:1963	adjacent		
+Aop:303	Event:1497	Event:1115	Relationship:1964	adjacent		
+Aop:303	Event:1115	Event:1669	Relationship:1965	adjacent		
+Aop:303	Event:1669	Event:870	Relationship:1966	adjacent		
+Aop:303	Event:870	Event:1670	Relationship:1967	adjacent		
+Aop:305	Event:1617	Event:1613	Relationship:1880	adjacent	1	1
+Aop:305	Event:1614	Event:1688	Relationship:2820	non-adjacent	1	
+Aop:305	Event:1613	Event:1614	Relationship:1935	adjacent	1	
+Aop:305	Event:286	Event:1688	Relationship:2127	non-adjacent	2	
+Aop:305	Event:1614	Event:286	Relationship:2124	adjacent	1	
+Aop:306	Event:26	Event:1614	Relationship:2130	adjacent	1	1
+Aop:306	Event:1614	Event:1688	Relationship:2820	non-adjacent	1	
+Aop:306	Event:1614	Event:286	Relationship:2124	adjacent	2	
+Aop:306	Event:286	Event:1688	Relationship:2127	non-adjacent	2	
+Aop:307	Event:286	Event:1688	Relationship:2127	non-adjacent	2	3
+Aop:307	Event:2298	Event:1690	Relationship:3448	adjacent	1	2
+Aop:307	Event:1614	Event:1688	Relationship:2820	non-adjacent	1	2
+Aop:307	Event:1690	Event:1614	Relationship:2131	adjacent	1	2
+Aop:307	Event:1614	Event:286	Relationship:2124	adjacent	2	3
+Aop:307	Event:2298	Event:1688	Relationship:3449	non-adjacent	2	2
+Aop:307	Event:1690	Event:1688	Relationship:3349	non-adjacent	1	2
+Aop:309	Event:1691	Event:1692	Relationship:1986	adjacent	2	2
+Aop:309	Event:1692	Event:1693	Relationship:1987	adjacent	1	2
+Aop:309	Event:1693	Event:1694	Relationship:1988	adjacent	1	2
+Aop:309	Event:1694	Event:1695	Relationship:1989	adjacent	1	1
+Aop:309	Event:1695	Event:1696	Relationship:1990	adjacent	1	2
+Aop:309	Event:1696	Event:679	Relationship:1991	adjacent	1	1
+Aop:310	Event:18	Event:944	Relationship:972	adjacent	1	2
+Aop:310	Event:219	Event:221	Relationship:1386	non-adjacent	1	2
+Aop:310	Event:944	Event:1697	Relationship:1996	adjacent	2	3
+Aop:310	Event:1697	Event:1698	Relationship:1993	adjacent	2	3
+Aop:310	Event:1698	Event:1699	Relationship:1994	adjacent	2	3
+Aop:310	Event:1699	Event:3	Relationship:1995	adjacent	2	3
+Aop:310	Event:3	Event:219	Relationship:5	adjacent	1	2
+Aop:310	Event:219	Event:285	Relationship:252	adjacent	1	2
+Aop:310	Event:285	Event:221	Relationship:315	adjacent	1	2
+Aop:310	Event:221	Event:309	Relationship:255	adjacent	2	3
+Aop:310	Event:309	Event:78	Relationship:337	adjacent	2	2
+Aop:310	Event:78	Event:360	Relationship:94	adjacent	2	2
+Aop:311	Event:1686	Event:1115	Relationship:2548	adjacent		
+Aop:311	Event:1115	Event:1634	Relationship:3490	adjacent		
+Aop:311	Event:1634	Event:1775	Relationship:2592	adjacent		
+Aop:311	Event:1775	Event:1366	Relationship:2104	adjacent		
+Aop:311	Event:1366	Event:78	Relationship:2588	adjacent		
+Aop:311	Event:78	Event:360	Relationship:94	adjacent		
+Aop:312	Event:12	Event:10	Relationship:11	adjacent		
+Aop:312	Event:12	Event:39	Relationship:451	non-adjacent		
+Aop:312	Event:10	Event:39	Relationship:456	adjacent		
+Aop:312	Event:12	Event:1705	Relationship:2014	non-adjacent		
+Aop:312	Event:39	Event:1705	Relationship:2011	adjacent		
+Aop:312	Event:1705	Event:360	Relationship:2015	non-adjacent		
+Aop:312	Event:1705	Event:351	Relationship:2012	adjacent		
+Aop:312	Event:351	Event:360	Relationship:2013	adjacent		
+Aop:313	Event:1706	Event:1707	Relationship:2017	adjacent	1	1
+Aop:313	Event:1707	Event:1708	Relationship:2018	adjacent	1	1
+Aop:313	Event:1708	Event:1709	Relationship:2019	adjacent	1	1
+Aop:314	Event:1710	Event:1711	Relationship:2020	adjacent	2	2
+Aop:314	Event:1711	Event:1712	Relationship:2021	adjacent	2	2
+Aop:314	Event:1712	Event:1713	Relationship:2022	adjacent	2	2
+Aop:314	Event:1713	Event:1714	Relationship:2023	adjacent	2	2
+Aop:315	Event:1715	Event:1716	Relationship:2024	adjacent	1	1
+Aop:315	Event:1716	Event:1717	Relationship:2025	adjacent	1	1
+Aop:315	Event:1717	Event:1718	Relationship:2026	adjacent	1	1
+Aop:315	Event:1718	Event:1719	Relationship:2027	adjacent	1	1
+Aop:316	Event:1720	Event:1721	Relationship:2028	adjacent	2	3
+Aop:316	Event:1721	Event:1722	Relationship:2029	adjacent	1	2
+Aop:316	Event:1722	Event:1723	Relationship:2030	adjacent	1	1
+Aop:316	Event:1723	Event:1724	Relationship:2031	adjacent	1	2
+Aop:316	Event:1724	Event:1725	Relationship:2032	adjacent	1	1
+Aop:318	Event:122	Event:1834	Relationship:2266	adjacent		
+Aop:318	Event:1834	Event:860	Relationship:2267	adjacent		
+Aop:318	Event:860	Event:291	Relationship:2264	adjacent		
+Aop:318	Event:291	Event:459	Relationship:2265	adjacent		
+Aop:319	Event:1740	Event:1752	Relationship:2065	adjacent	1	2
+Aop:319	Event:1752	Event:1851	Relationship:2593	adjacent	1	1
+Aop:319	Event:1851	Event:1115	Relationship:2319	adjacent	2	2
+Aop:319	Event:1115	Event:1172	Relationship:2320	adjacent	2	2
+Aop:319	Event:1172	Event:1496	Relationship:2309	adjacent	2	2
+Aop:319	Event:1496	Event:68	Relationship:2307	adjacent	2	2
+Aop:319	Event:68	Event:1276	Relationship:2139	adjacent	3	5
+Aop:320	Event:1739	Event:1738	Relationship:2056	adjacent	1	1
+Aop:320	Event:1847	Event:1848	Relationship:2351	adjacent	2	5
+Aop:320	Event:1848	Event:1496	Relationship:2303	adjacent	1	5
+Aop:320	Event:1496	Event:1750	Relationship:2061	adjacent	1	3
+Aop:320	Event:1750	Event:1748	Relationship:2062	adjacent	2	3
+Aop:320	Event:1748	Event:351	Relationship:2135	adjacent	2	5
+Aop:320	Event:1738	Event:1901	Relationship:2496	adjacent	1	
+Aop:320	Event:1901	Event:1847	Relationship:2497	adjacent	1	
+Aop:322	Event:97	Event:155	Relationship:24	adjacent		
+Aop:322	Event:155	Event:1635	Relationship:1910	adjacent		
+Aop:322	Event:1635	Event:1365	Relationship:2074	adjacent		
+Aop:322	Event:1365	Event:1757	Relationship:2075	adjacent		
+Aop:323	Event:227	Event:807	Relationship:2073	adjacent	1	3
+Aop:323	Event:807	Event:1756	Relationship:2072	adjacent	1	3
+Aop:323	Event:1756	Event:1758	Relationship:2076	adjacent	1	3
+Aop:323	Event:1758	Event:2147	Relationship:2937	adjacent	2	3
+Aop:323	Event:2147	Event:360	Relationship:2938	adjacent	2	3
+Aop:324	Event:1115	Event:1634	Relationship:3490	adjacent		
+Aop:324	Event:1634	Event:55	Relationship:3359	adjacent		
+Aop:324	Event:55	Event:1521	Relationship:2767	adjacent		
+Aop:325	Event:1115	Event:1445	Relationship:2460	adjacent		
+Aop:325	Event:1445	Event:55	Relationship:3360	adjacent		
+Aop:325	Event:55	Event:1521	Relationship:2767	adjacent		
+Aop:326	Event:1115	Event:1767	Relationship:3491	adjacent		
+Aop:326	Event:1767	Event:55	Relationship:3361	adjacent		
+Aop:326	Event:55	Event:1521	Relationship:2767	adjacent		
+Aop:327	Event:1767	Event:1768	Relationship:2090	adjacent		
+Aop:327	Event:1768	Event:1769	Relationship:2091	adjacent		
+Aop:327	Event:1769	Event:350	Relationship:2092	adjacent		
+Aop:327	Event:1115	Event:1767	Relationship:3491	adjacent		
+Aop:328	Event:1770	Event:1477	Relationship:2094	adjacent		
+Aop:328	Event:1477	Event:1771	Relationship:2095	adjacent		
+Aop:328	Event:1771	Event:350	Relationship:2096	adjacent		
+Aop:328	Event:1115	Event:1770	Relationship:2550	adjacent		
+Aop:329	Event:1115	Event:1445	Relationship:2460	adjacent		
+Aop:329	Event:1445	Event:1772	Relationship:2097	adjacent		
+Aop:329	Event:1772	Event:1771	Relationship:2098	adjacent		
+Aop:329	Event:1771	Event:350	Relationship:2096	adjacent		
+Aop:330	Event:1115	Event:1634	Relationship:3490	adjacent		
+Aop:330	Event:1634	Event:1461	Relationship:3230	adjacent		
+Aop:330	Event:1461	Event:1365	Relationship:3096	adjacent		
+Aop:330	Event:1365	Event:350	Relationship:1751	adjacent		
+Aop:331	Event:1115	Event:1634	Relationship:3490	adjacent		
+Aop:331	Event:1634	Event:1505	Relationship:3362	adjacent		
+Aop:331	Event:1505	Event:1821	Relationship:3363	adjacent		
+Aop:331	Event:1821	Event:1521	Relationship:2205	adjacent		
+Aop:332	Event:1115	Event:1445	Relationship:2460	adjacent		
+Aop:332	Event:1445	Event:1505	Relationship:3364	adjacent		
+Aop:332	Event:1505	Event:1821	Relationship:3363	adjacent		
+Aop:332	Event:1821	Event:1521	Relationship:2205	adjacent		
+Aop:333	Event:1446	Event:1771	Relationship:2203	adjacent		
+Aop:333	Event:1771	Event:1821	Relationship:2204	adjacent		
+Aop:333	Event:1821	Event:1521	Relationship:2205	adjacent		
+Aop:333	Event:1115	Event:1446	Relationship:3492	adjacent		
+Aop:334	Event:122	Event:2245	Relationship:3526	adjacent	1	
+Aop:334	Event:2245	Event:2089	Relationship:3320	adjacent	1	2
+Aop:334	Event:2089	Event:1761	Relationship:3527	adjacent	2	
+Aop:334	Event:1761	Event:1005	Relationship:2080	adjacent	1	
+Aop:334	Event:1005	Event:360	Relationship:2081	adjacent	1	
+Aop:335	Event:177	Event:1762	Relationship:3150	adjacent		
+Aop:335	Event:1762	Event:795	Relationship:2084	adjacent		
+Aop:335	Event:795	Event:796	Relationship:797	adjacent		
+Aop:335	Event:796	Event:1763	Relationship:2085	adjacent		
+Aop:336	Event:1619	Event:1773	Relationship:2101	adjacent	1	3
+Aop:336	Event:1773	Event:1774	Relationship:2102	adjacent	2	3
+Aop:336	Event:1774	Event:1775	Relationship:2103	adjacent	2	3
+Aop:336	Event:1775	Event:1366	Relationship:2104	adjacent	2	3
+Aop:336	Event:1366	Event:328	Relationship:1752	adjacent	2	3
+Aop:336	Event:328	Event:360	Relationship:1886	adjacent	2	3
+Aop:337	Event:1619	Event:1773	Relationship:2101	adjacent	1	3
+Aop:337	Event:1773	Event:1774	Relationship:2102	adjacent	2	3
+Aop:337	Event:1774	Event:1776	Relationship:2105	adjacent	2	3
+Aop:337	Event:1776	Event:1777	Relationship:2106	adjacent	2	3
+Aop:337	Event:1777	Event:1366	Relationship:2107	adjacent	2	3
+Aop:337	Event:1366	Event:328	Relationship:1752	adjacent	2	3
+Aop:337	Event:328	Event:360	Relationship:1886	adjacent	2	3
+Aop:338	Event:1619	Event:1461	Relationship:3098	adjacent	1	3
+Aop:338	Event:1461	Event:1774	Relationship:3099	adjacent	2	3
+Aop:338	Event:1774	Event:1775	Relationship:2103	adjacent	2	3
+Aop:338	Event:1775	Event:1366	Relationship:2104	adjacent	2	3
+Aop:338	Event:1366	Event:328	Relationship:1752	adjacent	2	3
+Aop:338	Event:328	Event:360	Relationship:1886	adjacent	2	3
+Aop:340	Event:1619	Event:1773	Relationship:2101	adjacent	1	3
+Aop:340	Event:1773	Event:1778	Relationship:2110	adjacent	2	3
+Aop:340	Event:1778	Event:1779	Relationship:2111	adjacent	2	3
+Aop:340	Event:1779	Event:1780	Relationship:2112	adjacent	2	3
+Aop:340	Event:1780	Event:1782	Relationship:2113	adjacent	2	3
+Aop:340	Event:1782	Event:1781	Relationship:2114	adjacent	2	3
+Aop:340	Event:1781	Event:360	Relationship:2115	adjacent	2	3
+Aop:341	Event:1619	Event:1773	Relationship:2101	adjacent	1	3
+Aop:341	Event:1773	Event:1778	Relationship:2110	adjacent	2	3
+Aop:341	Event:1778	Event:1779	Relationship:2111	adjacent	2	3
+Aop:341	Event:1779	Event:1783	Relationship:2116	adjacent	2	3
+Aop:341	Event:1783	Event:1784	Relationship:2117	adjacent	2	3
+Aop:341	Event:1784	Event:1782	Relationship:2118	adjacent	2	3
+Aop:341	Event:1782	Event:1781	Relationship:2114	adjacent	2	3
+Aop:341	Event:1781	Event:360	Relationship:2115	adjacent	2	3
+Aop:342	Event:1522	Event:1523	Relationship:1742	adjacent		
+Aop:342	Event:1523	Event:1524	Relationship:1743	adjacent		
+Aop:342	Event:1524	Event:350	Relationship:1744	adjacent		
+Aop:343	Event:1525	Event:1527	Relationship:1745	adjacent		
+Aop:343	Event:1527	Event:1526	Relationship:1746	adjacent		
+Aop:343	Event:1526	Event:1523	Relationship:1747	adjacent		
+Aop:343	Event:1523	Event:1524	Relationship:1743	adjacent		
+Aop:343	Event:1524	Event:350	Relationship:1744	adjacent		
+Aop:344	Event:26	Event:1614	Relationship:2130	adjacent	1	
+Aop:344	Event:26	Event:1786	Relationship:2133	non-adjacent	2	3
+Aop:344	Event:1614	Event:286	Relationship:2124	adjacent	2	2
+Aop:344	Event:286	Event:1786	Relationship:2132	adjacent	2	3
+Aop:345	Event:26	Event:1614	Relationship:2130	adjacent	1	2
+Aop:345	Event:1614	Event:286	Relationship:2124	adjacent	1	2
+Aop:345	Event:286	Event:1800	Relationship:2273	adjacent	2	3
+Aop:345	Event:1800	Event:405	Relationship:3142	adjacent	1	3
+Aop:345	Event:405	Event:406	Relationship:394	adjacent	1	3
+Aop:346	Event:36	Event:1790	Relationship:2167	non-adjacent	1	
+Aop:346	Event:36	Event:1789	Relationship:2144	adjacent	1	
+Aop:346	Event:36	Event:1791	Relationship:2350	non-adjacent	2	
+Aop:346	Event:1789	Event:1790	Relationship:2145	adjacent	2	
+Aop:346	Event:1790	Event:1791	Relationship:2146	adjacent	1	
+Aop:346	Event:1791	Event:360	Relationship:2147	adjacent	3	
+Aop:347	Event:1792	Event:1292	Relationship:2148	adjacent	5	5
+Aop:347	Event:1292	Event:1793	Relationship:2149	adjacent	5	5
+Aop:347	Event:1292	Event:1794	Relationship:2150	adjacent	5	5
+Aop:347	Event:1794	Event:1795	Relationship:2151	adjacent	5	5
+Aop:347	Event:1795	Event:1283	Relationship:2152	adjacent	5	5
+Aop:347	Event:1283	Event:1457	Relationship:2153	adjacent	5	5
+Aop:347	Event:1457	Event:1458	Relationship:2154	adjacent	5	5
+Aop:347	Event:1270	Event:1283	Relationship:2156	adjacent	5	5
+Aop:347	Event:1793	Event:1795	Relationship:2157	adjacent	5	5
+Aop:348	Event:1799	Event:1756	Relationship:2162	adjacent	1	2
+Aop:348	Event:1756	Event:1758	Relationship:2076	adjacent	1	2
+Aop:348	Event:1758	Event:406	Relationship:2274	adjacent	1	1
+Aop:348	Event:406	Event:360	Relationship:2292	adjacent	1	1
+Aop:349	Event:1796	Event:1835	Relationship:2275	adjacent	1	2
+Aop:349	Event:1835	Event:1756	Relationship:2277	adjacent	1	2
+Aop:349	Event:1835	Event:1836	Relationship:2276	adjacent	1	2
+Aop:349	Event:1756	Event:1798	Relationship:2166	adjacent	2	2
+Aop:349	Event:1836	Event:1837	Relationship:2278	adjacent	2	2
+Aop:349	Event:1798	Event:406	Relationship:2161	adjacent	1	1
+Aop:349	Event:1837	Event:406	Relationship:2293	adjacent	1	1
+Aop:349	Event:406	Event:360	Relationship:2292	adjacent	1	1
+Aop:358	Event:1806	Event:996	Relationship:2170	adjacent	2	3
+Aop:358	Event:996	Event:1524	Relationship:2171	adjacent	2	3
+Aop:358	Event:1524	Event:350	Relationship:1744	adjacent	2	3
+Aop:359	Event:1807	Event:996	Relationship:2172	adjacent	2	3
+Aop:359	Event:996	Event:1524	Relationship:2171	adjacent	2	3
+Aop:359	Event:1524	Event:350	Relationship:1744	adjacent	2	3
+Aop:360	Event:1522	Event:1523	Relationship:1742	adjacent	2	3
+Aop:360	Event:1523	Event:1524	Relationship:1743	adjacent	2	3
+Aop:360	Event:1524	Event:350	Relationship:1744	adjacent	2	3
+Aop:361	Event:1525	Event:1527	Relationship:1745	adjacent	3	3
+Aop:361	Event:1527	Event:1526	Relationship:1746	adjacent	3	3
+Aop:361	Event:1526	Event:1523	Relationship:1747	adjacent	3	3
+Aop:361	Event:1523	Event:1524	Relationship:1743	adjacent	2	2
+Aop:361	Event:1524	Event:350	Relationship:1744	adjacent	1	1
+Aop:362	Event:1814	Event:177	Relationship:3151	adjacent	1	1
+Aop:362	Event:177	Event:1817	Relationship:3152	adjacent	1	1
+Aop:362	Event:1814	Event:1818	Relationship:2194	adjacent	1	1
+Aop:362	Event:177	Event:1815	Relationship:3153	adjacent	1	1
+Aop:362	Event:1818	Event:1819	Relationship:2196	adjacent	1	3
+Aop:362	Event:1819	Event:1633	Relationship:2197	adjacent	1	3
+Aop:362	Event:1817	Event:1633	Relationship:2198	adjacent	1	2
+Aop:362	Event:1633	Event:1820	Relationship:2199	adjacent	1	1
+Aop:362	Event:1815	Event:1817	Relationship:2200	adjacent	1	1
+Aop:363	Event:279	Event:277	Relationship:309	adjacent	1	2
+Aop:363	Event:279	Event:281	Relationship:366	non-adjacent	1	2
+Aop:363	Event:277	Event:281	Relationship:305	adjacent	2	2
+Aop:363	Event:281	Event:1003	Relationship:2038	adjacent	2	2
+Aop:363	Event:1003	Event:1877	Relationship:2373	adjacent	2	3
+Aop:363	Event:1877	Event:1643	Relationship:2374	adjacent	1	3
+Aop:363	Event:1643	Event:351	Relationship:2375	adjacent	2	3
+Aop:363	Event:351	Event:360	Relationship:2013	adjacent	2	2
+Aop:364	Event:279	Event:277	Relationship:309	adjacent		
+Aop:364	Event:277	Event:281	Relationship:305	adjacent		
+Aop:364	Event:281	Event:1003	Relationship:2038	adjacent		
+Aop:364	Event:1003	Event:1878	Relationship:2376	adjacent		
+Aop:364	Event:1878	Event:1643	Relationship:2377	adjacent		
+Aop:364	Event:1643	Event:351	Relationship:2375	adjacent		
+Aop:364	Event:351	Event:360	Relationship:2013	adjacent		
+Aop:365	Event:279	Event:277	Relationship:309	adjacent		
+Aop:365	Event:277	Event:281	Relationship:305	adjacent		
+Aop:365	Event:281	Event:1003	Relationship:2038	adjacent		
+Aop:365	Event:1003	Event:1640	Relationship:2378	adjacent		
+Aop:365	Event:1640	Event:1643	Relationship:1918	adjacent		
+Aop:365	Event:1643	Event:351	Relationship:2375	adjacent		
+Aop:365	Event:351	Event:360	Relationship:2013	adjacent		
+Aop:366	Event:957	Event:1830	Relationship:2248	adjacent	2	3
+Aop:366	Event:281	Event:1101	Relationship:2168	non-adjacent	1	1
+Aop:366	Event:1830	Event:959	Relationship:2249	adjacent	2	3
+Aop:366	Event:959	Event:1158	Relationship:2247	adjacent	2	3
+Aop:366	Event:1158	Event:281	Relationship:2237	adjacent	2	3
+Aop:366	Event:1158	Event:961	Relationship:2479	adjacent	2	3
+Aop:366	Event:961	Event:281	Relationship:2270	adjacent	2	3
+Aop:367	Event:1158	Event:961	Relationship:2479	non-adjacent	2	3
+Aop:367	Event:1831	Event:1830	Relationship:2250	adjacent	2	3
+Aop:367	Event:1830	Event:959	Relationship:2249	adjacent	2	3
+Aop:367	Event:281	Event:1101	Relationship:2168	non-adjacent	1	1
+Aop:367	Event:959	Event:1158	Relationship:2247	adjacent	2	3
+Aop:367	Event:1158	Event:281	Relationship:2237	adjacent	2	3
+Aop:367	Event:961	Event:281	Relationship:2270	adjacent	2	3
+Aop:368	Event:1840	Event:1825	Relationship:3503	adjacent	1	
+Aop:368	Event:1825	Event:2312	Relationship:3504	adjacent	1	
+Aop:374	Event:1739	Event:188	Relationship:2286	adjacent	1	3
+Aop:374	Event:188	Event:352	Relationship:208	adjacent	1	5
+Aop:374	Event:352	Event:1841	Relationship:2287	adjacent	3	3
+Aop:374	Event:188	Event:1841	Relationship:2288	adjacent	1	3
+Aop:376	Event:25	Event:1790	Relationship:2260	adjacent		
+Aop:376	Event:25	Event:1791	Relationship:2349	non-adjacent		
+Aop:376	Event:1790	Event:1791	Relationship:2146	adjacent		
+Aop:376	Event:1791	Event:360	Relationship:2147	adjacent		
+Aop:377	Event:1842	Event:1897	Relationship:2429	adjacent	1	1
+Aop:377	Event:1842	Event:1895	Relationship:2433	adjacent	2	5
+Aop:377	Event:1897	Event:1172	Relationship:2430	adjacent	1	1
+Aop:377	Event:1172	Event:87	Relationship:2431	adjacent	1	1
+Aop:377	Event:1172	Event:1493	Relationship:2432	adjacent	1	1
+Aop:377	Event:1172	Event:1496	Relationship:2309	adjacent	1	1
+Aop:377	Event:87	Event:1497	Relationship:1963	adjacent	1	1
+Aop:379	Event:1739	Event:1738	Relationship:2056	adjacent	1	2
+Aop:379	Event:1738	Event:1901	Relationship:2496	adjacent	2	2
+Aop:379	Event:1901	Event:1847	Relationship:2497	adjacent	2	2
+Aop:379	Event:1847	Event:1869	Relationship:2358	adjacent	2	5
+Aop:379	Event:1869	Event:1845	Relationship:2359	adjacent	2	5
+Aop:379	Event:1845	Event:1869	Relationship:2360	adjacent	2	5
+Aop:379	Event:1845	Event:1846	Relationship:2290	adjacent	1	5
+Aop:381	Event:1739	Event:1787	Relationship:2312	adjacent	2	5
+Aop:381	Event:1787	Event:1752	Relationship:2137	adjacent	3	5
+Aop:381	Event:1752	Event:1856	Relationship:2317	adjacent	3	5
+Aop:381	Event:1849	Event:1850	Relationship:2296	adjacent	3	5
+Aop:381	Event:1856	Event:1849	Relationship:2318	adjacent	3	5
+Aop:382	Event:1851	Event:1115	Relationship:2319	adjacent	2	2
+Aop:382	Event:1115	Event:1172	Relationship:2320	adjacent	2	2
+Aop:382	Event:1172	Event:1496	Relationship:2309	adjacent	2	2
+Aop:382	Event:1496	Event:68	Relationship:2307	adjacent	2	2
+Aop:382	Event:68	Event:1276	Relationship:2139	adjacent	3	5
+Aop:383	Event:1852	Event:1115	Relationship:2323	adjacent	2	2
+Aop:383	Event:1743	Event:1852	Relationship:2435	adjacent	1	1
+Aop:383	Event:1115	Event:1501	Relationship:2324	adjacent	2	2
+Aop:383	Event:1501	Event:344	Relationship:2325	adjacent	2	5
+Aop:383	Event:1740	Event:1743	Relationship:2434	adjacent	1	1
+Aop:384	Event:1853	Event:1752	Relationship:2326	adjacent	1	1
+Aop:384	Event:1752	Event:1852	Relationship:2327	adjacent	2	2
+Aop:384	Event:1852	Event:1115	Relationship:2323	adjacent	2	2
+Aop:384	Event:1115	Event:1855	Relationship:2328	adjacent	2	5
+Aop:384	Event:1855	Event:1603	Relationship:2329	adjacent	2	5
+Aop:385	Event:1739	Event:1854	Relationship:2311	adjacent		
+Aop:385	Event:1739	Event:1787	Relationship:2312	adjacent		
+Aop:385	Event:1854	Event:2096	Relationship:2831	adjacent		
+Aop:386	Event:1686	Event:1115	Relationship:2548	adjacent	1	1
+Aop:386	Event:1115	Event:1861	Relationship:2549	adjacent	1	1
+Aop:386	Event:1862	Event:1475	Relationship:2333	adjacent	1	1
+Aop:386	Event:1475	Event:1472	Relationship:2334	adjacent	1	1
+Aop:386	Event:1472	Event:1863	Relationship:2547	adjacent	2	2
+Aop:386	Event:1863	Event:360	Relationship:2336	adjacent	1	1
+Aop:387	Event:1686	Event:1115	Relationship:2548	adjacent	1	1
+Aop:387	Event:1115	Event:1770	Relationship:2550	adjacent	1	1
+Aop:387	Event:1770	Event:1477	Relationship:2094	adjacent	2	2
+Aop:387	Event:1477	Event:40	Relationship:1669	adjacent	1	1
+Aop:387	Event:1863	Event:360	Relationship:2336	adjacent	1	1
+Aop:387	Event:40	Event:1863	Relationship:2551	adjacent	2	2
+Aop:388	Event:1686	Event:1194	Relationship:2552	adjacent	1	1
+Aop:388	Event:1194	Event:1864	Relationship:2338	adjacent	1	1
+Aop:388	Event:1864	Event:1863	Relationship:2553	adjacent	1	1
+Aop:388	Event:1863	Event:360	Relationship:2336	adjacent	1	1
+Aop:389	Event:1865	Event:1862	Relationship:2340	adjacent	1	1
+Aop:389	Event:1862	Event:1475	Relationship:2333	adjacent	1	1
+Aop:389	Event:1475	Event:1472	Relationship:2334	adjacent	1	1
+Aop:389	Event:1472	Event:1479	Relationship:2341	adjacent	2	2
+Aop:389	Event:1479	Event:1863	Relationship:2335	adjacent	2	2
+Aop:389	Event:1863	Event:360	Relationship:2336	adjacent	1	1
+Aop:392	Event:1866	Event:1867	Relationship:2352	adjacent		
+Aop:392	Event:1866	Event:1496	Relationship:2356	non-adjacent		
+Aop:392	Event:1867	Event:1866	Relationship:2355	adjacent		
+Aop:392	Event:1867	Event:1496	Relationship:2353	adjacent		
+Aop:392	Event:1867	Event:1868	Relationship:2357	non-adjacent		
+Aop:392	Event:1496	Event:1497	Relationship:1703	adjacent		
+Aop:392	Event:1497	Event:1868	Relationship:2354	adjacent		
+Aop:394	Event:1739	Event:1738	Relationship:2056	adjacent		
+Aop:394	Event:1870	Event:1873	Relationship:2365	non-adjacent		
+Aop:394	Event:1871	Event:1873	Relationship:2366	non-adjacent		
+Aop:394	Event:1738	Event:1847	Relationship:2310	adjacent		
+Aop:394	Event:1847	Event:1870	Relationship:2545	adjacent		
+Aop:394	Event:1870	Event:1871	Relationship:2362	adjacent		
+Aop:394	Event:1871	Event:1872	Relationship:2363	adjacent		
+Aop:394	Event:1872	Event:1873	Relationship:2364	adjacent		
+Aop:396	Event:1550	Event:1392	Relationship:3240	non-adjacent	1	1
+Aop:396	Event:1550	Event:1775	Relationship:2397	non-adjacent	2	2
+Aop:396	Event:1775	Event:1696	Relationship:2400	non-adjacent	2	2
+Aop:396	Event:1550	Event:1194	Relationship:2380	adjacent	1	1
+Aop:396	Event:1550	Event:752	Relationship:2392	non-adjacent	2	2
+Aop:396	Event:1550	Event:1798	Relationship:2393	non-adjacent	2	2
+Aop:396	Event:1194	Event:752	Relationship:2381	adjacent	2	2
+Aop:396	Event:1550	Event:406	Relationship:2394	non-adjacent	2	2
+Aop:396	Event:1550	Event:1696	Relationship:2395	non-adjacent	2	2
+Aop:396	Event:1194	Event:1775	Relationship:2382	adjacent	1	1
+Aop:396	Event:1550	Event:997	Relationship:2396	non-adjacent	2	2
+Aop:396	Event:752	Event:1775	Relationship:2383	adjacent	2	2
+Aop:396	Event:752	Event:1798	Relationship:2384	adjacent	1	1
+Aop:396	Event:1392	Event:1775	Relationship:3239	adjacent	2	2
+Aop:396	Event:1194	Event:1505	Relationship:2790	adjacent	2	3
+Aop:396	Event:1505	Event:752	Relationship:2791	adjacent	3	3
+Aop:396	Event:1775	Event:1366	Relationship:2104	adjacent	2	3
+Aop:396	Event:1775	Event:406	Relationship:2386	adjacent	1	2
+Aop:396	Event:1798	Event:406	Relationship:2161	adjacent	1	1
+Aop:396	Event:1798	Event:1696	Relationship:2388	adjacent	1	1
+Aop:396	Event:406	Event:1696	Relationship:2387	adjacent	1	1
+Aop:396	Event:1696	Event:997	Relationship:2389	adjacent	1	1
+Aop:396	Event:1550	Event:1115	Relationship:2379	adjacent	1	2
+Aop:396	Event:1115	Event:1392	Relationship:2009	adjacent	1	2
+Aop:397	Event:1879	Event:155	Relationship:2398	adjacent		
+Aop:397	Event:1879	Event:185	Relationship:2399	non-adjacent		
+Aop:397	Event:155	Event:185	Relationship:164	adjacent		
+Aop:398	Event:1880	Event:1881	Relationship:2401	adjacent	1	2
+Aop:398	Event:1881	Event:1882	Relationship:2477	adjacent	2	3
+Aop:398	Event:1882	Event:1883	Relationship:2481	adjacent	1	2
+Aop:398	Event:1883	Event:405	Relationship:2525	adjacent	2	3
+Aop:398	Event:405	Event:406	Relationship:394	adjacent	1	3
+Aop:399	Event:1884	Event:1885	Relationship:2402	adjacent	2	3
+Aop:399	Event:1885	Event:1886	Relationship:2403	adjacent	3	3
+Aop:399	Event:1886	Event:1821	Relationship:2404	adjacent	1	3
+Aop:399	Event:1821	Event:1878	Relationship:2405	adjacent	1	3
+Aop:399	Event:1878	Event:1643	Relationship:2377	adjacent		
+Aop:399	Event:1643	Event:351	Relationship:2375	adjacent		
+Aop:399	Event:351	Event:360	Relationship:2013	adjacent	1	1
+Aop:400	Event:1888	Event:1889	Relationship:2527	adjacent	2	3
+Aop:405	Event:12	Event:10	Relationship:11	adjacent	1	2
+Aop:405	Event:386	Event:402	Relationship:2411	non-adjacent	2	2
+Aop:405	Event:10	Event:39	Relationship:456	adjacent	1	3
+Aop:405	Event:39	Event:402	Relationship:2412	non-adjacent	2	2
+Aop:405	Event:39	Event:386	Relationship:2410	adjacent	2	2
+Aop:406	Event:1739	Event:1738	Relationship:2056	adjacent		
+Aop:406	Event:1738	Event:1847	Relationship:2310	adjacent		
+Aop:406	Event:1847	Event:1869	Relationship:2358	adjacent		
+Aop:406	Event:1869	Event:1895	Relationship:2413	adjacent		
+Aop:406	Event:1895	Event:1868	Relationship:2414	adjacent		
+Aop:409	Event:1668	Event:1496	Relationship:2415	adjacent	1	5
+Aop:409	Event:1668	Event:1115	Relationship:2416	non-adjacent	1	5
+Aop:409	Event:1496	Event:1497	Relationship:1703	adjacent	1	5
+Aop:409	Event:1497	Event:1115	Relationship:1964	adjacent	1	5
+Aop:409	Event:1115	Event:1669	Relationship:1965	adjacent	1	5
+Aop:409	Event:1669	Event:1896	Relationship:2417	adjacent	1	5
+Aop:409	Event:1896	Event:870	Relationship:2418	adjacent	5	5
+Aop:409	Event:870	Event:1090	Relationship:2419	adjacent	1	5
+Aop:410	Event:1647	Event:1902	Relationship:2485	adjacent	1	3
+Aop:410	Event:1902	Event:1903	Relationship:2436	adjacent	2	3
+Aop:410	Event:1903	Event:1904	Relationship:2437	adjacent	3	3
+Aop:410	Event:1904	Event:1905	Relationship:2438	adjacent	3	3
+Aop:410	Event:1905	Event:1825	Relationship:2439	adjacent	1	3
+Aop:410	Event:1825	Event:1930	Relationship:2467	adjacent	1	3
+Aop:410	Event:1930	Event:1008	Relationship:2468	adjacent	1	3
+Aop:410	Event:1008	Event:351	Relationship:2231	adjacent	1	3
+Aop:410	Event:351	Event:360	Relationship:2013	adjacent	1	1
+Aop:411	Event:1392	Event:1908	Relationship:2451	adjacent	1	1
+Aop:411	Event:1908	Event:1909	Relationship:2442	adjacent	1	2
+Aop:411	Event:1909	Event:1250	Relationship:2443	adjacent	2	2
+Aop:412	Event:1913	Event:87	Relationship:2453	adjacent		
+Aop:412	Event:87	Event:1914	Relationship:2454	adjacent		
+Aop:412	Event:87	Event:1915	Relationship:2455	adjacent		
+Aop:412	Event:1914	Event:1857	Relationship:2456	adjacent		
+Aop:412	Event:1915	Event:1857	Relationship:2457	adjacent		
+Aop:412	Event:1857	Event:1916	Relationship:2458	adjacent		
+Aop:413	Event:926	Event:1115	Relationship:2459	adjacent	2	2
+Aop:413	Event:1115	Event:1445	Relationship:2460	adjacent	1	2
+Aop:413	Event:1445	Event:1607	Relationship:2464	adjacent	2	2
+Aop:413	Event:1607	Event:759	Relationship:2465	adjacent	2	2
+Aop:413	Event:759	Event:351	Relationship:2466	adjacent	1	1
+Aop:422	Event:1739	Event:1738	Relationship:2056	adjacent	1	1
+Aop:422	Event:1738	Event:1901	Relationship:2496	adjacent	3	
+Aop:422	Event:1901	Event:1847	Relationship:2497	adjacent	3	
+Aop:422	Event:1847	Event:1931	Relationship:2546	adjacent	3	3
+Aop:423	Event:2030	Event:177	Relationship:2719	adjacent	2	2
+Aop:424	Event:1392	Event:1906	Relationship:2449	adjacent	1	1
+Aop:424	Event:1906	Event:1907	Relationship:2440	adjacent	1	2
+Aop:424	Event:1907	Event:1908	Relationship:2441	adjacent	2	3
+Aop:424	Event:1908	Event:1909	Relationship:2442	adjacent	1	2
+Aop:424	Event:1909	Event:1250	Relationship:2443	adjacent	2	2
+Aop:425	Event:1392	Event:1911	Relationship:2450	adjacent		
+Aop:425	Event:1911	Event:1912	Relationship:2447	adjacent		
+Aop:425	Event:1912	Event:1908	Relationship:2448	adjacent		
+Aop:425	Event:1908	Event:1909	Relationship:2442	adjacent		
+Aop:425	Event:1909	Event:1250	Relationship:2443	adjacent		
+Aop:428	Event:1739	Event:1854	Relationship:2311	adjacent	2	
+Aop:428	Event:1854	Event:1954	Relationship:2532	adjacent	2	2
+Aop:429	Event:1816	Event:1392	Relationship:2499	adjacent	2	5
+Aop:429	Event:1392	Event:1943	Relationship:2505	adjacent	1	5
+Aop:429	Event:1945	Event:1942	Relationship:2502	adjacent	2	5
+Aop:429	Event:1942	Event:1582	Relationship:2503	adjacent	2	5
+Aop:429	Event:1582	Event:1944	Relationship:2506	adjacent	2	5
+Aop:429	Event:1944	Event:386	Relationship:2504	adjacent	1	
+Aop:429	Event:1942	Event:188	Relationship:2507	adjacent	1	5
+Aop:429	Event:188	Event:386	Relationship:2500	adjacent	1	
+Aop:429	Event:386	Event:1941	Relationship:2501	adjacent	2	5
+Aop:430	Event:1739	Event:1738	Relationship:2056	adjacent	1	2
+Aop:430	Event:1738	Event:1901	Relationship:2496	adjacent	1	5
+Aop:430	Event:1901	Event:1847	Relationship:2497	adjacent	1	5
+Aop:430	Event:1847	Event:1939	Relationship:2498	adjacent	1	5
+Aop:431	Event:1950	Event:1949	Relationship:2528	adjacent	1	5
+Aop:431	Event:1949	Event:1951	Relationship:2529	adjacent	1	5
+Aop:431	Event:1951	Event:1952	Relationship:2530	adjacent	1	5
+Aop:431	Event:1952	Event:1953	Relationship:2531	adjacent	1	5
+Aop:433	Event:2099	Event:2100	Relationship:2850	adjacent	1	
+Aop:433	Event:2100	Event:1961	Relationship:2851	adjacent	1	
+Aop:433	Event:1961	Event:1962	Relationship:2540	adjacent	1	
+Aop:433	Event:1962	Event:1963	Relationship:2541	adjacent	3	
+Aop:433	Event:1963	Event:1964	Relationship:2542	adjacent	3	
+Aop:435	Event:1686	Event:1194	Relationship:2552	adjacent	1	1
+Aop:435	Event:1194	Event:752	Relationship:2381	adjacent	1	2
+Aop:435	Event:752	Event:1965	Relationship:2554	adjacent	1	2
+Aop:435	Event:1965	Event:1863	Relationship:2555	adjacent	1	1
+Aop:435	Event:1863	Event:442	Relationship:2556	adjacent	1	1
+Aop:436	Event:1880	Event:1881	Relationship:2401	adjacent	1	2
+Aop:436	Event:1881	Event:1682	Relationship:2561	adjacent	1	3
+Aop:436	Event:1682	Event:1557	Relationship:2562	adjacent	2	3
+Aop:436	Event:1557	Event:1970	Relationship:2563	adjacent	1	3
+Aop:437	Event:105	Event:1392	Relationship:3241	adjacent	5	5
+Aop:437	Event:1392	Event:177	Relationship:3129	adjacent	5	5
+Aop:437	Event:177	Event:709	Relationship:3134	adjacent	5	5
+Aop:437	Event:709	Event:814	Relationship:1676	adjacent	5	5
+Aop:439	Event:18	Event:149	Relationship:2568	adjacent	1	
+Aop:439	Event:18	Event:1262	Relationship:2569	adjacent	1	
+Aop:439	Event:18	Event:1241	Relationship:2570	adjacent	1	
+Aop:439	Event:18	Event:1190	Relationship:2571	adjacent	2	
+Aop:439	Event:18	Event:1196	Relationship:2572	adjacent	1	
+Aop:439	Event:149	Event:1196	Relationship:2573	adjacent	1	
+Aop:439	Event:149	Event:1376	Relationship:2574	adjacent	1	
+Aop:439	Event:1241	Event:1196	Relationship:1306	adjacent	1	
+Aop:439	Event:1190	Event:1376	Relationship:2575	adjacent	1	
+Aop:439	Event:1262	Event:1971	Relationship:2577	adjacent	1	
+Aop:439	Event:1376	Event:1982	Relationship:3137	adjacent	1	1
+Aop:439	Event:1196	Event:1982	Relationship:3138	adjacent	1	1
+Aop:439	Event:1971	Event:1982	Relationship:3139	adjacent	1	1
+Aop:440	Event:1046	Event:1047	Relationship:2580	adjacent	1	5
+Aop:440	Event:1047	Event:1050	Relationship:1089	adjacent	1	2
+Aop:440	Event:1076	Event:1052	Relationship:2585	non-adjacent	1	5
+Aop:440	Event:1050	Event:1972	Relationship:2581	adjacent	1	2
+Aop:440	Event:1052	Event:1053	Relationship:1093	non-adjacent	1	5
+Aop:440	Event:1972	Event:1973	Relationship:2582	adjacent	1	2
+Aop:440	Event:1053	Event:2092	Relationship:2829	non-adjacent	2	3
+Aop:440	Event:1973	Event:1076	Relationship:2583	adjacent	1	2
+Aop:441	Event:1686	Event:1194	Relationship:2552	adjacent	1	5
+Aop:441	Event:1686	Event:1978	Relationship:2604	non-adjacent	1	5
+Aop:441	Event:1194	Event:1974	Relationship:2595	adjacent	1	5
+Aop:441	Event:1974	Event:1979	Relationship:2606	adjacent	2	5
+Aop:441	Event:1974	Event:1262	Relationship:3105	adjacent	2	3
+Aop:441	Event:1262	Event:2200	Relationship:3106	adjacent	1	3
+Aop:441	Event:1979	Event:2200	Relationship:3107	adjacent	3	3
+Aop:441	Event:2200	Event:1978	Relationship:3108	adjacent	1	3
+Aop:442	Event:1353	Event:1977	Relationship:2605	adjacent		
+Aop:442	Event:1977	Event:1983	Relationship:2625	adjacent		
+Aop:442	Event:1983	Event:2005	Relationship:3242	adjacent		
+Aop:442	Event:2005	Event:757	Relationship:3243	adjacent		
+Aop:442	Event:757	Event:758	Relationship:749	adjacent		
+Aop:442	Event:758	Event:402	Relationship:748	adjacent		
+Aop:443	Event:1669	Event:155	Relationship:2608	adjacent	1	1
+Aop:443	Event:1669	Event:1554	Relationship:2728	non-adjacent	1	1
+Aop:443	Event:155	Event:185	Relationship:164	adjacent	1	1
+Aop:443	Event:1554	Event:1980	Relationship:2729	non-adjacent	1	1
+Aop:443	Event:185	Event:1980	Relationship:2609	adjacent	2	2
+Aop:443	Event:1980	Event:1981	Relationship:2610	adjacent	2	2
+Aop:443	Event:1981	Event:1172	Relationship:2611	adjacent	2	2
+Aop:443	Event:1172	Event:112	Relationship:2612	adjacent	2	2
+Aop:443	Event:112	Event:1457	Relationship:2613	adjacent	1	1
+Aop:443	Event:1457	Event:1982	Relationship:2614	adjacent	1	1
+Aop:444	Event:1686	Event:1632	Relationship:2616	adjacent	2	5
+Aop:444	Event:1798	Event:1863	Relationship:2623	non-adjacent	2	2
+Aop:444	Event:1686	Event:1194	Relationship:2552	adjacent	1	1
+Aop:444	Event:328	Event:360	Relationship:1886	non-adjacent	2	2
+Aop:444	Event:1632	Event:1194	Relationship:1904	adjacent	2	2
+Aop:444	Event:1798	Event:360	Relationship:2624	non-adjacent	2	2
+Aop:444	Event:1632	Event:1392	Relationship:3268	adjacent	2	5
+Aop:444	Event:1392	Event:1194	Relationship:3267	adjacent	2	5
+Aop:444	Event:1194	Event:1365	Relationship:1468	adjacent	5	5
+Aop:444	Event:1194	Event:1798	Relationship:2622	adjacent	1	1
+Aop:444	Event:1392	Event:1365	Relationship:3270	adjacent	3	5
+Aop:444	Event:1365	Event:1798	Relationship:2619	adjacent	5	5
+Aop:444	Event:1798	Event:328	Relationship:2620	adjacent	2	2
+Aop:444	Event:328	Event:1863	Relationship:2621	adjacent	2	2
+Aop:444	Event:1863	Event:360	Relationship:2336	adjacent	2	2
+Aop:445	Event:1065	Event:1985	Relationship:2665	adjacent	1	2
+Aop:445	Event:1985	Event:1986	Relationship:2627	adjacent	1	2
+Aop:445	Event:1065	Event:1986	Relationship:2666	non-adjacent	2	2
+Aop:445	Event:1986	Event:1987	Relationship:2629	adjacent		
+Aop:445	Event:1065	Event:1991	Relationship:2730	non-adjacent	1	2
+Aop:445	Event:1987	Event:1988	Relationship:2630	adjacent		
+Aop:445	Event:1988	Event:1989	Relationship:2631	adjacent		
+Aop:445	Event:1989	Event:1990	Relationship:2632	adjacent		
+Aop:445	Event:1990	Event:1991	Relationship:2633	adjacent		
+Aop:447	Event:105	Event:1770	Relationship:2636	adjacent		
+Aop:447	Event:1770	Event:177	Relationship:3163	adjacent		
+Aop:447	Event:177	Event:1917	Relationship:3164	adjacent		
+Aop:447	Event:177	Event:202	Relationship:3165	adjacent		
+Aop:447	Event:177	Event:1365	Relationship:3131	adjacent		
+Aop:447	Event:1917	Event:1815	Relationship:2641	adjacent		
+Aop:447	Event:1917	Event:1392	Relationship:3271	adjacent		
+Aop:447	Event:1815	Event:1365	Relationship:2643	adjacent		
+Aop:447	Event:202	Event:1633	Relationship:2644	adjacent		
+Aop:447	Event:1392	Event:1097	Relationship:3264	adjacent		
+Aop:447	Event:1365	Event:1097	Relationship:2645	adjacent		
+Aop:447	Event:1633	Event:1097	Relationship:2646	adjacent		
+Aop:447	Event:1097	Event:814	Relationship:2647	adjacent		
+Aop:447	Event:814	Event:759	Relationship:2648	adjacent		
+Aop:449	Event:2023	Event:2024	Relationship:2694	adjacent	1	
+Aop:449	Event:1502	Event:1561	Relationship:2699	non-adjacent		
+Aop:449	Event:2024	Event:2025	Relationship:2695	adjacent	2	
+Aop:449	Event:2026	Event:1561	Relationship:2700	non-adjacent	1	
+Aop:449	Event:2025	Event:2026	Relationship:2696	adjacent		
+Aop:449	Event:2023	Event:2033	Relationship:2697	adjacent		
+Aop:449	Event:2033	Event:1502	Relationship:2698	adjacent		
+Aop:450	Event:12	Event:1391	Relationship:2653	adjacent	3	2
+Aop:450	Event:1583	Event:351	Relationship:2657	non-adjacent	3	3
+Aop:450	Event:1391	Event:1392	Relationship:1512	adjacent	2	2
+Aop:450	Event:1392	Event:352	Relationship:3312	adjacent	1	1
+Aop:450	Event:352	Event:618	Relationship:647	adjacent	1	1
+Aop:450	Event:618	Event:1583	Relationship:2656	adjacent	2	3
+Aop:451	Event:1495	Event:1496	Relationship:1702	adjacent	2	2
+Aop:451	Event:1495	Event:1115	Relationship:2662	non-adjacent		
+Aop:451	Event:1496	Event:1497	Relationship:1703	adjacent	2	3
+Aop:451	Event:1495	Event:1669	Relationship:2663	non-adjacent		
+Aop:451	Event:1497	Event:780	Relationship:2658	adjacent	2	2
+Aop:451	Event:780	Event:2006	Relationship:2664	non-adjacent		
+Aop:451	Event:780	Event:1115	Relationship:2659	adjacent		
+Aop:451	Event:1115	Event:2006	Relationship:2660	adjacent		
+Aop:451	Event:2006	Event:1669	Relationship:2661	adjacent		
+Aop:451	Event:1669	Event:870	Relationship:1966	adjacent		
+Aop:451	Event:870	Event:1670	Relationship:1967	adjacent	1	3
+Aop:452	Event:2007	Event:2009	Relationship:2667	adjacent		
+Aop:452	Event:2007	Event:1392	Relationship:2668	adjacent		
+Aop:452	Event:2007	Event:1457	Relationship:3203	adjacent		
+Aop:452	Event:2007	Event:2012	Relationship:2670	adjacent		
+Aop:452	Event:2007	Event:1262	Relationship:2671	adjacent		
+Aop:452	Event:2007	Event:1945	Relationship:2672	adjacent		
+Aop:452	Event:2009	Event:2010	Relationship:2673	adjacent		
+Aop:452	Event:1392	Event:2010	Relationship:2674	adjacent		
+Aop:452	Event:1262	Event:2011	Relationship:2675	adjacent		
+Aop:452	Event:1945	Event:2011	Relationship:2676	adjacent		
+Aop:452	Event:1457	Event:2013	Relationship:3204	adjacent		
+Aop:452	Event:2012	Event:2013	Relationship:2678	adjacent		
+Aop:452	Event:2010	Event:2008	Relationship:2679	adjacent		
+Aop:452	Event:2011	Event:2008	Relationship:2680	adjacent		
+Aop:452	Event:2013	Event:2008	Relationship:2681	adjacent		
+Aop:455	Event:18	Event:944	Relationship:972	adjacent	1	2
+Aop:455	Event:944	Event:2021	Relationship:2683	adjacent	2	2
+Aop:455	Event:18	Event:2020	Relationship:2688	non-adjacent	2	3
+Aop:455	Event:2021	Event:2020	Relationship:2684	adjacent	2	2
+Aop:455	Event:2020	Event:1559	Relationship:2685	adjacent	1	3
+Aop:455	Event:1559	Event:947	Relationship:2686	adjacent	3	3
+Aop:455	Event:2021	Event:1559	Relationship:2690	non-adjacent	2	2
+Aop:455	Event:18	Event:947	Relationship:984	non-adjacent	1	2
+Aop:455	Event:18	Event:1559	Relationship:2689	non-adjacent	1	1
+Aop:456	Event:18	Event:944	Relationship:972	adjacent	1	2
+Aop:456	Event:18	Event:2020	Relationship:2688	non-adjacent	1	3
+Aop:456	Event:944	Event:2021	Relationship:2683	adjacent	2	2
+Aop:456	Event:2021	Event:317	Relationship:2727	non-adjacent	2	2
+Aop:456	Event:2021	Event:2020	Relationship:2684	adjacent	2	2
+Aop:456	Event:18	Event:947	Relationship:984	non-adjacent	1	2
+Aop:456	Event:2020	Event:317	Relationship:2691	adjacent	2	2
+Aop:456	Event:18	Event:317	Relationship:2765	non-adjacent	1	3
+Aop:456	Event:317	Event:947	Relationship:1567	adjacent	1	3
+Aop:457	Event:2118	Event:2120	Relationship:2866	adjacent	1	3
+Aop:457	Event:2120	Event:1392	Relationship:3273	adjacent	1	3
+Aop:457	Event:1392	Event:277	Relationship:3274	adjacent	2	3
+Aop:457	Event:277	Event:281	Relationship:305	adjacent	1	
+Aop:457	Event:281	Event:2119	Relationship:2865	adjacent	2	2
+Aop:458	Event:18	Event:295	Relationship:2883	adjacent	1	1
+Aop:458	Event:281	Event:402	Relationship:403	non-adjacent	1	1
+Aop:458	Event:295	Event:961	Relationship:2478	adjacent	1	1
+Aop:458	Event:961	Event:281	Relationship:2270	adjacent	1	1
+Aop:458	Event:281	Event:280	Relationship:312	adjacent	1	2
+Aop:458	Event:280	Event:756	Relationship:746	adjacent	1	2
+Aop:458	Event:756	Event:758	Relationship:2886	adjacent	2	3
+Aop:458	Event:758	Event:402	Relationship:748	adjacent	3	3
+Aop:459	Event:18	Event:850	Relationship:869	adjacent	1	2
+Aop:459	Event:850	Event:1392	Relationship:3275	adjacent	2	3
+Aop:459	Event:1392	Event:277	Relationship:3274	adjacent	2	3
+Aop:459	Event:277	Event:281	Relationship:305	adjacent	1	1
+Aop:459	Event:281	Event:280	Relationship:312	adjacent	1	2
+Aop:459	Event:280	Event:756	Relationship:746	adjacent	2	2
+Aop:459	Event:756	Event:758	Relationship:2886	adjacent	2	2
+Aop:459	Event:758	Event:402	Relationship:748	adjacent	2	2
+Aop:460	Event:2027	Event:2042	Relationship:2894	non-adjacent	1	2
+Aop:460	Event:2027	Event:2044	Relationship:2734	adjacent	2	3
+Aop:460	Event:2044	Event:2028	Relationship:2735	adjacent	2	3
+Aop:460	Event:2028	Event:2040	Relationship:2721	adjacent	3	3
+Aop:460	Event:2040	Event:2043	Relationship:2731	adjacent	3	3
+Aop:460	Event:2043	Event:1821	Relationship:2732	adjacent	3	3
+Aop:460	Event:1821	Event:2041	Relationship:2724	adjacent	3	3
+Aop:460	Event:2041	Event:2042	Relationship:2726	adjacent	2	3
+Aop:460	Event:1262	Event:2041	Relationship:2792	adjacent	3	3
+Aop:460	Event:2040	Event:1262	Relationship:2882	adjacent	3	3
+Aop:462	Event:1115	Event:1392	Relationship:2009	adjacent	1	
+Aop:462	Event:1392	Event:2068	Relationship:2776	adjacent	1	
+Aop:462	Event:2068	Event:901	Relationship:3373	adjacent	2	
+Aop:462	Event:901	Event:1198	Relationship:3374	adjacent	2	
+Aop:462	Event:1198	Event:1442	Relationship:3376	adjacent	2	
+Aop:462	Event:1392	Event:467	Relationship:3442	adjacent	2	
+Aop:462	Event:467	Event:1442	Relationship:3443	adjacent	2	
+Aop:464	Event:2036	Event:2037	Relationship:2703	adjacent	5	5
+Aop:464	Event:2037	Event:389	Relationship:2702	adjacent	5	5
+Aop:464	Event:388	Event:389	Relationship:361	adjacent	5	5
+Aop:464	Event:388	Event:1527	Relationship:3038	adjacent		
+Aop:464	Event:2039	Event:1527	Relationship:2707	adjacent	5	5
+Aop:464	Event:1527	Event:2187	Relationship:3039	adjacent	5	5
+Aop:464	Event:2187	Event:389	Relationship:3040	adjacent	5	5
+Aop:464	Event:389	Event:2038	Relationship:2704	adjacent	5	5
+Aop:464	Event:2038	Event:1825	Relationship:2705	adjacent	5	5
+Aop:464	Event:389	Event:2017	Relationship:2710	adjacent	5	5
+Aop:464	Event:2017	Event:1512	Relationship:2711	adjacent	5	5
+Aop:464	Event:1512	Event:2188	Relationship:3041	adjacent	5	5
+Aop:464	Event:389	Event:177	Relationship:362	adjacent	5	5
+Aop:464	Event:177	Event:1585	Relationship:3136	adjacent	5	5
+Aop:464	Event:1585	Event:1605	Relationship:3044	adjacent	5	5
+Aop:464	Event:1605	Event:2017	Relationship:3045	adjacent	5	5
+Aop:464	Event:1605	Event:2188	Relationship:3046	adjacent	5	5
+Aop:464	Event:177	Event:1392	Relationship:1684	adjacent	5	5
+Aop:464	Event:1392	Event:1585	Relationship:3048	adjacent	5	5
+Aop:464	Event:1392	Event:1605	Relationship:3047	adjacent	5	5
+Aop:464	Event:1392	Event:1547	Relationship:2714	adjacent	5	5
+Aop:464	Event:1547	Event:1812	Relationship:3049	adjacent	5	5
+Aop:464	Event:1812	Event:2188	Relationship:3050	adjacent	5	5
+Aop:464	Event:2188	Event:1825	Relationship:3051	adjacent	5	5
+Aop:464	Event:1825	Event:896	Relationship:2706	adjacent	5	5
+Aop:465	Event:2045	Event:748	Relationship:2736	adjacent	2	2
+Aop:465	Event:748	Event:2046	Relationship:2737	adjacent	2	2
+Aop:465	Event:2046	Event:2047	Relationship:2738	adjacent	2	2
+Aop:465	Event:2047	Event:2048	Relationship:2739	adjacent	2	2
+Aop:465	Event:2047	Event:2049	Relationship:2740	adjacent	2	2
+Aop:465	Event:2048	Event:2050	Relationship:2741	adjacent	2	2
+Aop:465	Event:2049	Event:2050	Relationship:2742	adjacent	2	2
+Aop:465	Event:2050	Event:350	Relationship:2743	adjacent	2	2
+Aop:466	Event:2051	Event:2052	Relationship:2744	adjacent	2	2
+Aop:466	Event:2052	Event:2053	Relationship:2745	adjacent	2	2
+Aop:466	Event:2053	Event:2054	Relationship:2746	adjacent	2	2
+Aop:466	Event:2053	Event:2055	Relationship:2747	adjacent	2	2
+Aop:466	Event:2054	Event:990	Relationship:2748	adjacent	2	2
+Aop:466	Event:2055	Event:990	Relationship:2749	adjacent	2	2
+Aop:466	Event:990	Event:2056	Relationship:2750	adjacent	2	2
+Aop:466	Event:990	Event:350	Relationship:1002	adjacent	2	2
+Aop:466	Event:990	Event:2057	Relationship:2751	adjacent	2	2
+Aop:467	Event:2058	Event:2059	Relationship:2752	adjacent	2	2
+Aop:467	Event:2059	Event:2060	Relationship:2753	adjacent	2	2
+Aop:467	Event:2059	Event:2061	Relationship:2754	adjacent	2	2
+Aop:467	Event:2060	Event:2062	Relationship:2755	adjacent	2	2
+Aop:467	Event:2061	Event:2062	Relationship:2756	adjacent	2	2
+Aop:467	Event:2062	Event:2063	Relationship:2757	adjacent	2	2
+Aop:467	Event:2063	Event:990	Relationship:2758	adjacent	2	2
+Aop:467	Event:990	Event:2050	Relationship:2759	adjacent	2	2
+Aop:467	Event:2050	Event:350	Relationship:2743	adjacent	2	2
+Aop:468	Event:1739	Event:1738	Relationship:2056	adjacent	1	1
+Aop:468	Event:1497	Event:1496	Relationship:2761	non-adjacent		
+Aop:468	Event:1738	Event:1901	Relationship:2496	adjacent	1	2
+Aop:468	Event:1901	Event:1847	Relationship:2497	adjacent	1	2
+Aop:468	Event:1847	Event:1825	Relationship:2488	adjacent	1	2
+Aop:468	Event:1825	Event:1496	Relationship:2760	adjacent		
+Aop:468	Event:1496	Event:1497	Relationship:1703	adjacent	1	1
+Aop:468	Event:1497	Event:1868	Relationship:2354	adjacent		
+Aop:470	Event:1686	Event:1392	Relationship:2769	adjacent	1	1
+Aop:470	Event:1686	Event:1635	Relationship:1977	adjacent	1	1
+Aop:470	Event:1392	Event:1635	Relationship:2811	adjacent	1	2
+Aop:470	Event:1635	Event:2244	Relationship:3315	adjacent	1	2
+Aop:470	Event:1686	Event:2067	Relationship:2779	non-adjacent	1	3
+Aop:470	Event:1392	Event:2244	Relationship:3316	adjacent	1	3
+Aop:470	Event:1392	Event:1493	Relationship:2772	adjacent	2	2
+Aop:470	Event:1686	Event:2068	Relationship:2780	non-adjacent	2	3
+Aop:470	Event:1686	Event:2069	Relationship:2785	non-adjacent	1	3
+Aop:470	Event:2244	Event:2067	Relationship:3317	adjacent	2	3
+Aop:470	Event:1392	Event:2067	Relationship:2774	adjacent	2	3
+Aop:470	Event:1392	Event:2068	Relationship:2776	non-adjacent	2	3
+Aop:470	Event:2244	Event:2068	Relationship:3318	adjacent	2	3
+Aop:470	Event:1493	Event:2068	Relationship:2777	adjacent	2	3
+Aop:470	Event:2068	Event:2069	Relationship:2784	adjacent	2	3
+Aop:470	Event:2067	Event:2068	Relationship:2789	adjacent	2	3
+Aop:471	Event:2195	Event:2196	Relationship:3056	adjacent	2	2
+Aop:471	Event:2195	Event:2197	Relationship:3057	adjacent	2	2
+Aop:471	Event:2195	Event:2198	Relationship:3058	adjacent	2	2
+Aop:471	Event:2196	Event:352	Relationship:3059	adjacent	2	2
+Aop:471	Event:2197	Event:352	Relationship:3060	adjacent	2	2
+Aop:471	Event:2198	Event:352	Relationship:3061	adjacent	2	2
+Aop:471	Event:188	Event:352	Relationship:208	adjacent	2	2
+Aop:471	Event:1392	Event:352	Relationship:3312	adjacent	2	2
+Aop:471	Event:1392	Event:618	Relationship:3322	adjacent	2	2
+Aop:471	Event:10	Event:12	Relationship:459	adjacent	2	2
+Aop:471	Event:12	Event:2195	Relationship:3063	adjacent	2	2
+Aop:471	Event:12	Event:1944	Relationship:3064	adjacent	2	2
+Aop:471	Event:1944	Event:1582	Relationship:3065	adjacent	2	2
+Aop:471	Event:1582	Event:1583	Relationship:1835	adjacent	2	2
+Aop:471	Event:1583	Event:618	Relationship:3066	adjacent	2	2
+Aop:471	Event:388	Event:12	Relationship:3068	adjacent	2	2
+Aop:471	Event:388	Event:618	Relationship:3069	adjacent	2	2
+Aop:471	Event:352	Event:388	Relationship:3070	adjacent	2	2
+Aop:471	Event:388	Event:188	Relationship:3071	adjacent	2	2
+Aop:471	Event:618	Event:2150	Relationship:3072	adjacent	2	2
+Aop:471	Event:191	Event:2150	Relationship:2941	adjacent	2	2
+Aop:471	Event:618	Event:188	Relationship:3073	adjacent	2	2
+Aop:471	Event:188	Event:890	Relationship:906	adjacent	2	2
+Aop:471	Event:352	Event:637	Relationship:3075	adjacent	2	2
+Aop:471	Event:618	Event:637	Relationship:3076	adjacent	2	2
+Aop:471	Event:890	Event:637	Relationship:3077	adjacent	2	2
+Aop:471	Event:352	Event:1841	Relationship:2287	adjacent	2	2
+Aop:471	Event:1944	Event:637	Relationship:3078	adjacent	2	2
+Aop:471	Event:2078	Event:1944	Relationship:2807	adjacent	2	2
+Aop:471	Event:637	Event:896	Relationship:3079	adjacent	2	2
+Aop:471	Event:2151	Event:637	Relationship:3080	adjacent	2	2
+Aop:471	Event:352	Event:1348	Relationship:3081	adjacent	2	2
+Aop:471	Event:1348	Event:1363	Relationship:1460	adjacent	2	2
+Aop:471	Event:1363	Event:350	Relationship:3082	adjacent	2	2
+Aop:471	Event:896	Event:350	Relationship:3083	adjacent	2	2
+Aop:471	Event:1018	Event:388	Relationship:3084	adjacent	2	2
+Aop:471	Event:1018	Event:2195	Relationship:3085	adjacent	2	2
+Aop:471	Event:1349	Event:1018	Relationship:3086	adjacent	2	2
+Aop:471	Event:1016	Event:350	Relationship:3087	adjacent	2	2
+Aop:471	Event:1349	Event:1177	Relationship:3088	adjacent	2	2
+Aop:471	Event:1012	Event:1014	Relationship:1054	adjacent	2	2
+Aop:471	Event:1014	Event:1015	Relationship:3089	adjacent	2	2
+Aop:471	Event:1015	Event:1016	Relationship:3090	adjacent	2	2
+Aop:473	Event:1686	Event:1632	Relationship:2616	adjacent	1	3
+Aop:473	Event:1632	Event:2073	Relationship:2798	adjacent	2	3
+Aop:473	Event:2073	Event:2074	Relationship:2799	adjacent	2	3
+Aop:473	Event:2073	Event:2075	Relationship:2800	adjacent	5	5
+Aop:473	Event:2075	Event:2077	Relationship:2801	adjacent	5	5
+Aop:473	Event:2077	Event:1521	Relationship:2802	adjacent	5	5
+Aop:473	Event:2074	Event:2076	Relationship:2803	adjacent	5	5
+Aop:473	Event:1521	Event:1141	Relationship:2804	adjacent	5	5
+Aop:474	Event:2118	Event:2243	Relationship:3302	adjacent	1	1
+Aop:474	Event:2243	Event:1619	Relationship:3303	adjacent	1	1
+Aop:474	Event:1619	Event:1457	Relationship:3305	adjacent	2	2
+Aop:474	Event:1457	Event:885	Relationship:3306	adjacent	1	1
+Aop:475	Event:875	Event:388	Relationship:919	adjacent	1	2
+Aop:475	Event:388	Event:389	Relationship:361	adjacent	1	1
+Aop:475	Event:389	Event:2078	Relationship:3091	adjacent	1	2
+Aop:475	Event:2078	Event:2242	Relationship:3298	adjacent	1	1
+Aop:475	Event:2242	Event:1944	Relationship:3301	adjacent	1	1
+Aop:475	Event:2078	Event:341	Relationship:3300	non-adjacent	1	1
+Aop:475	Event:1944	Event:386	Relationship:2504	adjacent	1	2
+Aop:475	Event:386	Event:341	Relationship:359	adjacent	1	2
+Aop:475	Event:875	Event:2078	Relationship:3506	non-adjacent	1	1
+Aop:477	Event:26	Event:1614	Relationship:2130	adjacent	1	
+Aop:477	Event:1614	Event:2082	Relationship:2828	non-adjacent		
+Aop:478	Event:1686	Event:1635	Relationship:1977	adjacent	1	1
+Aop:478	Event:1686	Event:1634	Relationship:2813	non-adjacent	2	2
+Aop:478	Event:1686	Event:1392	Relationship:2769	adjacent	1	1
+Aop:478	Event:1686	Event:185	Relationship:1981	non-adjacent	1	1
+Aop:478	Event:1686	Event:2081	Relationship:2809	adjacent	2	2
+Aop:478	Event:1686	Event:1636	Relationship:1982	non-adjacent	1	1
+Aop:478	Event:1392	Event:1634	Relationship:2810	adjacent	2	3
+Aop:478	Event:1686	Event:870	Relationship:2814	non-adjacent	2	2
+Aop:478	Event:1392	Event:1635	Relationship:2811	adjacent	2	3
+Aop:478	Event:1392	Event:2081	Relationship:2812	adjacent	2	3
+Aop:478	Event:1686	Event:2083	Relationship:2815	non-adjacent	1	1
+Aop:478	Event:155	Event:2083	Relationship:2817	non-adjacent	3	3
+Aop:478	Event:1634	Event:155	Relationship:1909	adjacent	2	3
+Aop:478	Event:1635	Event:155	Relationship:1911	adjacent	2	2
+Aop:478	Event:1392	Event:2083	Relationship:2818	non-adjacent	2	3
+Aop:478	Event:155	Event:185	Relationship:164	adjacent	1	3
+Aop:478	Event:155	Event:1636	Relationship:1912	adjacent	3	3
+Aop:478	Event:185	Event:870	Relationship:1978	adjacent	2	3
+Aop:478	Event:1636	Event:870	Relationship:1979	adjacent	2	3
+Aop:478	Event:2081	Event:2083	Relationship:2816	adjacent	2	3
+Aop:478	Event:870	Event:2083	Relationship:2819	adjacent	2	3
+Aop:478	Event:1634	Event:1635	Relationship:1913	adjacent	3	3
+Aop:479	Event:105	Event:177	Relationship:2821	adjacent		
+Aop:479	Event:177	Event:1392	Relationship:1684	adjacent		
+Aop:479	Event:1392	Event:55	Relationship:1690	adjacent		
+Aop:479	Event:55	Event:2084	Relationship:3244	adjacent		
+Aop:479	Event:2084	Event:2215	Relationship:3175	adjacent		
+Aop:479	Event:55	Event:1532	Relationship:3245	adjacent		
+Aop:479	Event:1532	Event:2215	Relationship:3176	adjacent		
+Aop:480	Event:105	Event:177	Relationship:2821	adjacent		
+Aop:480	Event:177	Event:40	Relationship:2822	adjacent		
+Aop:480	Event:40	Event:1532	Relationship:2823	adjacent		
+Aop:480	Event:1532	Event:2215	Relationship:3176	adjacent		
+Aop:481	Event:1115	Event:1392	Relationship:2009	adjacent	1	1
+Aop:481	Event:1392	Event:177	Relationship:3129	adjacent	1	1
+Aop:482	Event:1686	Event:1392	Relationship:2769	adjacent	1	2
+Aop:482	Event:1392	Event:2089	Relationship:2846	non-adjacent	2	3
+Aop:482	Event:1392	Event:1825	Relationship:2716	adjacent	2	3
+Aop:482	Event:1686	Event:2089	Relationship:2847	non-adjacent	1	3
+Aop:482	Event:1686	Event:2090	Relationship:2848	non-adjacent	1	3
+Aop:482	Event:1392	Event:2245	Relationship:3319	adjacent	1	3
+Aop:482	Event:1825	Event:2089	Relationship:2842	adjacent	1	3
+Aop:482	Event:1686	Event:2091	Relationship:2849	non-adjacent	1	2
+Aop:482	Event:2245	Event:2089	Relationship:3320	adjacent	1	2
+Aop:482	Event:2089	Event:2090	Relationship:2844	adjacent	2	3
+Aop:482	Event:2090	Event:2091	Relationship:2845	adjacent	2	3
+Aop:483	Event:1686	Event:1392	Relationship:2769	adjacent	1	2
+Aop:483	Event:1686	Event:2098	Relationship:2837	non-adjacent	2	3
+Aop:483	Event:1686	Event:1492	Relationship:2832	adjacent	2	2
+Aop:483	Event:1686	Event:341	Relationship:2838	non-adjacent	2	3
+Aop:483	Event:2097	Event:341	Relationship:2839	non-adjacent	2	3
+Aop:483	Event:1392	Event:2244	Relationship:3316	adjacent	1	3
+Aop:483	Event:1392	Event:1492	Relationship:2833	adjacent	2	3
+Aop:483	Event:1492	Event:2097	Relationship:2834	adjacent	2	3
+Aop:483	Event:2097	Event:2098	Relationship:2835	adjacent	2	3
+Aop:483	Event:2098	Event:341	Relationship:2836	adjacent	2	3
+Aop:483	Event:2244	Event:2098	Relationship:3321	adjacent	2	3
+Aop:483	Event:1635	Event:2098	Relationship:2841	adjacent	2	3
+Aop:483	Event:1392	Event:1635	Relationship:2811	adjacent	2	2
+Aop:483	Event:1686	Event:1635	Relationship:1977	adjacent	1	1
+Aop:483	Event:1635	Event:2244	Relationship:3315	adjacent	2	3
+Aop:490	Event:2037	Event:1350	Relationship:3037	adjacent	2	
+Aop:490	Event:2186	Event:1350	Relationship:3036	adjacent	2	
+Aop:490	Event:1350	Event:2123	Relationship:2868	adjacent	1	
+Aop:490	Event:1350	Event:2124	Relationship:2869	adjacent	1	
+Aop:490	Event:1350	Event:1998	Relationship:2861	adjacent	1	
+Aop:490	Event:1998	Event:188	Relationship:2862	adjacent	1	
+Aop:490	Event:2123	Event:55	Relationship:2870	adjacent	1	
+Aop:490	Event:2124	Event:55	Relationship:2871	adjacent	1	
+Aop:490	Event:188	Event:55	Relationship:1687	adjacent	1	
+Aop:490	Event:55	Event:758	Relationship:2875	adjacent	1	
+Aop:490	Event:758	Event:341	Relationship:2864	adjacent	1	
+Aop:490	Event:341	Event:2121	Relationship:2872	adjacent	2	
+Aop:490	Event:2121	Event:2122	Relationship:2867	adjacent	1	
+Aop:491	Event:2040	Event:2043	Relationship:2731	adjacent	3	3
+Aop:491	Event:2043	Event:1821	Relationship:2732	adjacent	3	3
+Aop:491	Event:1821	Event:2041	Relationship:2724	adjacent	3	3
+Aop:491	Event:2043	Event:1262	Relationship:2957	adjacent	3	3
+Aop:491	Event:2041	Event:2042	Relationship:2726	adjacent	2	3
+Aop:491	Event:1262	Event:2041	Relationship:2792	adjacent	3	3
+Aop:492	Event:2131	Event:130	Relationship:2877	adjacent	1	1
+Aop:492	Event:130	Event:1115	Relationship:2878	adjacent	1	1
+Aop:492	Event:1115	Event:1445	Relationship:2460	adjacent	1	1
+Aop:492	Event:1445	Event:406	Relationship:2879	adjacent	1	1
+Aop:493	Event:2126	Event:2128	Relationship:2881	adjacent	1	
+Aop:493	Event:2128	Event:2125	Relationship:2898	adjacent	1	
+Aop:493	Event:2127	Event:2125	Relationship:2899	adjacent	1	
+Aop:493	Event:2130	Event:2125	Relationship:2900	adjacent	1	
+Aop:493	Event:2125	Event:2132	Relationship:2901	adjacent	1	
+Aop:493	Event:2125	Event:1497	Relationship:2876	adjacent	1	
+Aop:493	Event:2126	Event:2130	Relationship:2906	adjacent	1	
+Aop:493	Event:2126	Event:2127	Relationship:2880	adjacent	1	
+Aop:493	Event:1497	Event:1633	Relationship:2903	adjacent	1	
+Aop:493	Event:2132	Event:1633	Relationship:2902	adjacent	1	
+Aop:493	Event:1633	Event:2119	Relationship:3177	adjacent	1	
+Aop:493	Event:2119	Event:2129	Relationship:3178	adjacent	1	
+Aop:494	Event:18	Event:459	Relationship:3219	adjacent	1	2
+Aop:494	Event:459	Event:55	Relationship:3218	adjacent	2	2
+Aop:494	Event:55	Event:265	Relationship:68	adjacent	2	2
+Aop:494	Event:265	Event:1501	Relationship:2892	adjacent	1	1
+Aop:494	Event:1501	Event:344	Relationship:2325	adjacent	1	1
+Aop:495	Event:25	Event:286	Relationship:3392	adjacent	1	1
+Aop:495	Event:286	Event:2134	Relationship:2909	adjacent	1	1
+Aop:495	Event:2134	Event:854	Relationship:2910	adjacent	1	1
+Aop:495	Event:854	Event:2136	Relationship:2911	adjacent	2	2
+Aop:495	Event:2136	Event:2135	Relationship:2912	adjacent	1	1
+Aop:495	Event:25	Event:1183	Relationship:3463	adjacent	1	1
+Aop:495	Event:1183	Event:854	Relationship:2914	adjacent	1	1
+Aop:495	Event:25	Event:1599	Relationship:3462	adjacent	1	1
+Aop:495	Event:1599	Event:1196	Relationship:2916	adjacent	1	1
+Aop:495	Event:1599	Event:2136	Relationship:2917	adjacent	1	1
+Aop:496	Event:25	Event:286	Relationship:3392	adjacent	2	5
+Aop:496	Event:219	Event:221	Relationship:1386	non-adjacent	1	1
+Aop:496	Event:2139	Event:2137	Relationship:3393	non-adjacent		
+Aop:496	Event:1690	Event:219	Relationship:3213	adjacent	1	2
+Aop:496	Event:219	Event:2139	Relationship:2922	adjacent	1	2
+Aop:496	Event:2139	Event:221	Relationship:2923	adjacent	1	1
+Aop:496	Event:221	Event:309	Relationship:255	adjacent	2	2
+Aop:496	Event:309	Event:78	Relationship:337	adjacent	1	2
+Aop:496	Event:78	Event:442	Relationship:2924	adjacent	1	2
+Aop:496	Event:1690	Event:2139	Relationship:3214	adjacent	2	2
+Aop:497	Event:2126	Event:179	Relationship:2929	adjacent	1	
+Aop:497	Event:2126	Event:1115	Relationship:2930	adjacent	1	
+Aop:497	Event:179	Event:177	Relationship:3159	adjacent	1	
+Aop:497	Event:1115	Event:1392	Relationship:2009	adjacent	1	
+Aop:497	Event:177	Event:2144	Relationship:3161	adjacent	2	
+Aop:497	Event:1392	Event:2144	Relationship:3272	adjacent	1	
+Aop:497	Event:2144	Event:2119	Relationship:3179	adjacent	1	
+Aop:497	Event:2119	Event:2145	Relationship:3180	adjacent	1	
+Aop:497	Event:1392	Event:177	Relationship:3129	adjacent	1	
+Aop:498	Event:2148	Event:2149	Relationship:2939	adjacent	2	1
+Aop:498	Event:2149	Event:191	Relationship:2940	adjacent	1	1
+Aop:498	Event:191	Event:2150	Relationship:2941	adjacent	2	3
+Aop:499	Event:2146	Event:1339	Relationship:2942	adjacent	2	
+Aop:499	Event:1339	Event:2151	Relationship:2954	adjacent	2	
+Aop:499	Event:2151	Event:341	Relationship:2955	adjacent	2	
+Aop:500	Event:2146	Event:1339	Relationship:2942	adjacent	2	
+Aop:500	Event:1339	Event:1262	Relationship:2968	non-adjacent	1	
+Aop:500	Event:1339	Event:177	Relationship:3140	adjacent	2	
+Aop:500	Event:177	Event:1115	Relationship:3141	adjacent	1	
+Aop:500	Event:1115	Event:1262	Relationship:2966	adjacent	1	
+Aop:500	Event:1262	Event:352	Relationship:2967	adjacent	1	
+Aop:500	Event:352	Event:341	Relationship:1069	adjacent	1	
+Aop:501	Event:2149	Event:1392	Relationship:3313	adjacent	2	5
+Aop:501	Event:1392	Event:386	Relationship:3314	adjacent	1	5
+Aop:501	Event:386	Event:2150	Relationship:2953	adjacent	1	5
+Aop:503	Event:1065	Event:2152	Relationship:2969	adjacent		
+Aop:503	Event:2152	Event:2153	Relationship:2970	adjacent		
+Aop:503	Event:2153	Event:772	Relationship:2971	adjacent		
+Aop:503	Event:772	Event:1896	Relationship:2972	adjacent		
+Aop:503	Event:1896	Event:2154	Relationship:2973	adjacent		
+Aop:504	Event:2155	Event:2251	Relationship:3390	adjacent		
+Aop:504	Event:2251	Event:1065	Relationship:3391	adjacent		
+Aop:505	Event:1115	Event:1392	Relationship:2009	adjacent	1	5
+Aop:505	Event:1392	Event:149	Relationship:2975	adjacent	1	5
+Aop:505	Event:149	Event:1513	Relationship:2976	adjacent	1	5
+Aop:505	Event:1513	Event:885	Relationship:2977	adjacent	1	5
+Aop:506	Event:2158	Event:2159	Relationship:2978	adjacent	1	5
+Aop:506	Event:2159	Event:2180	Relationship:3030	adjacent	1	5
+Aop:506	Event:2180	Event:2192	Relationship:3054	adjacent	1	5
+Aop:506	Event:2192	Event:2193	Relationship:3053	adjacent	1	2
+Aop:506	Event:2193	Event:2194	Relationship:3055	adjacent	1	2
+Aop:507	Event:1417	Event:2009	Relationship:3035	non-adjacent	1	1
+Aop:507	Event:1417	Event:1392	Relationship:3276	adjacent	1	1
+Aop:507	Event:1392	Event:2009	Relationship:3277	adjacent	1	1
+Aop:507	Event:2009	Event:1928	Relationship:2981	adjacent	1	1
+Aop:507	Event:1928	Event:2181	Relationship:3031	adjacent	1	1
+Aop:507	Event:2181	Event:2161	Relationship:3032	adjacent	1	1
+Aop:508	Event:1417	Event:2162	Relationship:2984	adjacent	1	1
+Aop:508	Event:2162	Event:2163	Relationship:2985	adjacent	1	2
+Aop:508	Event:2163	Event:2164	Relationship:2986	adjacent	2	2
+Aop:508	Event:2164	Event:1928	Relationship:2987	adjacent	1	1
+Aop:508	Event:1928	Event:2181	Relationship:3031	adjacent	1	1
+Aop:508	Event:2181	Event:2161	Relationship:3032	adjacent	1	1
+Aop:509	Event:1417	Event:1392	Relationship:3276	adjacent	1	1
+Aop:509	Event:1392	Event:1365	Relationship:3270	adjacent	1	1
+Aop:509	Event:1392	Event:177	Relationship:3129	adjacent	1	1
+Aop:509	Event:177	Event:1365	Relationship:3131	adjacent	1	1
+Aop:509	Event:1365	Event:1928	Relationship:3034	adjacent	1	1
+Aop:509	Event:177	Event:1928	Relationship:3132	adjacent	1	1
+Aop:509	Event:1928	Event:2181	Relationship:3031	adjacent	1	1
+Aop:509	Event:2181	Event:2161	Relationship:3032	adjacent	1	1
+Aop:510	Event:228	Event:2165	Relationship:2988	adjacent	1	1
+Aop:510	Event:2165	Event:1392	Relationship:3278	adjacent	1	1
+Aop:510	Event:2165	Event:2167	Relationship:2990	adjacent	1	1
+Aop:510	Event:2165	Event:2168	Relationship:2991	adjacent	1	1
+Aop:510	Event:2165	Event:2169	Relationship:2992	adjacent	1	1
+Aop:510	Event:1392	Event:2166	Relationship:3279	adjacent	1	1
+Aop:510	Event:2167	Event:1928	Relationship:2994	adjacent	2	2
+Aop:510	Event:2168	Event:1928	Relationship:2995	adjacent	1	1
+Aop:510	Event:2169	Event:1928	Relationship:2996	adjacent	1	1
+Aop:510	Event:2166	Event:1928	Relationship:2997	adjacent	1	1
+Aop:510	Event:1928	Event:2181	Relationship:3031	adjacent	1	1
+Aop:510	Event:2181	Event:2161	Relationship:3032	adjacent	1	1
+Aop:511	Event:1115	Event:1392	Relationship:2009	adjacent	1	1
+Aop:511	Event:1392	Event:2009	Relationship:3277	adjacent	1	1
+Aop:511	Event:1392	Event:2170	Relationship:3280	adjacent	2	2
+Aop:511	Event:1392	Event:2164	Relationship:3281	adjacent	1	1
+Aop:511	Event:1392	Event:2171	Relationship:3282	adjacent	3	3
+Aop:511	Event:1392	Event:2172	Relationship:3283	adjacent	3	3
+Aop:511	Event:1392	Event:932	Relationship:3284	adjacent	1	1
+Aop:511	Event:1392	Event:2173	Relationship:3285	adjacent	2	2
+Aop:511	Event:1392	Event:2174	Relationship:3286	adjacent	1	1
+Aop:511	Event:1392	Event:177	Relationship:3129	adjacent	1	1
+Aop:511	Event:2009	Event:1928	Relationship:2981	adjacent	1	1
+Aop:511	Event:2170	Event:1928	Relationship:3020	adjacent	1	1
+Aop:511	Event:2164	Event:1928	Relationship:2987	adjacent	1	1
+Aop:511	Event:2171	Event:1928	Relationship:3021	adjacent	1	1
+Aop:511	Event:2172	Event:1928	Relationship:3022	adjacent	1	1
+Aop:511	Event:932	Event:1928	Relationship:3023	adjacent	1	1
+Aop:511	Event:2173	Event:1928	Relationship:3024	adjacent	1	1
+Aop:511	Event:2174	Event:1928	Relationship:3025	adjacent	1	1
+Aop:511	Event:177	Event:1928	Relationship:3132	adjacent	1	1
+Aop:511	Event:1928	Event:2179	Relationship:3019	adjacent	1	1
+Aop:511	Event:2178	Event:2161	Relationship:3028	adjacent	1	1
+Aop:511	Event:2179	Event:2161	Relationship:3029	adjacent	1	1
+Aop:511	Event:1928	Event:2181	Relationship:3031	adjacent	1	1
+Aop:511	Event:2181	Event:2161	Relationship:3032	adjacent	1	1
+Aop:511	Event:1928	Event:2178	Relationship:3027	adjacent	1	1
+Aop:513	Event:1115	Event:233	Relationship:3092	adjacent	1	5
+Aop:513	Event:233	Event:1060	Relationship:3093	adjacent	1	5
+Aop:513	Event:1060	Event:1513	Relationship:3094	adjacent	1	5
+Aop:513	Event:1513	Event:885	Relationship:2977	adjacent	1	5
+Aop:517	Event:239	Event:54	Relationship:3100	adjacent	1	5
+Aop:517	Event:54	Event:115	Relationship:66	adjacent	1	5
+Aop:517	Event:115	Event:291	Relationship:132	adjacent	1	5
+Aop:517	Event:291	Event:459	Relationship:2265	adjacent	1	5
+Aop:518	Event:167	Event:2199	Relationship:3103	adjacent	1	5
+Aop:518	Event:2199	Event:89	Relationship:3104	adjacent	1	5
+Aop:518	Event:89	Event:291	Relationship:110	adjacent	1	5
+Aop:518	Event:291	Event:459	Relationship:2265	adjacent	1	5
+Aop:519	Event:2282	Event:1961	Relationship:3410	adjacent	1	1
+Aop:519	Event:1961	Event:2283	Relationship:3411	adjacent	1	2
+Aop:519	Event:2283	Event:1929	Relationship:3412	adjacent	2	2
+Aop:520	Event:2201	Event:2202	Relationship:3109	adjacent	1	5
+Aop:520	Event:2201	Event:2203	Relationship:3113	non-adjacent	2	5
+Aop:520	Event:2202	Event:2203	Relationship:3110	adjacent	1	5
+Aop:520	Event:2201	Event:341	Relationship:3114	non-adjacent	1	5
+Aop:520	Event:2203	Event:2204	Relationship:3111	adjacent	1	5
+Aop:520	Event:2204	Event:341	Relationship:3112	adjacent	1	5
+Aop:521	Event:2205	Event:1115	Relationship:3115	adjacent		
+Aop:521	Event:1115	Event:1445	Relationship:2460	non-adjacent		
+Aop:521	Event:1115	Event:1392	Relationship:2009	adjacent		
+Aop:521	Event:1392	Event:1445	Relationship:3116	adjacent		
+Aop:521	Event:1445	Event:2206	Relationship:3117	adjacent		
+Aop:521	Event:2206	Event:1758	Relationship:3118	adjacent		
+Aop:521	Event:1758	Event:2147	Relationship:2937	adjacent		
+Aop:522	Event:112	Event:2207	Relationship:3120	adjacent	1	5
+Aop:522	Event:2207	Event:2208	Relationship:3121	adjacent	2	5
+Aop:522	Event:2208	Event:386	Relationship:3122	adjacent	2	5
+Aop:522	Event:386	Event:2209	Relationship:3123	adjacent	3	5
+Aop:522	Event:195	Event:2208	Relationship:3124	adjacent	2	5
+Aop:523	Event:2201	Event:2202	Relationship:3109	adjacent	1	5
+Aop:523	Event:2201	Event:2203	Relationship:3113	non-adjacent	2	5
+Aop:523	Event:2202	Event:2203	Relationship:3110	adjacent	1	5
+Aop:523	Event:2201	Event:1978	Relationship:3144	non-adjacent	3	5
+Aop:523	Event:2203	Event:2210	Relationship:3126	adjacent	1	5
+Aop:523	Event:2210	Event:1978	Relationship:3143	adjacent	1	5
+Aop:524	Event:2252	Event:2275	Relationship:3383	adjacent	2	
+Aop:524	Event:2254	Event:2275	Relationship:3384	adjacent	2	
+Aop:524	Event:2253	Event:2275	Relationship:3385	adjacent	2	
+Aop:524	Event:2275	Event:2255	Relationship:3386	adjacent	2	
+Aop:524	Event:2255	Event:2260	Relationship:3341	adjacent	2	
+Aop:524	Event:2260	Event:2256	Relationship:3342	adjacent	2	
+Aop:524	Event:2256	Event:1931	Relationship:3333	adjacent	2	
+Aop:524	Event:1931	Event:2257	Relationship:3335	adjacent	2	
+Aop:525	Event:2216	Event:1656	Relationship:3181	adjacent	1	5
+Aop:525	Event:1656	Event:2107	Relationship:3193	non-adjacent	2	5
+Aop:525	Event:2217	Event:2220	Relationship:3182	adjacent	1	5
+Aop:525	Event:2221	Event:2223	Relationship:3194	non-adjacent	2	5
+Aop:525	Event:2218	Event:2221	Relationship:3183	adjacent	1	5
+Aop:525	Event:2219	Event:2223	Relationship:3195	non-adjacent	2	5
+Aop:525	Event:2219	Event:2222	Relationship:3185	adjacent	1	5
+Aop:525	Event:1656	Event:2223	Relationship:3186	adjacent	2	5
+Aop:525	Event:2218	Event:2115	Relationship:3187	adjacent	2	5
+Aop:525	Event:2219	Event:2115	Relationship:3188	adjacent	2	5
+Aop:525	Event:2115	Event:2223	Relationship:3189	adjacent	2	5
+Aop:525	Event:2223	Event:2107	Relationship:3190	adjacent	1	5
+Aop:525	Event:2107	Event:2108	Relationship:3191	adjacent	1	5
+Aop:525	Event:2108	Event:341	Relationship:3192	adjacent	1	5
+Aop:525	Event:2115	Event:2221	Relationship:3196	adjacent	2	5
+Aop:526	Event:656	Event:647	Relationship:3167	adjacent	1	5
+Aop:526	Event:647	Event:1690	Relationship:3168	adjacent	1	5
+Aop:526	Event:1690	Event:2212	Relationship:3169	adjacent	1	5
+Aop:526	Event:2212	Event:1758	Relationship:3170	adjacent	1	5
+Aop:527	Event:656	Event:647	Relationship:3167	adjacent	1	5
+Aop:527	Event:647	Event:1613	Relationship:3171	adjacent	1	5
+Aop:527	Event:1613	Event:2213	Relationship:3172	adjacent	1	5
+Aop:527	Event:2213	Event:2082	Relationship:3173	adjacent	1	5
+Aop:528	Event:2214	Event:1615	Relationship:3174	non-adjacent	1	5
+Aop:528	Event:1615	Event:1616	Relationship:1938	adjacent	1	5
+Aop:529	Event:2226	Event:2227	Relationship:3220	adjacent	1	2
+Aop:529	Event:2225	Event:291	Relationship:3211	non-adjacent	2	2
+Aop:529	Event:2227	Event:2224	Relationship:3221	adjacent	1	2
+Aop:529	Event:2224	Event:2225	Relationship:3224	adjacent	1	2
+Aop:529	Event:2224	Event:179	Relationship:3223	adjacent	1	2
+Aop:529	Event:179	Event:2225	Relationship:3209	adjacent	2	2
+Aop:529	Event:2225	Event:327	Relationship:3210	adjacent	2	2
+Aop:529	Event:327	Event:291	Relationship:472	adjacent	2	2
+Aop:529	Event:291	Event:459	Relationship:2265	adjacent	1	2
+Aop:530	Event:1539	Event:898	Relationship:1775	adjacent	1	
+Aop:530	Event:898	Event:177	Relationship:993	adjacent	1	
+Aop:530	Event:177	Event:55	Relationship:363	adjacent	1	
+Aop:530	Event:55	Event:1931	Relationship:3197	adjacent	1	
+Aop:534	Event:2118	Event:1446	Relationship:3233	adjacent	1	1
+Aop:534	Event:1446	Event:1115	Relationship:3495	adjacent	1	1
+Aop:534	Event:1115	Event:1392	Relationship:2009	adjacent	1	1
+Aop:534	Event:1392	Event:1553	Relationship:3382	adjacent	1	1
+Aop:534	Event:1553	Event:885	Relationship:3237	adjacent	1	1
+Aop:535	Event:2029	Event:389	Relationship:3246	adjacent	1	
+Aop:535	Event:2029	Event:2233	Relationship:3247	adjacent	2	
+Aop:535	Event:389	Event:1392	Relationship:3248	adjacent	2	
+Aop:535	Event:1392	Event:1262	Relationship:3249	adjacent	1	
+Aop:535	Event:1262	Event:2208	Relationship:3250	adjacent	2	
+Aop:535	Event:1262	Event:2151	Relationship:3251	adjacent	2	
+Aop:535	Event:1392	Event:188	Relationship:3252	adjacent	1	
+Aop:535	Event:2208	Event:341	Relationship:3253	adjacent	1	
+Aop:535	Event:2151	Event:341	Relationship:2955	adjacent	2	
+Aop:535	Event:2233	Event:1262	Relationship:3254	adjacent	2	
+Aop:535	Event:188	Event:341	Relationship:3255	adjacent	1	
+Aop:535	Event:389	Event:2151	Relationship:3256	adjacent	2	
+Aop:535	Event:1262	Event:188	Relationship:3257	adjacent	2	
+Aop:536	Event:111	Event:307	Relationship:128	adjacent	1	3
+Aop:536	Event:307	Event:220	Relationship:336	adjacent	1	2
+Aop:536	Event:220	Event:252	Relationship:254	adjacent	2	3
+Aop:536	Event:252	Event:351	Relationship:3258	adjacent	2	3
+Aop:536	Event:351	Event:360	Relationship:2013	adjacent	2	2
+Aop:537	Event:111	Event:307	Relationship:128	adjacent		
+Aop:537	Event:307	Event:220	Relationship:336	adjacent		
+Aop:537	Event:220	Event:364	Relationship:3259	adjacent		
+Aop:537	Event:364	Event:78	Relationship:3260	adjacent		
+Aop:538	Event:1392	Event:2240	Relationship:3293	adjacent	1	1
+Aop:538	Event:1392	Event:2241	Relationship:3294	adjacent	1	2
+Aop:538	Event:2240	Event:1928	Relationship:3295	adjacent	1	1
+Aop:538	Event:2241	Event:1928	Relationship:3296	adjacent	1	1
+Aop:538	Event:1928	Event:2161	Relationship:3297	adjacent	1	1
+Aop:539	Event:1562	Event:2236	Relationship:3287	adjacent	1	5
+Aop:539	Event:2236	Event:2237	Relationship:3288	adjacent	1	5
+Aop:539	Event:2237	Event:2261	Relationship:3346	adjacent	1	5
+Aop:539	Event:2261	Event:2238	Relationship:3347	adjacent	2	5
+Aop:539	Event:2238	Event:2239	Relationship:3291	adjacent	1	5
+Aop:539	Event:2239	Event:1535	Relationship:3292	adjacent	1	5
+Aop:540	Event:1115	Event:1392	Relationship:2009	adjacent	1	3
+Aop:540	Event:3	Event:285	Relationship:3326	adjacent	5	5
+Aop:540	Event:1392	Event:1262	Relationship:3249	adjacent	5	5
+Aop:540	Event:1262	Event:3	Relationship:3327	adjacent	5	5
+Aop:540	Event:285	Event:221	Relationship:315	adjacent	1	2
+Aop:540	Event:221	Event:309	Relationship:255	adjacent	2	3
+Aop:540	Event:309	Event:78	Relationship:337	adjacent	2	2
+Aop:540	Event:78	Event:360	Relationship:94	adjacent	2	2
+Aop:543	Event:2262	Event:2263	Relationship:3351	adjacent	2	
+Aop:543	Event:2263	Event:2264	Relationship:3352	adjacent	2	
+Aop:543	Event:2264	Event:2265	Relationship:3353	adjacent	2	
+Aop:543	Event:2265	Event:2266	Relationship:3354	adjacent	1	
+Aop:543	Event:2266	Event:2267	Relationship:3355	adjacent	1	
+Aop:544	Event:2262	Event:2263	Relationship:3351	adjacent	1	
+Aop:544	Event:149	Event:2266	Relationship:3358	non-adjacent	2	
+Aop:544	Event:2263	Event:149	Relationship:3356	adjacent	1	
+Aop:544	Event:149	Event:2265	Relationship:3357	adjacent	1	
+Aop:544	Event:2265	Event:2266	Relationship:3354	adjacent	3	
+Aop:544	Event:2266	Event:2267	Relationship:3355	adjacent	1	
+Aop:545	Event:239	Event:2268	Relationship:3365	adjacent	2	
+Aop:545	Event:2268	Event:2269	Relationship:3366	adjacent	1	
+Aop:545	Event:2269	Event:2270	Relationship:3367	adjacent	1	
+Aop:545	Event:2270	Event:2271	Relationship:3368	adjacent	1	
+Aop:546	Event:2118	Event:2243	Relationship:3302	adjacent	1	1
+Aop:546	Event:2243	Event:798	Relationship:3304	adjacent	1	1
+Aop:546	Event:798	Event:590	Relationship:3369	adjacent	1	1
+Aop:546	Event:590	Event:885	Relationship:3370	adjacent	1	1
+Aop:547	Event:25	Event:2274	Relationship:3378	adjacent	1	3
+Aop:547	Event:2274	Event:286	Relationship:3379	adjacent	1	3
+Aop:548	Event:239	Event:2268	Relationship:3365	adjacent	2	
+Aop:548	Event:2268	Event:2269	Relationship:3366	adjacent	1	
+Aop:548	Event:2269	Event:2276	Relationship:3388	adjacent	1	
+Aop:548	Event:2276	Event:2271	Relationship:3389	adjacent	1	
+Aop:549	Event:36	Event:2277	Relationship:3394	adjacent		
+Aop:549	Event:2277	Event:219	Relationship:3395	adjacent		
+Aop:549	Event:219	Event:221	Relationship:1386	adjacent		
+Aop:549	Event:221	Event:309	Relationship:255	adjacent		
+Aop:549	Event:309	Event:78	Relationship:337	adjacent		
+Aop:549	Event:309	Event:1467	Relationship:3396	adjacent		
+Aop:549	Event:78	Event:442	Relationship:2924	adjacent		
+Aop:550	Event:2278	Event:2279	Relationship:3398	adjacent	1	1
+Aop:550	Event:2279	Event:2066	Relationship:3399	adjacent	1	2
+Aop:550	Event:2066	Event:1924	Relationship:3400	adjacent	2	1
+Aop:550	Event:1924	Event:1535	Relationship:3413	adjacent	1	1
+Aop:551	Event:1602	Event:1098	Relationship:3402	adjacent	1	2
+Aop:551	Event:1098	Event:1983	Relationship:3403	adjacent	1	2
+Aop:551	Event:1983	Event:2280	Relationship:3404	adjacent	1	2
+Aop:551	Event:2280	Event:1106	Relationship:3405	adjacent	1	2
+Aop:552	Event:1529	Event:698	Relationship:3406	adjacent	1	1
+Aop:552	Event:698	Event:1962	Relationship:3407	adjacent	1	1
+Aop:552	Event:1962	Event:1963	Relationship:2541	adjacent	1	1
+Aop:552	Event:1963	Event:2281	Relationship:3408	adjacent	1	1
+Aop:552	Event:2281	Event:1535	Relationship:3447	adjacent	1	1
+Aop:553	Event:584	Event:698	Relationship:3414	adjacent	1	1
+Aop:553	Event:698	Event:1532	Relationship:3415	adjacent	1	1
+Aop:553	Event:1532	Event:1535	Relationship:2824	adjacent	1	2
+Aop:554	Event:1038	Event:2284	Relationship:3416	adjacent	1	1
+Aop:554	Event:2284	Event:2285	Relationship:3417	adjacent	1	2
+Aop:554	Event:2285	Event:1106	Relationship:3418	adjacent	1	1
+Aop:555	Event:593	Event:1961	Relationship:3419	adjacent	1	1
+Aop:555	Event:1961	Event:1962	Relationship:2540	adjacent	1	1
+Aop:555	Event:1962	Event:2283	Relationship:3420	adjacent	1	1
+Aop:555	Event:2283	Event:1535	Relationship:3421	adjacent	1	1
+Aop:556	Event:1321	Event:2287	Relationship:3424	adjacent	1	2
+Aop:556	Event:2287	Event:389	Relationship:3425	adjacent	1	2
+Aop:556	Event:389	Event:1532	Relationship:3426	adjacent	1	2
+Aop:556	Event:1532	Event:1535	Relationship:2824	adjacent	2	2
+Aop:556	Event:1562	Event:1321	Relationship:3444	adjacent	1	1
+Aop:558	Event:2289	Event:389	Relationship:3429	adjacent	1	1
+Aop:558	Event:1532	Event:1535	Relationship:2824	adjacent	2	3
+Aop:558	Event:389	Event:1532	Relationship:3426	adjacent	1	2
+Aop:558	Event:2288	Event:693	Relationship:3445	adjacent	1	1
+Aop:558	Event:693	Event:2289	Relationship:3446	adjacent	1	2
+Aop:559	Event:12	Event:1602	Relationship:3430	adjacent	1	1
+Aop:559	Event:1602	Event:698	Relationship:3431	adjacent	1	1
+Aop:559	Event:698	Event:2280	Relationship:3432	adjacent	1	2
+Aop:559	Event:2280	Event:1106	Relationship:3405	adjacent	1	3
+Aop:560	Event:2290	Event:2291	Relationship:3433	adjacent	1	3
+Aop:560	Event:2291	Event:2292	Relationship:3434	adjacent	1	2
+Aop:560	Event:2292	Event:1106	Relationship:3435	adjacent	2	2
+Aop:561	Event:2293	Event:1076	Relationship:3436	adjacent		
+Aop:561	Event:1076	Event:2251	Relationship:3439	non-adjacent		
+Aop:561	Event:1076	Event:2294	Relationship:3437	adjacent		
+Aop:561	Event:2294	Event:2251	Relationship:3438	adjacent		
+Aop:561	Event:2251	Event:1065	Relationship:3391	adjacent		
+Aop:562	Event:2295	Event:2296	Relationship:3440	adjacent	2	2
+Aop:562	Event:2296	Event:2291	Relationship:3441	adjacent	1	2
+Aop:562	Event:2291	Event:2292	Relationship:3434	adjacent	2	3
+Aop:562	Event:2292	Event:1106	Relationship:3435	adjacent	3	3
+Aop:563	Event:18	Event:944	Relationship:972	adjacent	1	
+Aop:563	Event:944	Event:2124	Relationship:3466	adjacent	2	
+Aop:563	Event:2124	Event:1262	Relationship:3467	adjacent	1	
+Aop:563	Event:1262	Event:1883	Relationship:3468	adjacent	2	
+Aop:563	Event:1883	Event:2305	Relationship:3483	adjacent	1	
+Aop:564	Event:1541	Event:2299	Relationship:3453	adjacent	1	1
+Aop:564	Event:2299	Event:178	Relationship:3454	adjacent	1	1
+Aop:564	Event:178	Event:40	Relationship:188	adjacent	2	2
+Aop:564	Event:40	Event:2300	Relationship:3455	adjacent	1	2
+Aop:564	Event:40	Event:2151	Relationship:3456	adjacent	2	2
+Aop:564	Event:2300	Event:566	Relationship:3457	adjacent	1	1
+Aop:564	Event:2151	Event:2301	Relationship:3458	adjacent	1	1
+Aop:564	Event:2301	Event:566	Relationship:3459	adjacent	2	2
+Aop:564	Event:566	Event:2302	Relationship:3460	adjacent	3	3
+Aop:564	Event:2302	Event:351	Relationship:3461	adjacent	3	3
+Aop:564	Event:351	Event:360	Relationship:2013	adjacent	1	1
+Aop:565	Event:2250	Event:2251	Relationship:3464	adjacent		
+Aop:565	Event:2251	Event:1065	Relationship:3391	adjacent		
+Aop:566	Event:530	Event:531	Relationship:3465	adjacent	1	1
+Aop:566	Event:531	Event:1695	Relationship:3469	adjacent	1	1
+Aop:566	Event:1695	Event:2303	Relationship:3470	adjacent	2	2
+Aop:566	Event:2303	Event:2251	Relationship:3471	adjacent		
+Aop:566	Event:2303	Event:2306	Relationship:3473	adjacent		
+Aop:568	Event:619	Event:1320	Relationship:3474	adjacent	1	5
+Aop:568	Event:1320	Event:1016	Relationship:3489	non-adjacent	2	5
+Aop:568	Event:1320	Event:2308	Relationship:3475	adjacent	1	5
+Aop:568	Event:2308	Event:1016	Relationship:3476	adjacent	2	5
+Aop:569	Event:2309	Event:2310	Relationship:3497	adjacent	2	2
+Aop:569	Event:2309	Event:2121	Relationship:3502	non-adjacent	1	1
+Aop:569	Event:2310	Event:2311	Relationship:3498	adjacent	2	3
+Aop:569	Event:2311	Event:1115	Relationship:3536	adjacent	2	3
+Aop:569	Event:1115	Event:2195	Relationship:3537	adjacent	1	3
+Aop:569	Event:2195	Event:2121	Relationship:3501	adjacent	2	3
+Aop:570	Event:2298	Event:1690	Relationship:3448	adjacent		
+Aop:570	Event:2298	Event:2082	Relationship:3488	non-adjacent		
+Aop:570	Event:1690	Event:1614	Relationship:2131	adjacent		
+Aop:570	Event:1690	Event:2082	Relationship:3350	non-adjacent	3	3
+Aop:570	Event:1614	Event:286	Relationship:2124	adjacent		
+Aop:570	Event:1614	Event:2082	Relationship:2828	non-adjacent		
+Aop:571	Event:1617	Event:1613	Relationship:1880	adjacent		
+Aop:571	Event:1614	Event:2082	Relationship:2828	non-adjacent		
+Aop:571	Event:1613	Event:1614	Relationship:1935	adjacent		
+Aop:571	Event:1614	Event:286	Relationship:2124	adjacent		
+Aop:573	Event:1840	Event:1825	Relationship:3503	adjacent	1	
+Aop:573	Event:1825	Event:2316	Relationship:3507	adjacent	1	
+Aop:574	Event:1840	Event:1825	Relationship:3503	adjacent	1	
+Aop:574	Event:1825	Event:2317	Relationship:3508	adjacent	1	
+Aop:576	Event:1617	Event:1613	Relationship:1880	adjacent		
+Aop:576	Event:1614	Event:1786	Relationship:3348	non-adjacent		
+Aop:576	Event:1613	Event:1614	Relationship:1935	adjacent		
+Aop:576	Event:1614	Event:286	Relationship:2124	adjacent		
+Aop:578	Event:18	Event:2323	Relationship:3533	adjacent		
+Aop:578	Event:2323	Event:2324	Relationship:3534	adjacent		
+Aop:578	Event:2324	Event:2326	Relationship:3538	adjacent		
+Aop:578	Event:2326	Event:1971	Relationship:3541	adjacent		
