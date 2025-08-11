@@ -10,12 +10,12 @@ try:
     # Test imports
     import requests
     from dotenv import load_dotenv
-    print("✅ Imports successful")
+    print("Imports successful")
     
     # Load environment
     load_dotenv()
     api_key = os.getenv('PERPLEXITY_API_KEY')
-    print(f"✅ API Key loaded: {api_key[:10] if api_key else 'None'}...")
+    print(f" API Key loaded: {api_key[:10] if api_key else 'None'}...")
     
     # Test a minimal request
     if api_key:
@@ -33,27 +33,27 @@ try:
             "Content-Type": "application/json"
         }
         
-        print("🚀 Making API request...")
+        print("Making API request...")
         response = requests.post(url, json=payload, headers=headers, timeout=30)
         
-        print(f"📡 Status: {response.status_code}")
+        print(f" Status: {response.status_code}")
         
         if response.status_code == 200:
             result = response.json()
-            print("✅ Success!")
+            print("Success!")
             print(f"Response keys: {list(result.keys())}")
             
             if 'choices' in result:
                 content = result['choices'][0]['message']['content']
                 print(f"Content preview: {content[:100]}...")
             
-            print("🎉 Perplexity integration working!")
+            print(" Perplexity integration working!")
             
         else:
-            print(f"❌ Error {response.status_code}: {response.text}")
+            print(f" Error {response.status_code}: {response.text}")
     
 except Exception as e:
-    print(f"❌ Test failed: {e}")
+    print(f" Test failed: {e}")
     import traceback
     traceback.print_exc()
 
