@@ -4,38 +4,38 @@ A comprehensive web application for visualizing and analyzing Adverse Outcome Pa
 
 ## Features
 
-### 🔬 Core Visualization & Analysis
+###  Core Visualization & Analysis
 - **Interactive Network Visualization**: Color-coded nodes (Green triangles: MIE, Blue rectangles: KE, Pink ellipses: AO) with labeled relationships
 - **Hypergraph View**: Advanced network analysis with community detection and type-based grouping for complex pathway visualization
 - **Multi-AOP Selection**: Toggle between single/multiple AOP selection modes with combined network visualization
 - **Real-time Graph Manipulation**: Interactive node and edge exploration with zoom, pan, and layout controls
 
-### 🛤️ Advanced Pathfinding & Navigation
+###  Advanced Pathfinding & Navigation
 - **Intelligent Pathfinding**: Find shortest paths between MIE (Molecular Initiating Events) and AO (Adverse Outcomes)
 - **Full Database Search**: Search across entire AOP database (1,499 nodes, 2,887 edges, 485 AOPs)
 - **Customizable Path Discovery**: K-paths (1, 2, 3, etc.) with automatic graph generation from results
 - **Searchable Node Selection**: Type-to-search through all available nodes with smart filtering by label, type, or ID
 - **No Stressor Pathways**: Focuses on biological pathways excluding stressor nodes for cleaner analysis
 
-### 🎯 Interactive Selection & Chain Building
+###  Interactive Selection & Chain Building
 - **Node Chain Selection**: Click nodes to build selection sequences with numbered order display
 - **Relationship-Based Selection**: Click edges to automatically select both connected nodes
 - **Chain Management**: Remove individual nodes or clear entire chains with visual feedback
 - **Context-Aware Analysis**: Selected chains provide context for AI analysis and pathway exploration
 
-### 🤖 AI-Powered Features
+###  AI-Powered Features
 - **Expert AI Analysis**: GPT-powered insights about AOP networks and biological pathways with toxicology expertise
 - **Session-Persistent Chat**: Maintains conversation state across tab switches within browser session
 - **Context-Aware Responses**: Analyzes selected node chains and relationships for targeted insights
 - **Secure API Handling**: API keys stored only in sessionStorage, never persisted on servers
 
-### 📊 Data Export & Management
+###  Data Export & Management
 - **High-Quality PNG Export**: Professional network visualizations with 📷 button
-- **Comprehensive CSV Export**: Complete metadata for nodes, edges, and pathway relationships with 📊 button
+- **Comprehensive CSV Export**: Complete metadata for nodes, edges, and pathway relationships with  button
 - **Graph Data Export**: Save pathfinding results and network configurations for further analysis
 - **Performance Optimized**: Efficient handling of large datasets with smart pagination and search
 
-### 🎨 User Experience
+###  User Experience
 - **Responsive Design**: Works seamlessly on desktop and mobile devices
 - **Streamlined Interface**: Clean, focused design with "Details" and "AI Analysis" tabs
 - **Visual Feedback**: Clear indicators for selections, loading states, and user interactions
@@ -124,7 +124,7 @@ aop-network-visualizer/
 
 ## Database Statistics
 
-### 📊 Comprehensive AOP Dataset
+###  Comprehensive AOP Dataset
 - **Total AOPs**: 485 complete Adverse Outcome Pathways
 - **Total Nodes**: 1,499 biological events and outcomes
   - **MIE (Molecular Initiating Events)**: Starting points of biological pathways
@@ -133,7 +133,7 @@ aop-network-visualizer/
 - **Total Edges**: 2,887 verified biological relationships and transitions
 - **Network Coverage**: Complete pathway mappings from molecular events to adverse outcomes
 
-### 🔍 Search Capabilities
+###  Search Capabilities
 - **Full Database Access**: Search and analyze across all 1,499 nodes simultaneously
 - **Cross-AOP Analysis**: Discover connections between different pathways
 - **Comprehensive Pathfinding**: Find routes through the complete biological network

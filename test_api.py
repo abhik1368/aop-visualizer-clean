@@ -26,11 +26,11 @@ def test_key_events_api():
             
             return True, data
         else:
-            print(f"❌ Key events API failed: {response.status_code}")
+            print(f"Key events API failed: {response.status_code}")
             return False, None
             
     except Exception as e:
-        print(f"❌ Error testing key events API: {e}")
+        print(f" Error testing key events API: {e}")
         return False, None
 
 def test_key_event_search():
@@ -49,13 +49,13 @@ def test_key_event_search():
         
         if response.status_code == 200:
             data = response.json()
-            print(f"✅ Key event search successful!")
+            print(f" Key event search successful!")
             print(f"Found {data.get('count', 0)} nodes and {data.get('edge_count', 0)} edges")
             print(f"Affected AOPs: {data.get('affected_aops', [])}")
             print(f"Shared events: {data.get('shared_events', {})}")
             return True
         else:
-            print(f"❌ Key event search failed: {response.status_code}")
+            print(f"Key event search failed: {response.status_code}")
             try:
                 error_data = response.json()
                 print(f"Error: {error_data.get('error', 'Unknown error')}")
@@ -64,11 +64,11 @@ def test_key_event_search():
             return False
             
     except Exception as e:
-        print(f"❌ Error testing key event search: {e}")
+        print(f" Error testing key event search: {e}")
         return False
 
 if __name__ == "__main__":
-    print("🧪 Testing Key Event APIs\n")
+    print(" Testing Key Event APIs\n")
     
     # Test key events endpoint
     test1_result, key_events = test_key_events_api()
@@ -76,11 +76,11 @@ if __name__ == "__main__":
     # Test key event search
     test2_result = test_key_event_search()
     
-    print(f"\n📊 Test Results:")
-    print(f"Key Events API: {'✅ PASS' if test1_result else '❌ FAIL'}")
-    print(f"Key Event Search: {'✅ PASS' if test2_result else '❌ FAIL'}")
+    print(f"\n Test Results:")
+    print(f"Key Events API: {' PASS' if test1_result else ' FAIL'}")
+    print(f"Key Event Search: {' PASS' if test2_result else ' FAIL'}")
     
     if test1_result and test2_result:
-        print("\n🎉 All API tests passed!")
+        print("\n All API tests passed!")
     else:
-        print("\n⚠️ Some API tests failed.")
+        print("\n Some API tests failed.")

@@ -20,9 +20,9 @@ command_exists() {
 # Function to print status
 print_status() {
     if [ $1 -eq 0 ]; then
-        echo -e "${GREEN}✅ $2${NC}"
+        echo -e "${GREEN} $2${NC}"
     else
-        echo -e "${RED}❌ $2${NC}"
+        echo -e "${RED} $2${NC}"
     fi
 }
 
@@ -57,7 +57,7 @@ else
 fi
 
 echo ""
-echo "📁 Checking Project Structure..."
+echo " Checking Project Structure..."
 echo ""
 
 # Check directories
@@ -90,11 +90,11 @@ fi
 if [ -d "backend/venv" ]; then
     print_status 0 "Python virtual environment exists"
 else
-    echo -e "${YELLOW}⚠️  Python virtual environment not found - Will be created on first run${NC}"
+    echo -e "${YELLOW}  Python virtual environment not found - Will be created on first run${NC}"
 fi
 
 echo ""
-echo "🚀 Ready to Start!"
+echo " Ready to Start!"
 echo ""
 echo "To start the application:"
 echo "• On Linux/Mac: ./start.sh"
