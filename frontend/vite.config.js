@@ -12,6 +12,24 @@ export default defineConfig({
     },
   },
   base: '/',
+  build: {
+    chunkSizeWarningLimit: 1500,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('cytoscape')) return 'vendor-cytoscape';
+            if (id.includes('@radix-ui')) return 'vendor-radix';
+            if (id.includes('react-day-picker') || id.includes('date-fns')) return 'vendor-dates';
+            if (id.includes('react')) return 'vendor-react';
+            if (id.includes('d3') || id.includes('recharts')) return 'vendor-charts';
+            // fallback: group remaining node_modules into vendor chunk
+            return 'vendor';
+          }
+        }
+      }
+    }
+  }
 })
 
 

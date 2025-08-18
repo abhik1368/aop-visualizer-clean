@@ -4,8 +4,7 @@ import { Card } from './ui/card';
 import { Badge } from './ui/badge';
 import { Search, X, ChevronDown } from 'lucide-react';
 import { Input } from './ui/input';
-import { getApiUrl } from '../config';
-import API_BASE_URL from '../config';
+import API_BASE_URL, { getApiUrl } from '../config';
 
 // Searchable Node Select Component
 const SearchableNodeSelect = ({ value, onChange, nodes, placeholder }) => {
@@ -119,22 +118,20 @@ const SearchableNodeSelect = ({ value, onChange, nodes, placeholder }) => {
   );
 };
 
-const SearchPanel = forwardRef(({ 
-  onAOPSelect, 
-  onNodeSelect, 
-  onSearchResults, 
-  onDataUpdate,
-  graphData, 
+
+const SearchPanel = forwardRef(({
+  onAOPSelect,
+  onNodeSelect,
+  onSearchResults,
+  graphData,
   onNodeChainUpdate,
   hypergraphEnabled = false,
   onHypergraphToggle,
-  minNodes = 4,
-  onMinNodesChange,
   maxNodesPerHypernode = 4,
   onMaxNodesPerHypernodeChange,
   communityMethod = 'louvain',
   onCommunityDetection,
-  onAnalysisModeChange
+  onLoadingChange
   // Removed nodeGroupingEnabled and onNodeGrouping props as redundant with hypergraph toggle
 }, ref) => {
   const [aops, setAops] = useState([]);
@@ -149,13 +146,9 @@ const SearchPanel = forwardRef(({
   const [keyEventResults, setKeyEventResults] = useState([]);
   const [keyEventLoading, setKeyEventLoading] = useState(false);
   
-  // KE/MIE multi-select states
+  // KE/MIE single-select states
   const [availableKEMIETerms, setAvailableKEMIETerms] = useState([]);
   const [selectedKEMIETerms, setSelectedKEMIETerms] = useState([]);
-  const [isGeneratingNetwork, setIsGeneratingNetwork] = useState(false);
-  const [keMieSearchTerm, setKeMieSearchTerm] = useState('');
-  const [keMieSearchOpen, setKeMieSearchOpen] = useState(false);
-  const [filteredKEMIETerms, setFilteredKEMIETerms] = useState([]);
   
   // AOP search states
   const [aopSearchTerm, setAopSearchTerm] = useState('');
@@ -166,24 +159,20 @@ const SearchPanel = forwardRef(({
   const [sourceNode, setSourceNode] = useState('');
   const [targetNode, setTargetNode] = useState('');
   const [availableNodes, setAvailableNodes] = useState([]);
-  const [selectedNodeChain, setSelectedNodeChain] = useState([]);
-  const [topKPaths, setTopKPaths] = useState(3);
-  const [shortestPathResults, setShortestPathResults] = useState(null);
-  const [pathfindingLoading, setPathfindingLoading] = useState(false);
-  const [pathfindingError, setPathfindingError] = useState(null);
-  const [databaseStats, setDatabaseStats] = useState(null);
+
+  // Search AOP KG states
+  // Removed: Search AOP KG (Neo4j) feature per requirements
+
+  // Removed: Neo4j search helpers
 
   useEffect(() => {
     loadAOPs();
     loadKEMIETerms();
+  // Removed: initial Neo4j load
   }, []); // Load initial data on mount
-  
+  const [selectedNodeChain, setSelectedNodeChain] = useState([]);
 
-  const getApiUrl = (path, params = {}) => {
-    const url = new URL(`${API_BASE_URL}${path}`);
-    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
-    return url.toString();
-  };
+  // Use shared getApiUrl from config.js
 
   const loadAOPs = async () => {
     try {
@@ -323,40 +312,7 @@ const SearchPanel = forwardRef(({
             }
           });
         }
-        {/* Node Chain Selection */}
-        {selectedNodeChain.length > 0 && (
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <h4 className="text-md font-semibold">Selected Node Chain</h4>
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={clearNodeChain}
-                className="text-xs"
-              >
-                Clear Chain
-              </Button>
-            </div>
-            <div className="space-y-1">
-              {selectedNodeChain.map((nodeId, index) => {
-                const node = availableNodes.find(n => n.id === nodeId);
-                return (
-                  <div key={nodeId} className="flex items-center justify-between bg-muted p-2 rounded text-xs">
-                    <span>{index + 1}. {node?.label || nodeId} ({node?.type})</span>
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      onClick={() => removeFromNodeChain(nodeId)}
-                      className="h-4 w-4 p-0"
-                    >
-                      ×
-                    </Button>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
+        
         if (data.edges) {
           data.edges.forEach(edge => {
             combinedEdges.push({
@@ -383,20 +339,21 @@ const SearchPanel = forwardRef(({
     }
   };
 
-  // Load network for comprehensive search results
-  const loadNetworkForSearch = async (searchTerm) => {
+  // Enhanced comprehensive pathway search using new backend endpoint
+  const loadComprehensivePathwayNetwork = async (searchTerm) => {
     if (!searchTerm.trim()) return;
     
-    console.log('🔄 Starting network load for:', searchTerm);
+    console.log('🔄 Starting comprehensive pathway search for:', searchTerm);
     setKeyEventLoading(true);
+    onLoadingChange && onLoadingChange(true);
     
     try {
-      const url = getApiUrl('/search_key_events', { 
+      const url = getApiUrl('/comprehensive_pathway_search', {
         query: searchTerm.trim(),
-        limit: 100,
-        complete_pathways: 'true'
+        cross_pathway_edges: 'true',
+        max_pathways: 15
       });
-      console.log('API URL:', url);
+      console.log('Comprehensive search API URL:', url);
       
       const response = await fetch(url);
       console.log('Response status:', response.status);
@@ -406,50 +363,130 @@ const SearchPanel = forwardRef(({
       }
       
       const data = await response.json();
-      console.log('Full API Response:', data);
+      console.log('🔍 Comprehensive search response:', {
+        success: data.success,
+        total_matches: data.total_matches,
+        total_aops: data.total_aops,
+        cross_pathway_nodes: data.cross_pathway_insights?.total_cross_pathway_nodes || 0,
+        graph_nodes: data.graph_data?.nodes?.length || 0
+      });
+      
+  if (data.success && data.graph_data) {
+        const metadata = data.graph_data.metadata || {};
+        const stats = metadata.stats || {};
+        const crossPathwayStats = stats.cross_pathway_analysis || {};
+        
+        console.log('✅ Comprehensive network data found!');
+        console.log('Enhanced network stats:', {
+          nodes: data.graph_data.nodes?.length || 0,
+          edges: data.graph_data.edges?.length || 0,
+          aop_count: stats.aop_count || 0,
+          direct_matches: stats.direct_matches || 0,
+          cross_pathway_nodes: crossPathwayStats.total_cross_pathway_nodes || 0,
+          cross_pathway_edges: crossPathwayStats.total_cross_pathway_edges || 0
+        });
+        
+        const networkTitle = `Comprehensive AOP Network: "${searchTerm}" (${stats.aop_count || 0} AOPs, ${stats.direct_matches || 0} matches, ${crossPathwayStats.total_cross_pathway_nodes || 0} cross-pathway nodes)`;
+        
+        if (onAOPSelect) {
+          console.log('🔄 Calling onAOPSelect with comprehensive data:', networkTitle);
+          // Remove chemical and search-term artifacts for Comprehensive Pathway Search
+          const stripUnwanted = (graph) => {
+            // 1) Drop chemical nodes/hypernodes
+            let nodes = (graph.nodes || []).filter(n => {
+              if (!n) return false;
+              const t = (n.type || n.original_type || '').toString().toLowerCase();
+              // Also drop backend-injected SearchTerm node
+              const isSearchTerm = t === 'searchterm' || n.is_search_term === true;
+              return t !== 'chemical' && t !== 'chemical-hypernode' && !isSearchTerm;
+            });
+            const keepIds = new Set(nodes.map(n => n.id));
+            // 2) Drop chemical-related edges and search edges
+            let edges = (graph.edges || []).filter(e => {
+              if (!e || !e.source || !e.target) return false;
+              const et = (e.type || e.relationship || '').toString().toLowerCase();
+              const isChemicalEdge = et === 'chemical_connection' || et === 'chemical-hyperedge' || et === 'chemical_hyperedge';
+              const isSearchEdge = e.is_search_edge === true || et === 'search_connection';
+              if (isChemicalEdge || isSearchEdge) return false;
+              return keepIds.has(e.source) && keepIds.has(e.target);
+            });
+            // 3) Update metadata counts
+            const newMeta = { ...(graph.metadata || {}) };
+            if (newMeta.stats) {
+              newMeta.stats = { ...newMeta.stats, nodes: nodes.length, edges: edges.length };
+            }
+            return { ...graph, nodes, edges, metadata: newMeta };
+          };
+
+          let filteredGraph = stripUnwanted(data.graph_data);
+          // Tag source and layout hint so the hypergraph view can prefer force layout
+          filteredGraph.metadata = {
+            ...(filteredGraph.metadata || {}),
+            source: 'comprehensive_search',
+            layout_hint: 'force'
+          };
+          onAOPSelect(filteredGraph, networkTitle);
+          console.log('✅ Comprehensive network loaded successfully!');
+        } else {
+          console.error('❌ onAOPSelect callback not available!');
+        }
+      } else {
+        console.error('❌ Comprehensive search failed:', data.error || 'No graph data returned');
+        if (data.matching_nodes_summary && data.matching_nodes_summary.length > 0) {
+          console.log('📋 Found matching nodes but no network generated:', data.matching_nodes_summary.length);
+        }
+      }
+    } catch (error) {
+      console.error('❌ Comprehensive pathway search error:', error);
+    } finally {
+      setKeyEventLoading(false);
+      onLoadingChange && onLoadingChange(false);
+      console.log('🏁 Comprehensive pathway search finished');
+    }
+  };
+
+  // Legacy network loading for fallback
+  const loadNetworkForSearch = async (searchTerm) => {
+    if (!searchTerm.trim()) return;
+    
+    console.log('🔄 Starting legacy network load for:', searchTerm);
+    setKeyEventLoading(true);
+    
+    try {
+      const url = getApiUrl('/search_key_events', {
+        query: searchTerm.trim(),
+        limit: 100,
+        complete_pathways: 'true'
+      });
+      console.log('Legacy API URL:', url);
+      
+      const response = await fetch(url);
+      console.log('Response status:', response.status);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      console.log('Legacy API Response:', data);
       
       if (data.success) {
-        console.log('graph_data value:', data.graph_data);
-        console.log('graph_data type:', typeof data.graph_data);
-        
         if (data.graph_data && data.graph_data !== null) {
           const metadata = data.graph_data.metadata || {};
           const stats = metadata.stats || {};
           
-          console.log('✅ Network data found!');
-          console.log('Network stats:', {
-            nodes: data.graph_data.nodes?.length || 0,
-            edges: data.graph_data.edges?.length || 0,
-            aop_count: stats.aop_count || 0,
-            direct_matches: stats.direct_matches || 0
-          });
-          
-          const networkTitle = `Complete AOP Pathways: "${searchTerm}" (${stats.aop_count || 0} AOPs, ${stats.direct_matches || 0} direct matches)`;
+          const networkTitle = `AOP Pathways: "${searchTerm}" (${stats.aop_count || 0} AOPs, ${stats.direct_matches || 0} direct matches)`;
           
           if (onAOPSelect) {
-            console.log('🔄 Calling onAOPSelect with title:', networkTitle);
+            console.log('🔄 Calling onAOPSelect with legacy data:', networkTitle);
             onAOPSelect(data.graph_data, networkTitle);
-            console.log('✅ Network load command sent successfully!');
-          } else {
-            console.error('❌ onAOPSelect callback not available!');
           }
-        } else {
-          console.warn('⚠️ graph_data is null or undefined');
-          console.log('graph_data value:', data.graph_data);
-          console.log('Available data keys:', Object.keys(data));
-          console.log('Search metadata:', data.search_metadata);
-          console.log('Total matches:', data.total_matches);
-          console.log('Matching AOPs:', data.matching_aops);
         }
-      } else {
-        console.error('❌ API returned success: false');
-        console.log('Error:', data.error);
       }
     } catch (error) {
-      console.error('❌ Network loading error:', error);
+      console.error('❌ Legacy network loading error:', error);
     } finally {
       setKeyEventLoading(false);
-      console.log('🏁 Network loading finished');
     }
   };
 
@@ -501,46 +538,18 @@ const SearchPanel = forwardRef(({
     }, 500);
   };
 
-  // KE/MIE search and selection handlers
-  const handleKEMIESearch = (e) => {
-    const searchTerm = e.target.value;
-    setKeMieSearchTerm(searchTerm);
-    
-    if (searchTerm.trim()) {
-      const filtered = availableKEMIETerms.filter(term => 
-        term.label.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        term.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        term.type.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-      setFilteredKEMIETerms(filtered.slice(0, 50)); // Limit to 50 results
-      setKeMieSearchOpen(true);
-    } else {
-      setFilteredKEMIETerms([]);
-      setKeMieSearchOpen(false);
-    }
-  };
-
-  const addKEMIETermToSelection = (term) => {
-    if (!selectedKEMIETerms.includes(term.id)) {
-      setSelectedKEMIETerms([...selectedKEMIETerms, term.id]);
-    }
-    setKeMieSearchOpen(false);
-    setKeMieSearchTerm('');
-  };
-
-  const removeKEMIETermFromSelection = (termId) => {
-    setSelectedKEMIETerms(prev => prev.filter(id => id !== termId));
-  };
-
   const clearKEMIESelection = () => {
     setSelectedKEMIETerms([]);
   };
 
-  // Generate network from selected KE/MIE terms
-  const generateKEMIENetwork = async () => {
-    if (selectedKEMIETerms.length === 0) return;
+  // Load network for a single selected term
+  const loadNetworkForTerm = async (term) => {
+    if (!term) return;
 
-    setIsGeneratingNetwork(true);
+    console.log('🔄 Loading network for term:', term.label, term.id);
+    setKeyEventLoading(true);
+    onLoadingChange && onLoadingChange(true);
+    
     try {
       const response = await fetch(getApiUrl('/generate_ke_mie_network'), {
         method: 'POST',
@@ -548,54 +557,78 @@ const SearchPanel = forwardRef(({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          term_ids: selectedKEMIETerms,
+          term_ids: [term.id],
           unique_nodes: true // Ensure unique nodes
         })
       });
       
       const data = await response.json();
+      console.log('🔍 Full backend response:', data);
+      console.log('🔍 Success:', data.success);
+      console.log('🔍 Graph data:', data.graph_data);
+      console.log('🔍 Graph data nodes:', data.graph_data?.nodes?.length);
+      console.log('🔍 Graph data edges:', data.graph_data?.edges?.length);
       
       if (data.success && data.graph_data) {
-        const selectedTermLabels = selectedKEMIETerms.map(termId => {
-          const term = availableKEMIETerms.find(t => t.id === termId);
-          return term ? term.label : termId;
-        }).join(', ');
+        const networkTitle = `AOP Network: ${term.label} (${term.type === 'KeyEvent' ? 'KE' : term.type === 'MolecularInitiatingEvent' ? 'MIE' : 'AO'})`;
         
-        console.log('Generated KE/MIE network:', data.graph_data);
-        onAOPSelect && onAOPSelect(data.graph_data, `KE/MIE Network: ${selectedTermLabels}`);
+        console.log('✅ Generated network for term:', data.graph_data);
+        console.log('✅ Network title:', networkTitle);
+        console.log('✅ Calling onAOPSelect with:', { nodes: data.graph_data.nodes?.length || 0, edges: data.graph_data.edges?.length || 0 });
+        onAOPSelect && onAOPSelect(data.graph_data, networkTitle);
       } else {
-        console.error('Failed to generate KE/MIE network:', data.error);
+        console.error('❌ Failed to generate network for term:', data.error || 'No graph data');
+        console.error('❌ Data success:', data.success);
+        console.error('❌ Data has graph_data:', !!data.graph_data);
+        onAOPSelect && onAOPSelect({ nodes: [], edges: [] }, '');
       }
     } catch (error) {
-      console.error('Error generating KE/MIE network:', error);
+      console.error('💥 Error loading network for term:', error);
+      onAOPSelect && onAOPSelect({ nodes: [], edges: [] }, '');
     } finally {
-      setIsGeneratingNetwork(false);
+      setKeyEventLoading(false);
+      onLoadingChange && onLoadingChange(false);
     }
   };
 
   const handleMultiAOPSelection = (aopObj) => {
+    // Ensure we're working with the correct AOP ID format
     const aopId = aopObj.id || aopObj.name || aopObj;
-    console.log('Multi-AOP selection triggered:', aopId);
+    console.log('Multi-AOP selection triggered with object:', aopObj);
+    console.log('Extracted AOP ID:', aopId);
     
     let newSelection;
     const currentIds = selectedAOPs.map(a => a.id || a.name || a);
+    console.log('Current selected AOP IDs:', currentIds);
     
     if (currentIds.includes(aopId)) {
+      // Remove from selection
       newSelection = selectedAOPs.filter(selected => {
         const selectedId = selected.id || selected.name || selected;
         return selectedId !== aopId;
       });
+      console.log('Removing AOP from selection:', aopId);
     } else {
+      // Add to selection
       newSelection = [...selectedAOPs, aopObj];
+      console.log('Adding AOP to selection:', aopId);
     }
     
     setSelectedAOPs(newSelection);
-    
-    if (newSelection.length > 0) {
+  
+    // Notify parent incrementally as selection changes
+    if (typeof onAOPSelect === 'function' && onAOPSelect.__expectsIncremental) {
       const aopIds = newSelection.map(a => a.id || a.name || a);
-      loadMultipleAOPGraphs(aopIds);
+      console.log('Sending AOP IDs to parent:', aopIds);
+      onAOPSelect({ __selectionChange: true, aopIds }, aopIds.join(', '));
     } else {
-      onAOPSelect && onAOPSelect({ nodes: [], edges: [] }, '');
+      // Legacy behavior: fetch and combine immediately
+      if (newSelection.length > 0) {
+        const aopIds = newSelection.map(a => a.id || a.name || a);
+        loadMultipleAOPGraphs(aopIds);
+      } else {
+        onAOPSelect && onAOPSelect({ nodes: [], edges: [] }, '');
+      }
     }
   };
 
@@ -716,6 +749,17 @@ const SearchPanel = forwardRef(({
     }
   }, [selectedNodeChain, onNodeChainUpdate]);
 
+  // Clear graph when switching to comprehensive pathway search mode
+  useEffect(() => {
+    if (searchMode === 'keyEvent') {
+      console.log('🔄 Clearing graph for Comprehensive Pathway Search mode');
+      if (onAOPSelect) {
+        onAOPSelect({ nodes: [], edges: [] }, '');
+      }
+      setSelectedKEMIETerms([]);
+    }
+  }, [searchMode]); // Remove onAOPSelect from dependencies to prevent infinite loop
+
   // Expose functions to parent component
   useImperativeHandle(ref, () => ({
     addToNodeChain,
@@ -725,303 +769,6 @@ const SearchPanel = forwardRef(({
   }));
 
   // Path finding functions
-  const findBothPathTypes = async () => {
-    if (!sourceNode || !targetNode) {
-      setPathfindingError('Please select both source and target nodes');
-      return;
-    }
-    
-    setPathfindingLoading(true);
-    setPathfindingError(null);
-    setShortestPathResults(null);
-    setLongestPathResults(null);
-    
-    try {
-      // Search for shortest paths
-      const shortestParams = new URLSearchParams({
-        source: sourceNode,
-        target: targetNode,
-        k: topKPaths.toString(),
-        type: 'shortest',
-        full_database: 'true'
-      });
-      const shortestUrl = `${API_BASE_URL}/custom_path_search?${shortestParams}`;
-      const shortestResponse = await fetch(shortestUrl);
-      const shortestData = await shortestResponse.json();
-      
-      // Search for longest paths
-      const longestParams = new URLSearchParams({
-        source: sourceNode,
-        target: targetNode,
-        k: topKPaths.toString(),
-        type: 'longest',
-        full_database: 'true'
-      });
-      const longestUrl = `${API_BASE_URL}/custom_path_search?${longestParams}`;
-      const longestResponse = await fetch(longestUrl);
-      const longestData = await longestResponse.json();
-      
-      // Handle results
-      if (shortestData.error && longestData.error) {
-        setPathfindingError(`No paths found: ${shortestData.error}`);
-        return;
-      }
-      
-      if (!shortestData.error && shortestData.paths && shortestData.paths.length > 0) {
-        setShortestPathResults(shortestData);
-        console.log('Shortest paths found:', shortestData);
-      }
-      
-      if (!longestData.error && longestData.paths && longestData.paths.length > 0) {
-        setLongestPathResults(longestData);
-        console.log('Longest paths found:', longestData);
-      }
-      
-      // If no paths found in either search
-      if ((!shortestData.paths || shortestData.paths.length === 0) && 
-          (!longestData.paths || longestData.paths.length === 0)) {
-        setPathfindingError('No paths found between the selected nodes');
-      }
-      
-    } catch (error) {
-      console.error('Error finding paths:', error);
-      setPathfindingError('Failed to find paths. Please try again.');
-    } finally {
-      setPathfindingLoading(false);
-    }
-  };
-
-  const clearPathResults = () => {
-    setShortestPathResults(null);
-    setPathfindingError(null);
-  };
-
-  // Individual pathfinding function
-  const findShortestPaths = async () => {
-    if (!sourceNode || !targetNode) {
-      setPathfindingError('Please select both source and target nodes');
-      return;
-    }
-    
-    setPathfindingLoading(true);
-    setPathfindingError(''); // Clear any previous errors immediately
-    setShortestPathResults(null);
-    
-    try {
-      const params = new URLSearchParams({
-        source: sourceNode,
-        target: targetNode,
-        k: topKPaths.toString(),
-        type: 'shortest',
-        full_database: 'true'
-      });
-      const url = `${API_BASE_URL}/custom_path_search?${params}`;
-      console.log('Making shortest path request to:', url);
-      const response = await fetch(url);
-      
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-      
-      const data = await response.json();
-      console.log('Shortest path response:', data);
-      
-      if (data.error) {
-        setPathfindingError(`No shortest paths found: ${data.error}`);
-        return;
-      }
-      
-      if (data.paths && data.paths.length > 0) {
-        setShortestPathResults(data);
-        setPathfindingError(''); // Clear any previous errors
-        console.log('✅ SUCCESS: Shortest paths found:', data);
-        console.log('✅ About to generate graph with data:', data);
-        // Generate graph visualization
-        try {
-          generatePathGraph(data, 'shortest');
-          console.log('✅ Graph generation completed successfully');
-        } catch (graphError) {
-          console.error('❌ Error during graph generation:', graphError);
-          setPathfindingError('Graph generation failed: ' + graphError.message);
-        }
-      } else {
-        console.log('❌ No paths in response:', data);
-        setPathfindingError('No shortest paths found between the selected nodes');
-      }
-      
-    } catch (error) {
-      console.error('Error finding shortest paths:', error);
-      // Only set error if we don't already have results
-      if (!shortestPathResults || !shortestPathResults.paths || shortestPathResults.paths.length === 0) {
-        setPathfindingError('Failed to find shortest paths. Please try again.');
-      }
-    } finally {
-      setPathfindingLoading(false);
-    }
-  };
-
-  // Graph generation for pathfinding results
-  const generatePathGraph = (pathData, pathType) => {
-    console.log('🎯 Starting generatePathGraph with:', { pathData, pathType });
-    
-    if (!pathData || !pathData.paths || pathData.paths.length === 0) {
-      console.log('❌ No paths to visualize');
-      return;
-    }
-
-    console.log('🔄 Generating graph from path data:', pathData);
-
-    // Extract all unique nodes and edges from paths
-    const nodes = new Set();
-    const edges = [];
-    const edgeIds = new Set(); // To avoid duplicate edges
-    
-    pathData.paths.forEach((pathObj, pathIndex) => {
-      console.log(`📍 Processing path ${pathIndex}:`, pathObj);
-      
-      // Handle different path formats - sometimes it's an object with 'path' property
-      const path = Array.isArray(pathObj) ? pathObj : (pathObj.path || pathObj);
-      
-      if (!Array.isArray(path)) {
-        console.warn('⚠️ Invalid path format:', pathObj);
-        return;
-      }
-      
-      console.log(`📋 Path ${pathIndex} array:`, path);
-      
-      path.forEach((node, nodeIndex) => {
-        nodes.add(node);
-        
-        // Add edge to next node in path
-        if (nodeIndex < path.length - 1) {
-          const nextNode = path[nodeIndex + 1];
-          const edgeId = `${node}-${nextNode}`;
-          
-          // Avoid duplicate edges
-          if (!edgeIds.has(edgeId)) {
-            edges.push({
-              source: node,
-              target: nextNode,
-              pathIndex: pathIndex,
-              pathType: pathType
-            });
-            edgeIds.add(edgeId);
-          }
-        }
-      });
-    });
-
-    // Create graph data structure with proper node labels
-    const graphData = {
-      nodes: Array.from(nodes).map(nodeId => {
-        // Try to get node name from the database nodes if available
-        let nodeLabel = nodeId;
-        let nodeType = 'Unknown';
-        
-        if (availableNodes && availableNodes.length > 0) {
-          const nodeInfo = availableNodes.find(n => n.id === nodeId);
-          if (nodeInfo) {
-            nodeLabel = nodeInfo.label || nodeInfo.name || nodeId;
-            nodeType = nodeInfo.type || nodeInfo.etype || 'Unknown';
-          }
-        }
-        
-        return {
-          id: nodeId,
-          label: nodeLabel,
-          name: nodeLabel,
-          type: nodeType,
-          group: 'shortest_path',
-          color: '#3b82f6'
-        };
-      }),
-      edges: edges.map((edge, index) => ({
-        id: `${edge.source}-${edge.target}-${index}`,
-        source: edge.source,
-        target: edge.target,
-        pathIndex: edge.pathIndex,
-        pathType: edge.pathType,
-        group: 'shortest_path',
-        color: '#3b82f6'
-      }))
-    };
-
-    console.log(`✅ Generated ${pathType} path graph:`, {
-      nodes: graphData.nodes.length,
-      edges: graphData.edges.length,
-      paths: pathData.paths.length,
-      graphData: graphData
-    });
-
-    // Update the main graph visualization
-    if (onDataUpdate) {
-      console.log('📤 Calling onDataUpdate with graph data');
-      onDataUpdate(graphData);
-      
-      // Switch to regular graph view for pathfinding results
-      if (onHypergraphToggle) {
-        console.log('🔄 Switching to regular graph view');
-        onHypergraphToggle(false);
-      }
-      
-      console.log('✅ Graph update completed');
-    } else {
-      console.warn('❌ onDataUpdate function not available');
-    }
-  };
-
-  // Load all nodes from complete database for pathfinding
-  const loadAllDatabaseNodes = async () => {
-    try {
-      console.log('Loading all nodes from complete database for pathfinding...');
-      const response = await fetch(`${API_BASE_URL}/full_database_nodes`);
-      const data = await response.json();
-      
-      if (data.nodes && data.nodes.length > 0) {
-        // Create unique nodes by removing duplicates based on ID
-        const uniqueNodes = data.nodes.reduce((acc, node) => {
-          if (!acc.find(existing => existing.id === node.id)) {
-            acc.push(node);
-          }
-          return acc;
-        }, []);
-        
-        setAvailableNodes(uniqueNodes);
-        
-        // Store database statistics
-        setDatabaseStats({
-          total_nodes: data.total_nodes || uniqueNodes.length,
-          node_type_counts: data.node_type_counts || {},
-          categorized_counts: data.categorized_counts || {},
-          unique_nodes_loaded: uniqueNodes.length
-        });
-        
-        console.log(`✅ Loaded ${uniqueNodes.length} unique nodes from complete AOP database`);
-        console.log('🔍 Complete Database Stats:', {
-          total_nodes: data.total_nodes,
-          node_types: Object.keys(data.node_type_counts || {}),
-          mie_nodes: data.node_type_counts?.['MIE'] || 0,
-          ao_nodes: data.node_type_counts?.['AO'] || 0
-        });
-      } else {
-        console.error('No nodes returned from database');
-        setAvailableNodes([]);
-        setDatabaseStats(null);
-      }
-    } catch (error) {
-      console.error('Error loading complete database nodes:', error);
-      setAvailableNodes([]);
-      setDatabaseStats(null);
-    }
-  };
-
-  // Load database nodes when pathfinding mode is activated
-  useEffect(() => {
-    if (searchMode === 'pathFinding') {
-      loadAllDatabaseNodes();
-    }
-  }, [searchMode]);
-
   const findShortestPath = async () => {
     if (!sourceNode || !targetNode) {
       console.log('Please select both source and target nodes');
@@ -1103,10 +850,7 @@ const SearchPanel = forwardRef(({
                   name="searchMode"
                   value="aop"
                   checked={searchMode === 'aop'}
-                  onChange={(e) => {
-                    setSearchMode(e.target.value);
-                    onAnalysisModeChange && onAnalysisModeChange();
-                  }}
+                  onChange={(e) => setSearchMode(e.target.value)}
                   className="w-4 h-4"
                 />
                 <label htmlFor="aop-mode" className="text-sm">AOP Selection - Browse complete AOP networks</label>
@@ -1118,126 +862,92 @@ const SearchPanel = forwardRef(({
                   name="searchMode"
                   value="keyEvent"
                   checked={searchMode === 'keyEvent'}
-                  onChange={(e) => {
-                    setSearchMode(e.target.value);
-                    onAnalysisModeChange && onAnalysisModeChange();
-                  }}
+                  onChange={(e) => setSearchMode(e.target.value)}
                   className="w-4 h-4"
                 />
                 <label htmlFor="key-event-mode" className="text-sm">Comprehensive Pathway Search - Find complete AOP networks by biological terms</label>
-              </div>
-              <div className="flex items-center gap-2">
-                <input
-                  type="radio"
-                  id="path-finding-mode"
-                  name="searchMode"
-                  value="pathFinding"
-                  checked={searchMode === 'pathFinding'}
-                  onChange={(e) => {
-                    setSearchMode(e.target.value);
-                    onAnalysisModeChange && onAnalysisModeChange();
-                  }}
-                  className="w-4 h-4"
-                />
-                <label htmlFor="path-finding-mode" className="text-sm">Path Finding - Analyze connections between nodes</label>
               </div>
             </div>
           </div>
           
           {/* Key Event Search Mode */}
           {searchMode === 'keyEvent' && (
-            <div className="space-y-4">
+            <div className="space-y-4" style={{backgroundColor: '#f0f8ff', padding: '15px', border: '2px solid #0066cc', borderRadius: '8px'}}>
               <div>
                 <h3 className="text-sm font-medium text-gray-900 flex items-center mb-3">
                   <Search className="w-4 h-4 mr-2 text-blue-500" />
                   Comprehensive AOP Pathway Search
                 </h3>
                 <div className="text-xs text-muted-foreground mb-3">
-                  <strong>Search for biological terms to find complete AOP pathways (MIE→KE→AO)</strong>
+                  <strong>Discover complete AOP networks through biological term queries</strong>
                   <br />
-                  Examples: "Acetylcholinesterase inhibition", "DNA damage", "oxidative stress", "neurodegeneration"
-                  <br />
-                  <span className="text-green-600">✨ Enhanced search finds related AOPs and shows complete pathways</span>
+                  <span className="text-green-600">✨ Enhanced with cross-pathway relationship analysis and comprehensive node associations</span>
                 </div>
               </div>
               
-              {/* Comprehensive Search Input */}
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                <input
-                  type="text"
-                  value={keyEventSearch}
-                  onChange={(e) => {
-                    setKeyEventSearch(e.target.value);
-                    // Debounce search
-                    clearTimeout(window.keyEventSearchTimeout);
-                    window.keyEventSearchTimeout = setTimeout(() => {
-                      searchKeyEvents(e.target.value);
-                    }, 800);
-                  }}
-                  placeholder="Search for biological terms (e.g., 'Acetylcholinesterase inhibition', 'DNA damage', 'neurodegeneration')..."
-                  className="w-full pl-10 pr-4 py-2 border border-border rounded-md bg-background text-foreground"
-                />
-                {keyEventLoading && (
-                  <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500"></div>
-                  </div>
-                )}
+              {/* Enhanced Search Input */}
+              <div className="mb-4">
+                <label className="block text-sm font-medium mb-2">Search Biological Terms</label>
+                <div className="text-xs text-muted-foreground mb-2">
+                  Enter any biological term (e.g., "acetylcholinesterase", "DNA damage", "oxidative stress", "liver fibrosis")
+                </div>
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                  <input
+                    type="text"
+                    value={keyEventSearch}
+                    onChange={handleKeyEventSearch}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && keyEventSearch.trim().length > 2 && !keyEventLoading) {
+                        loadComprehensivePathwayNetwork(keyEventSearch);
+                      }
+                    }}
+                    placeholder="Search for biological terms across all AOPs..."
+                    className="w-full pl-10 pr-4 py-2 border border-border rounded-md bg-background text-foreground"
+                  />
+                  {keyEventSearch && (
+                    <button
+                      onClick={() => {
+                        setKeyEventSearch('');
+                        setKeyEventResults([]);
+                      }}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+                
+                {/* Actions removed per request – press Enter to load the network; preview updates automatically */}
               </div>
               
-              {/* Search Results Display */}
+              
+              {/* Search Results Preview */}
               {keyEventResults.length > 0 && (
-                <div className="mt-4 space-y-3">
-                  <div className="text-sm font-medium text-gray-900">
-                    🔍 Search Results ({keyEventResults.length} matches found)
-                  </div>
-                  
-
-                  
-                  {/* Top Results Preview */}
-                  <div className="max-h-32 overflow-y-auto border border-border rounded-md">
+                <div className="mb-4">
+                  <div className="text-sm font-medium mb-2">Search Preview ({keyEventResults.length} matches)</div>
+                  <div className="max-h-32 overflow-y-auto space-y-1">
                     {keyEventResults.slice(0, 10).map((result, index) => (
-                      <div 
-                        key={`${result.id}-${index}-${result.aop || 'unknown'}`} 
-                        className="p-2 text-xs border-b border-border last:border-b-0 hover:bg-blue-50 cursor-pointer transition-colors"
+                      <div
+                        key={index}
+                        className="p-2 text-xs bg-white border border-gray-200 rounded hover:bg-blue-50 cursor-pointer"
                         onClick={() => {
-                          console.log('Loading network for result:', result.label);
-                          loadNetworkForSearch(keyEventSearch);
+                          setKeyEventSearch(result.label);
+                          loadComprehensivePathwayNetwork(result.label);
                         }}
-                        title="Click to load complete AOP pathways"
                       >
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <div className="font-medium text-gray-900">{result.label}</div>
-                            <div className="text-muted-foreground">
-                              {result.type} • {result.aop_title || result.aop}
-                            </div>
-                          </div>
-                          <div className="text-xs">
-                            <span className={`px-2 py-1 rounded ${
-                              result.type === 'KeyEvent' ? 'bg-blue-100 text-blue-700' :
-                              result.type === 'MolecularInitiatingEvent' ? 'bg-green-100 text-green-700' :
-                              result.type === 'AdverseOutcome' ? 'bg-pink-100 text-pink-700' :
-                              'bg-gray-100 text-gray-700'
-                            }`}>
-                              {result.type === 'KeyEvent' ? 'KE' :
-                               result.type === 'MolecularInitiatingEvent' ? 'MIE' :
-                               result.type === 'AdverseOutcome' ? 'AO' : result.type}
-                            </span>
-                          </div>
-                        </div>
+                        <div className="font-medium">{result.label}</div>
+                        <div className="text-gray-500">{result.type} • {result.aop_title}</div>
                       </div>
                     ))}
-                    {keyEventResults.length > 10 && (
-                      <div className="p-2 text-xs text-center text-muted-foreground bg-muted/30">
-                        ... and {keyEventResults.length - 10} more results (all included in network)
-                      </div>
-                    )}
                   </div>
+                  {keyEventResults.length > 10 && (
+                    <div className="text-xs text-gray-500 mt-2">
+                      Showing first 10 of {keyEventResults.length} matches
+                    </div>
+                  )}
                 </div>
               )}
-              
-
               
               {/* No Results Message */}
               {keyEventResults.length === 0 && !keyEventLoading && keyEventSearch.length > 0 && (
@@ -1245,15 +955,15 @@ const SearchPanel = forwardRef(({
                   <div className="bg-orange-50 border border-orange-200 rounded-md p-3">
                     <div className="text-xs text-orange-800">
                       <div className="font-medium mb-1">🔍 No results found for "{keyEventSearch}"</div>
-                      <div>Try different terms or check spelling. The search looks in node labels, descriptions, and AOP titles.</div>
+                      <div>Try different terms or check spelling. The search looks across all {availableKEMIETerms.length} MIE, KE, and AO terms in the database.</div>
                     </div>
                   </div>
                 </div>
               )}
-              
-
             </div>
           )}
+          
+          {/* Removed: Search AOP KG Mode */}
           
           {/* AOP Selection Mode */}
           {searchMode === 'aop' && (
@@ -1334,7 +1044,11 @@ const SearchPanel = forwardRef(({
                     <button
                       onClick={() => {
                         setSelectedAOPs([]);
-                        onAOPSelect && onAOPSelect({ nodes: [], edges: [] }, '');
+                        if (typeof onAOPSelect === 'function' && onAOPSelect.__expectsIncremental) {
+                          onAOPSelect({ __selectionChange: true, aopIds: [] }, '');
+                        } else {
+                          onAOPSelect && onAOPSelect({ nodes: [], edges: [] }, '');
+                        }
                       }}
                       className="text-xs text-red-500 hover:text-red-700 mt-2"
                     >
@@ -1354,129 +1068,7 @@ const SearchPanel = forwardRef(({
             </div>
           )}
           
-          {/* Path Finding Mode */}
-          {searchMode === 'pathFinding' && (
-            <div className="space-y-3">
-              <div>
-                <label className="block text-sm font-medium mb-2">Path Finding - Analyze connections between nodes</label>
-                <div className="text-xs text-muted-foreground mb-3">
-                  🌐 <strong>Complete AOP Database Search</strong> - Independent from AOP selection above
-                </div>
-                
-                {/* Database Statistics */}
-                {databaseStats && (
-                  <div className="p-2 bg-blue-50 border border-blue-200 rounded mb-3">
-                    <div className="text-xs font-medium text-blue-800 mb-1">Complete Database Loaded</div>
-                    <div className="text-xs text-blue-700">
-                      📊 {databaseStats.unique_nodes_loaded} unique nodes | 
-                      🧬 {databaseStats.categorized_counts?.MIE || 0} MIE | 
-                      🎯 {databaseStats.categorized_counts?.AO || 0} AO | 
-                      🔗 {databaseStats.categorized_counts?.KE || 0} KE nodes
-                    </div>
-                  </div>
-                )}
-                
-                {pathfindingLoading && !databaseStats && (
-                  <div className="p-2 bg-yellow-50 border border-yellow-200 rounded mb-3">
-                    <div className="text-xs text-yellow-800">🔄 Loading complete AOP database...</div>
-                  </div>
-                )}
-                
-                {/* Path Finding Controls */}
-                {availableNodes.length > 0 && (
-                  <div className="space-y-3">
-                    <div className="grid grid-cols-2 gap-2">
-                      <div>
-                        <label className="text-xs font-medium mb-1 block">Source Node</label>
-                        <SearchableNodeSelect
-                          value={sourceNode}
-                          onChange={setSourceNode}
-                          nodes={availableNodes}
-                          placeholder="Type or select source..."
-                        />
-                      </div>
-                      <div>
-                        <label className="text-xs font-medium mb-1 block">Target Node</label>
-                        <SearchableNodeSelect
-                          value={targetNode}
-                          onChange={setTargetNode}
-                          nodes={availableNodes}
-                          placeholder="Type or select target..."
-                        />
-                      </div>
-                    </div>
-                    
-                    {/* Number of paths input */}
-                    <div>
-                      <label className="text-xs font-medium mb-1 block">Number of Paths (K)</label>
-                      <input
-                        type="number"
-                        min="1"
-                        max="10"
-                        value={topKPaths}
-                        onChange={(e) => setTopKPaths(parseInt(e.target.value) || 3)}
-                        className="w-full p-2 text-xs border rounded"
-                        placeholder="Enter number of paths"
-                      />
-                    </div>
-                    
-                    {/* Error Display */}
-                    {pathfindingError && (
-                      <div className="p-2 bg-red-50 border border-red-200 rounded">
-                        <div className="text-xs text-red-800">
-                          {pathfindingError}
-                        </div>
-                      </div>
-                    )}
-                    
-                    <div className="grid grid-cols-1 gap-2">
-                      <Button
-                        size="sm"
-                        onClick={findShortestPaths}
-                        disabled={!sourceNode || !targetNode || pathfindingLoading}
-                        className="text-xs bg-blue-600 hover:bg-blue-700 text-white"
-                      >
-                        {pathfindingLoading ? '🔍' : '⚡'} Find Shortest Paths
-                      </Button>
-                    </div>
-                    
-                    {shortestPathResults && (
-                      <div className="space-y-2">
-                        <div className="text-xs text-green-600 font-medium">
-                          ✅ Paths found and graph generated successfully!
-                        </div>
-                        
-                        <div className="space-y-2">
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={clearPathResults}
-                            className="text-xs"
-                          >
-                            Clear Results
-                          </Button>
-                          
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => {
-                              console.log('Manual graph generation test');
-                              if (shortestPathResults) {
-                                generatePathGraph(shortestPathResults, 'shortest');
-                              }
-                            }}
-                            className="text-xs"
-                          >
-                            🔄 Regenerate Graph
-                          </Button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
+          {/* Path Finding Mode removed per simplification */}
         </div>
 
         {/* Current Selection */}
@@ -1501,7 +1093,40 @@ const SearchPanel = forwardRef(({
 
 
 
-        
+        {/* Node Chain Selection */}
+        {selectedNodeChain.length > 0 && (
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <h4 className="text-md font-semibold">Selected Node Chain</h4>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={clearNodeChain}
+                className="text-xs"
+              >
+                Clear Chain
+              </Button>
+            </div>
+            <div className="space-y-1">
+              {selectedNodeChain.map((nodeId, index) => {
+                const node = availableNodes.find(n => n.id === nodeId);
+                return (
+                  <div key={nodeId} className="flex items-center justify-between bg-muted p-2 rounded text-xs">
+                    <span>{index + 1}. {node?.label || nodeId} ({node?.type})</span>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => removeFromNodeChain(nodeId)}
+                      className="h-4 w-4 p-0"
+                    >
+                      ×
+                    </Button>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         {/* Hypergraph Controls */}
         <div>
@@ -1531,7 +1156,7 @@ const SearchPanel = forwardRef(({
           
           {hypergraphEnabled && (
             <div className="space-y-3 p-3 bg-muted/50 rounded-md">
-              {/* Max Nodes Per Hypernode Slider - DISABLED per user requirement
+              {/* Max Nodes Per Hypernode Slider */}
               <div>
                 <label className="text-xs font-medium mb-1 block">
                   Max Nodes per Hypernode: {maxNodesPerHypernode}
@@ -1547,42 +1172,8 @@ const SearchPanel = forwardRef(({
                 <div className="text-xs text-muted-foreground mt-1">
                   Controls when to split type groups into multiple hypernodes
                 </div>
-              </div> */}
-              
-              {/* Communities toggle and min nodes */}
-              {/* Removed "Use Communities" toggle per user request */}
-              <div>
-                <label className="text-xs font-medium mb-1 block">
-                  Max Nodes per Hypernode
-                </label>
-                <Input
-                  type="number"
-                  min="1"
-                  step="1"
-                  value={minNodes}
-                  onChange={(e) => onMinNodesChange && onMinNodesChange(e.target.value)}
-                  className="w-full p-1 text-xs"
-                />
-                <div className="text-[11px] text-muted-foreground mt-1">
-                  When a group exceeds this number, it will be split into multiple hypernodes of the same type/color.
-                </div>
               </div>
               
-              {/* Community Detection */}
-              <div>
-                <label className="text-xs font-medium mb-1 block">Community Method</label>
-                <select
-                  value={communityMethod}
-                  onChange={(e) => onCommunityDetection && onCommunityDetection(e.target.value)}
-                  className="w-full p-1 text-xs border border-border rounded bg-background"
-                  disabled={true}
-                >
-                  <option value="louvain">Louvain</option>
-                  <option value="leiden">Leiden</option>
-                  <option value="walktrap">Walktrap</option>
-                  <option value="spectral">Spectral</option>
-                </select>
-              </div>
               
               {/* Removed "Group nodes by type" toggle - redundant with hypergraph toggle */}
             </div>

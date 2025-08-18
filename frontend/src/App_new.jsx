@@ -6,7 +6,6 @@ import { Card } from '@/components/ui/card';
 import NetworkGraph from './components/NetworkGraph';
 import HypergraphNetworkGraph from './components/HypergraphNetworkGraph';
 
-import SearchPanel from './components/SearchPanel';
 import NodeDetailsPanel from './components/NodeDetailsPanel';
 import ChatPanel from './components/ChatPanel';
 import PerplexityAnalysisPanel from './components/PerplexityAnalysisPanel';
@@ -276,7 +275,6 @@ function App() {
   ];
 
   return (
-    return (
     <div className={`min-h-screen bg-background text-foreground ${theme}`}>
       {/* Header */}
       <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
@@ -320,7 +318,7 @@ function App() {
       />
 
       <div className="flex h-[calc(100vh-140px)] bg-background">
-        {/* Left Resizable Sidebar */}
+        {/* Left Resizable Sidebar - SEARCH PANEL REMOVED */}
         {sidebarOpen && (
           <ResizablePanel 
             side="left" 
@@ -330,22 +328,10 @@ function App() {
             className="border-r bg-card"
           >
             <div className="h-full overflow-y-auto p-4">
-              <SearchPanel 
-                ref={searchPanelRef}
-                onAOPSelect={handleAOPSelect}
-                onNodeSelect={handleNodeSelect}
-                onSearchResults={setSearchResults}
-                graphData={isHypergraphView ? hypergraphData : graphData}
-                onNodeChainUpdate={handleNodeChainUpdate}
-                hypergraphEnabled={hypergraphEnabled}
-                onHypergraphToggle={handleHypergraphToggle}
-                maxNodesPerHypernode={maxNodesPerHypernode}
-                onMaxNodesPerHypernodeChange={handleMaxNodesPerHypernodeChange}
-                layoutType={layoutType}
-                onLayoutChange={handleLayoutChange}
-                communityMethod={communityMethod}
-                onCommunityDetection={handleCommunityDetection}
-              />
+              <div className="text-center text-muted-foreground mt-8">
+                <h3 className="text-lg font-medium mb-2">Search Panel Removed</h3>
+                <p className="text-sm">AOP search functionality has been removed as requested.</p>
+              </div>
             </div>
           </ResizablePanel>
         )}
@@ -368,248 +354,6 @@ function App() {
                     hypergraphEnabled={hypergraphEnabled}
                     maxNodesPerHypernode={maxNodesPerHypernode}
                     layoutType={layoutType}
-                    communityData={communityData}
-                  />
-                </ErrorBoundary>
-              ) : (
-                <NetworkGraph
-                  data={graphData}
-                  onNodeSelect={handleNodeSelect}
-                  onEdgeSelect={handleEdgeSelect}
-                  selectedNode={selectedNode}
-                  selectedEdge={selectedEdge}
-                  theme={theme}
-                  searchPanelRef={searchPanelRef}
-                  onVisibleNodesChange={(nodes, edges) => {
-                    setVisibleNodes(nodes);
-                    setVisibleEdges(edges);
-                  }}
-                />
-              )}
-            </Card>
-          </div>
-
-          {/* Right Resizable Panel */}
-          {rightPanelOpen && (
-            <ResizablePanel 
-              side="right" 
-              initialWidth={350}
-              minWidth={250}
-              maxWidth={500}
-              className="border-l bg-card"
-            >
-              <div className="h-full overflow-y-auto">
-                {/* Tab Navigation */}
-                <div className="flex border-b bg-muted/50">
-                  <button
-                    onClick={() => setActiveRightTab('details')}
-                    className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
-                      activeRightTab === 'details'
-                        ? 'bg-background text-foreground border-b-2 border-primary'
-                        : 'text-muted-foreground hover:text-foreground'
-                    }`}
-                  >
-                    Details
-                  </button>
-                  <button
-                    onClick={() => setActiveRightTab('chat')}
-                    className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
-                      activeRightTab === 'chat'
-                        ? 'bg-background text-foreground border-b-2 border-primary'
-                        : 'text-muted-foreground hover:text-foreground'
-                    }`}
-                  >
-                    Chat
-                  </button>
-                  <button
-                    onClick={() => setActiveRightTab('analysis')}
-                    className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
-                      activeRightTab === 'analysis'
-                        ? 'bg-background text-foreground border-b-2 border-primary'
-                        : 'text-muted-foreground hover:text-foreground'
-                    }`}
-                  >
-                    <div className="flex items-center gap-1">
-                      <div className="w-2 h-2 bg-pink-500 rounded-full"></div>
-                      AI Analysis
-                    </div>
-                  </button>
-                </div>
-
-                {/* Tab Content */}
-                <div className="p-4">
-                  {activeRightTab === 'details' && (
-                    <NodeDetailsPanel 
-                      selectedNode={selectedNode} 
-                      selectedEdge={selectedEdge}
-                      graphData={isHypergraphView ? hypergraphData : graphData}
-                    />
-                  )}
-                  {activeRightTab === 'chat' && (
-                    <ChatPanel 
-                      graphData={isHypergraphView ? hypergraphData : graphData}
-                      selectedNode={selectedNode}
-                    />
-                  )}
-                  {activeRightTab === 'analysis' && (
-                    <PerplexityAnalysisPanel 
-                      graphData={isHypergraphView ? hypergraphData : graphData}
-                      selectedNode={selectedNode}
-                    />
-                  )}
-                </div>
-              </div>
-            </ResizablePanel>
-          )}
-        </div>
-      </div>
-
-      {/* Mobile overlay */}
-      {sidebarOpen && (
-        <div
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
-    </div>
-  );
-}
-
-export default App;
-      {/* Header */}
-      <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="flex items-center justify-between p-4">
-          <div className="flex items-center gap-4">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={toggleLeftPanel}
-              title="Toggle left panel"
-            >
-              {sidebarOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
-            </Button>
-            <h1 className="text-xl font-bold">AOP Network Visualizer</h1>
-            {currentAOP && (
-              <div className="hidden md:block text-sm text-muted-foreground">
-                Current AOP: {currentAOP}
-              </div>
-            )}
-          </div>
-          
-          <div className="flex items-center gap-4">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={toggleRightPanel}
-              title="Toggle right panel"
-            >
-              {rightPanelOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
-            </Button>
-          </div>
-        </div>
-      </header>
-
-      {/* Top Status Bar */}
-      <TopStatusBar 
-        graphData={graphData} 
-        currentAOP={currentAOP}
-        visibleNodes={visibleNodes}
-        visibleEdges={visibleEdges}
-      />
-
-      <div className="flex h-[calc(100vh-140px)] bg-background">
-      {/* Header */}
-      <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="flex items-center justify-between p-4">
-          <div className="flex items-center gap-4">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={toggleLeftPanel}
-              title="Toggle left panel"
-            >
-              {sidebarOpen ? <Menu className="h-4 w-4" /> : <X className="h-4 w-4" />}
-            </Button>
-            <h1 className="text-xl font-bold">AOP Network Visualizer</h1>
-            {currentAOP && (
-              <div className="hidden md:block text-sm text-muted-foreground">
-                Current AOP: {currentAOP}
-              </div>
-            )}
-          </div>
-          
-          <div className="flex items-center gap-4">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={toggleRightPanel}
-              title="Toggle right panel"
-            >
-              {rightPanelOpen ? <Menu className="h-4 w-4" /> : <X className="h-4 w-4" />}
-            </Button>
-          </div>
-        </div>
-      </header>
-
-      {/* Top Status Bar */}
-      <TopStatusBar 
-        graphData={graphData} 
-        currentAOP={currentAOP}
-        visibleNodes={visibleNodes}
-        visibleEdges={visibleEdges}
-      />
-
-      <div className="flex h-[calc(100vh-120px)] bg-background">
-        {/* Left Resizable Sidebar */}
-        {sidebarOpen && (
-          <ResizablePanel 
-            side="left" 
-            initialWidth={320}
-            minWidth={250}
-            maxWidth={500}
-            className="border-r bg-card"
-          >
-            <div className="h-full overflow-y-auto p-4">
-              <SearchPanel 
-                ref={searchPanelRef}
-                onAOPSelect={handleAOPSelect}
-                onNodeSelect={handleNodeSelect}
-                onSearchResults={setSearchResults}
-                graphData={isHypergraphView ? hypergraphData : graphData}
-                onNodeChainUpdate={handleNodeChainUpdate}
-                hypergraphEnabled={hypergraphEnabled}
-                onHypergraphToggle={handleHypergraphToggle}
-                maxNodesPerHypernode={maxNodesPerHypernode}
-                onMaxNodesPerHypernodeChange={handleMaxNodesPerHypernodeChange}
-                layoutType={layoutType}
-                onLayoutChange={handleLayoutChange}
-                communityMethod={communityMethod}
-                onCommunityDetection={handleCommunityDetection}
-                // Removed nodeGroupingEnabled and onNodeGrouping props
-              />
-            </div>
-          </ResizablePanel>
-        )}
-
-        {/* Main Content */}
-        <div className="flex-1 flex">
-          {/* Graph Area */}
-          <div className="flex-1 p-4">
-            <Card className="h-full">
-              {isHypergraphView && hypergraphEnabled && (graphData?.nodes?.length > 0 || hypergraphData?.nodes?.length > 0) ? (
-                <ErrorBoundary>
-                  <HypergraphNetworkGraph
-                    data={graphData}
-                    hypergraphData={hypergraphData}
-                    onNodeSelect={handleNodeSelect}
-                    onEdgeSelect={handleEdgeSelect}
-                    selectedNode={selectedNode}
-                    selectedEdge={selectedEdge}
-                    theme={theme}
-                    hypergraphEnabled={hypergraphEnabled}
-                    maxNodesPerHypernode={maxNodesPerHypernode}
-                    layoutType={layoutType}
-                    // Removed nodeGroupingEnabled prop as it's redundant with hypergraphEnabled
                     communityData={communityData}
                   />
                 </ErrorBoundary>

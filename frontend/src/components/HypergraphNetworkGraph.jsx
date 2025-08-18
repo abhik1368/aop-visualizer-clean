@@ -1,10 +1,47 @@
 import React, { useEffect, useRef, useState } from 'react';
 import cytoscape from 'cytoscape';
-import fcose from 'cytoscape-fcose';
-import coseBilkent from 'cytoscape-cose-bilkent';
+import euler from 'cytoscape-euler';
+import dagre from 'cytoscape-dagre';
 
-cytoscape.use(fcose);
-cytoscape.use(coseBilkent);
+// Register supported layouts
+cytoscape.use(euler);
+cytoscape.use(dagre);
+
+// Pastel palette and helpers for community coloring and WOE detection
+const pastelPalette = [
+  '#a5b4fc', '#93c5fd', '#86efac', '#f9a8d4', '#fcd34d',
+  '#b9fbc0', '#c4b5fd', '#fdcfe8', '#fca5a5', '#99f6e4',
+  '#fde68a', '#c7d2fe', '#fbcfe8', '#a7f3d0', '#bfdbfe',
+  '#fde2e2', '#e9d5ff', '#d9f99d', '#fecaca', '#bae6fd'
+];
+
+const getPastelByIndex = (i) => pastelPalette[i % pastelPalette.length];
+
+const hexToRgba = (hex, alpha = 0.14) => {
+  try {
+    const h = hex.replace('#', '');
+    const bigint = parseInt(h.length === 3 ? h.split('').map(c => c + c).join('') : h, 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  } catch (e) {
+    return `rgba(209, 213, 219, ${alpha})`; // fallback gray
+  }
+};
+
+const isWOENode = (nodeTypeRaw) => {
+  const t = (nodeTypeRaw || '').toString().toLowerCase();
+  return t === 'woe' || t === 'weightofevidence' || t.includes('weight') || t.includes('evidence');
+};
+
+const NODE_COLORS = {
+  MIE: { normal: '#bbf7d0', selected: '#10b981' },
+  KE: { normal: '#dbeafe', selected: '#3b82f6' },
+  AO: { normal: '#f9a8d4', selected: '#ec4899' },
+  WOE: { normal: '#e9d5ff', selected: '#a855f7' },
+  OTHER: { normal: '#e5e7eb', selected: '#6b7280' }
+};
 
 // Simple connected components for community detection
 const detectCommunities = (adjacencyList, nodeMap) => {
@@ -54,26 +91,37 @@ const detectCommunities = (adjacencyList, nodeMap) => {
   return communities;
 };
 
-// Calculate positions for all hypernodes in a layout
+// Calculate positions for all hypernodes using a tighter square grid (more compact, not by type columns)
 const calculateHypernodePositions = (communities) => {
   const positions = {};
-  const padding = 300; // Space between hypernodes
-  
-  // Arrange hypernodes in a grid pattern
-  const cols = Math.ceil(Math.sqrt(communities.length));
-  const rows = Math.ceil(communities.length / cols);
-  
-  communities.forEach((community, index) => {
-    const col = index % cols;
-    const row = Math.floor(index / cols);
-    
-    const x = (col - (cols - 1) / 2) * padding;
-    const y = (row - (rows - 1) / 2) * padding;
-    
-    positions[community.globalId] = { x, y };
-    console.log(`Hypernode ${community.globalId} (${community.originalType}) positioned at (${x}, ${y})`);
+  const xPadding = 300; // tighter horizontal spacing
+  const yPadding = 220; // tighter vertical spacing
+
+  if (!communities || communities.length === 0) return positions;
+
+  // Arrange communities in a square grid for compactness
+  const n = communities.length;
+  const cols = Math.ceil(Math.sqrt(n));
+  const rows = Math.ceil(n / cols);
+
+  // Optional: stable ordering that lightly interleaves types without forcing single-type columns
+  const typePriority = { MolecularInitiatingEvent: 0, MIE: 0, KeyEvent: 1, KE: 1, AdverseOutcome: 2, AO: 2 };
+  const ordered = [...communities].sort((a, b) => {
+    const pa = typePriority[a.originalType] ?? 3;
+    const pb = typePriority[b.originalType] ?? 3;
+    if (pa !== pb) return pa - pb;
+    return a.globalId - b.globalId;
   });
-  
+
+  ordered.forEach((community, idx) => {
+    const row = Math.floor(idx / cols);
+    const col = idx % cols;
+    const x = (col - (cols - 1) / 2) * xPadding;
+    const y = (row - (rows - 1) / 2) * yPadding;
+    positions[community.globalId] = { x, y };
+    console.log(`Hypernode ${community.globalId} (${community.originalType}) positioned (grid) at (${x}, ${y})`);
+  });
+
   return positions;
 };
 
@@ -99,42 +147,52 @@ const calculateNodePositionInHypernode = (node, communityGlobalId, communities, 
     return { x: 0, y: 0 };
   }
   
-  // Calculate hypernode size based on member count
+  // Calculate hypernode size based on member count - optimized for chemical nodes
   const memberCount = community.nodes.length;
-  const baseSize = Math.max(150, Math.min(400, 150 + (memberCount * 6))); // Larger size for force layout
+  const baseSize = Math.max(140, Math.min(320, 140 + (memberCount * 8))); // Larger size for better chemical node spacing
   const availableRadius = (baseSize / 2) - 30;
   
   // Use force-directed positioning within the hypernode
   return forceDirectedPositionInHypernode(node, community, hypernodePos, availableRadius);
 };
 
-// Enhanced force-directed algorithm with guaranteed no overlaps
+// Enhanced force-directed algorithm with guaranteed no overlaps - optimized for chemical nodes
 const forceDirectedPositionInHypernode = (targetNode, community, center, maxRadius) => {
-  const nodeRadius = 30; // Increased node radius for collision detection
-  const minDistance = nodeRadius * 3.5; // Increased minimum distance (105px)
+  const nodeRadius = 25; // Smaller node radius for chemical nodes
+  const minDistance = nodeRadius * 2.8; // Increased minimum distance for better separation (70px)
   
   if (community.nodes.length === 1) {
     return { x: center.x, y: center.y };
   }
   
-  // Initialize positions with maximum initial spread
+  // Use grid-based initial positioning for better chemical node distribution
+  const cols = Math.ceil(Math.sqrt(community.nodes.length));
+  const rows = Math.ceil(community.nodes.length / cols);
+  const cellWidth = (maxRadius * 1.4) / cols;
+  const cellHeight = (maxRadius * 1.4) / rows;
+  
   let positions = community.nodes.map((node, index) => {
-    const angle = (2 * Math.PI * index) / community.nodes.length;
-    const radius = Math.min(maxRadius * 0.7, 80); // Wider initial spread
+    const row = Math.floor(index / cols);
+    const col = index % cols;
+    
+    // Grid positioning with some randomization
+    const gridX = center.x + (col - (cols - 1) / 2) * cellWidth;
+    const gridY = center.y + (row - (rows - 1) / 2) * cellHeight;
+    
     return {
       id: node.id,
-      x: center.x + radius * Math.cos(angle) + (Math.random() - 0.5) * 60,
-      y: center.y + radius * Math.sin(angle) + (Math.random() - 0.5) * 60,
+      x: gridX + (Math.random() - 0.5) * 15, // Small random offset
+      y: gridY + (Math.random() - 0.5) * 15,
       vx: 0,
       vy: 0
     };
   });
   
-  // Enhanced force simulation with stronger separation
-  const iterations = 200; // More iterations for better convergence
-  const damping = 0.8; // Less damping for more movement
-  const repulsionStrength = 5000; // Much stronger repulsion
-  const centeringStrength = 0.01; // Weaker centering to maximize spread
+  // Enhanced force simulation for chemical node separation
+  const iterations = 200; // More iterations for better final positioning
+  const damping = 0.88; // Higher damping for stability
+  const repulsionStrength = 3500; // Increased repulsion for chemical nodes
+  const centeringStrength = 0.06; // Gentler centering to allow better spread
   
   for (let iter = 0; iter < iterations; iter++) {
     // Reset forces
@@ -150,9 +208,17 @@ const forceDirectedPositionInHypernode = (targetNode, community, center, maxRadi
         const dy = positions[i].y - positions[j].y;
         const distance = Math.sqrt(dx * dx + dy * dy);
         
-        // Apply repulsion even at larger distances for better spread
-        if (distance < minDistance * 1.5 && distance > 0) {
-          const force = repulsionStrength / (distance * distance + 1); // Added +1 to prevent division by zero
+        // Enhanced repulsion for chemical nodes - stronger at close distances
+        if (distance < minDistance * 2.0 && distance > 0) {
+          let force;
+          if (distance < minDistance) {
+            // Very strong repulsion when nodes are too close
+            force = repulsionStrength / (distance * 0.5 + 1);
+          } else {
+            // Regular repulsion for spacing
+            force = repulsionStrength / (distance * distance + 1);
+          }
+          
           const fx = (dx / distance) * force;
           const fy = (dy / distance) * force;
           
@@ -170,9 +236,9 @@ const forceDirectedPositionInHypernode = (targetNode, community, center, maxRadi
       const dy = center.y - pos.y;
       const distance = Math.sqrt(dx * dx + dy * dy);
       
-      // Only apply centering if very close to boundary
-      if (distance > maxRadius * 0.95) {
-        const force = centeringStrength * (distance - maxRadius * 0.95);
+      // Apply gentle centering only when nodes get too far from center
+      if (distance > maxRadius * 0.8) {
+        const force = centeringStrength * (distance - maxRadius * 0.8);
         pos.fx += (dx / distance) * force;
         pos.fy += (dy / distance) * force;
       }
@@ -190,12 +256,12 @@ const forceDirectedPositionInHypernode = (targetNode, community, center, maxRadi
       const dy = pos.y - center.y;
       const distance = Math.sqrt(dx * dx + dy * dy);
       
-      if (distance > maxRadius * 0.98) { // Use almost full space
-        pos.x = center.x + (dx / distance) * maxRadius * 0.98;
-        pos.y = center.y + (dy / distance) * maxRadius * 0.98;
+      if (distance > maxRadius * 0.85) { // Allow more spread within hypernode
+        pos.x = center.x + (dx / distance) * maxRadius * 0.85;
+        pos.y = center.y + (dy / distance) * maxRadius * 0.85;
         // Reset velocity when hitting boundary
-        pos.vx *= 0.5;
-        pos.vy *= 0.5;
+        pos.vx *= 0.3;
+        pos.vy *= 0.3;
       }
     });
   }
@@ -208,8 +274,8 @@ const forceDirectedPositionInHypernode = (targetNode, community, center, maxRadi
       const distance = Math.sqrt(dx * dx + dy * dy);
       
       if (distance < minDistance) {
-        // Force separation
-        const overlap = minDistance - distance;
+        // Enhanced separation for chemical nodes
+        const overlap = minDistance - distance + 5; // Extra buffer
         const separationX = (dx / distance) * (overlap / 2);
         const separationY = (dy / distance) * (overlap / 2);
         
@@ -218,13 +284,13 @@ const forceDirectedPositionInHypernode = (targetNode, community, center, maxRadi
         positions[j].x -= separationX;
         positions[j].y -= separationY;
         
-        // Ensure still within bounds
+        // Ensure still within bounds but allow more spread
         [positions[i], positions[j]].forEach(pos => {
           const distFromCenter = Math.sqrt((pos.x - center.x) ** 2 + (pos.y - center.y) ** 2);
-          if (distFromCenter > maxRadius * 0.98) {
+          if (distFromCenter > maxRadius * 0.85) {
             const angle = Math.atan2(pos.y - center.y, pos.x - center.x);
-            pos.x = center.x + Math.cos(angle) * maxRadius * 0.98;
-            pos.y = center.y + Math.sin(angle) * maxRadius * 0.98;
+            pos.x = center.x + Math.cos(angle) * maxRadius * 0.85;
+            pos.y = center.y + Math.sin(angle) * maxRadius * 0.85;
           }
         });
       }
@@ -247,31 +313,58 @@ const HypergraphNetworkGraph = ({
   theme = 'light',
   hypergraphEnabled = false,
   maxNodesPerHypernode = 4, // Default to 4 nodes per hypernode
-  layoutType = 'fcose',
+  layoutType = 'euler',
   communityMethod = 'louvain',
-  communityData = null,
-  selectedNodeChain = [],
-  searchPanelRef
+  communityData = null
 }) => {
   // State for node size and font size controls
   const [baseNodeSize, setBaseNodeSize] = useState(35);
   const [fontSize, setFontSize] = useState(9);
   const [nodeSizingMode, setNodeSizingMode] = useState('betweenness'); // 'fixed', 'degree', 'betweenness'
   const [isPanelCollapsed, setIsPanelCollapsed] = useState(false);
+  const [legendItems, setLegendItems] = useState([]);
+  const [isLegendCollapsed, setIsLegendCollapsed] = useState(false);
+  
+  // Hypernode color and transparency controls
+  const [hypernodeColors, setHypernodeColors] = useState({
+    MolecularInitiatingEvent: '#86efac', // emerald-300 pastel
+    KeyEvent: '#93c5fd',                 // blue-300 pastel
+    AdverseOutcome: '#f9a8d4',          // pink-300 pastel
+    chemical: '#9CA3AF'                  // gray-400
+  });
+  const [hypernodeTransparency, setHypernodeTransparency] = useState({
+    MolecularInitiatingEvent: 0.14,
+    KeyEvent: 0.14,
+    AdverseOutcome: 0.14,
+    chemical: 0.18
+  });
+  const [showColorControls, setShowColorControls] = useState(false);
   
   const cyRef = useRef(null);
   const containerRef = useRef(null);
   const [cy, setCy] = useState(null);
   const [hyperElementCounts, setHyperElementCounts] = useState({ hypernodes: 0, hyperedges: 0 });
+  // Layout override for hypergraph (Auto = metadata-driven)
+  const [layoutOverride, setLayoutOverride] = useState('auto'); // 'auto' | 'preset' | 'euler' | 'dagre' | 'grid' | 'circle' | 'concentric' | 'breadthfirst'
+  const initialPositionsRef = useRef({});
+  // Chemical visibility controls
+  const [showChemicals, setShowChemicals] = useState(false); // default disabled per user request
+  const [ctxMenu, setCtxMenu] = useState({ visible: false, x: 0, y: 0, aopId: '', label: '' });
+
+  // Choose source graph: when hypergraph view is enabled and backend provided enhanced graph,
+  // prefer hypergraphData so server-added nodes/edges (e.g., chemicals) are included.
+  const sourceGraph = (hypergraphEnabled && hypergraphData && Array.isArray(hypergraphData.nodes) && hypergraphData.nodes.length > 0)
+    ? hypergraphData
+    : data;
 
   // Safety check - prevent crashes with missing data
-  if (!data || !data.nodes || data.nodes.length === 0) {
+  if (!sourceGraph || !sourceGraph.nodes || sourceGraph.nodes.length === 0) {
     return (
       <div className="flex items-center justify-center h-full bg-gray-50">
         <div className="text-center">
           <div className="text-gray-500 mb-2">No graph data available</div>
           <div className="text-sm text-gray-400">Select an AOP to view the network</div>
-          {data && <div className="text-xs text-gray-300 mt-2">Nodes: {data.nodes?.length || 0}</div>}
+          {sourceGraph && <div className="text-xs text-gray-300 mt-2">Nodes: {sourceGraph.nodes?.length || 0}</div>}
         </div>
       </div>
     );
@@ -279,8 +372,8 @@ const HypergraphNetworkGraph = ({
 
   // Ensure we have nodes and edges, even if empty arrays
   const rawData = {
-    nodes: data.nodes || [],
-    edges: data.edges || []
+    nodes: sourceGraph.nodes || [],
+    edges: sourceGraph.edges || []
   };
 
   // Filter out isolated nodes (nodes with no incoming or outgoing connections)
@@ -300,7 +393,8 @@ const HypergraphNetworkGraph = ({
     // Filter nodes to only include those with connections
     const connectedNodes = nodes.filter(node => {
       if (!node || !node.id) return false;
-      return connectedNodeIds.has(node.id);
+      // Always keep WOE nodes and chemical nodes even if isolated
+      return connectedNodeIds.has(node.id) || isWOENode(node.type) || node.type === 'chemical';
     });
     
     console.log(`Filtered isolated nodes: ${nodes.length} → ${connectedNodes.length} nodes (removed ${nodes.length - connectedNodes.length} isolated nodes)`);
@@ -459,209 +553,253 @@ const HypergraphNetworkGraph = ({
     }
   };
 
-  // Initialize Cytoscape
+  // Path highlighting helpers
+  const clearHighlights = (cyInst) => {
+    try {
+      if (!cyInst) return;
+      cyInst.elements().removeClass('faded highlighted');
+    } catch (e) {
+      console.warn('clearHighlights error:', e);
+    }
+  };
+
+  const applyHighlightForNode = (cyInst, nodeId) => {
+    try {
+      if (!cyInst || !nodeId) return;
+      const clicked = cyInst.getElementById(nodeId);
+      if (!clicked || clicked.length === 0) return;
+
+      // Start by fading everything, we'll un-fade highlighted elements
+      cyInst.elements().addClass('faded').removeClass('highlighted');
+
+      // If a hypernode (compound) is clicked, highlight its members and related hyperedges
+      if (clicked.hasClass('hypernode')) {
+        // Highlight the hypernode itself
+        clicked.removeClass('faded').addClass('highlighted');
+
+        const memberNodes = clicked.descendants('node').filter(n => !n.hasClass('hypernode'));
+        memberNodes.forEach(n => n.removeClass('faded').addClass('highlighted'));
+
+        // Highlight edges among member nodes
+        const memberIds = new Set(memberNodes.map(n => n.id()));
+        cyInst.edges('.base-edge').forEach(e => {
+          const s = e.data('source'); const t = e.data('target');
+          if (memberIds.has(s) && memberIds.has(t)) {
+            e.removeClass('faded').addClass('highlighted');
+          }
+        });
+
+        // Highlight hyperedges connected to this hypernode
+        cyInst.edges('.hyperedge').forEach(e => {
+          const s = e.data('source'); const t = e.data('target');
+          if (s === clicked.id() || t === clicked.id()) {
+            e.removeClass('faded').addClass('highlighted');
+          }
+        });
+
+        return;
+      }
+
+      // Build adjacency (directed) over base nodes/edges
+      const baseNodes = cyInst.nodes().filter(n => !n.hasClass('hypernode'));
+      const baseEdges = cyInst.edges('.base-edge');
+
+      const adj = new Map();
+      const rev = new Map();
+      baseNodes.forEach(n => {
+        adj.set(n.id(), new Set());
+        rev.set(n.id(), new Set());
+      });
+      baseEdges.forEach(e => {
+        const s = e.data('source'); const t = e.data('target');
+        if (adj.has(s) && adj.has(t)) {
+          adj.get(s).add(t);
+          rev.get(t).add(s);
+        }
+      });
+
+      const bfs = (startIds, map, allowed) => {
+        const queue = Array.isArray(startIds) ? [...startIds] : [startIds];
+        const visited = new Set(queue);
+        while (queue.length) {
+          const cur = queue.shift();
+          const nbrs = map.get(cur) || new Set();
+          nbrs.forEach(nid => {
+            if (allowed && !allowed.has(nid)) return;
+            if (!visited.has(nid)) { visited.add(nid); queue.push(nid); }
+          });
+        }
+        return visited;
+      };
+
+      const type = (clicked.data('type') || '').toString();
+      let nodeIdsToHighlight = new Set([nodeId]);
+
+      const forward = bfs(nodeId, adj);
+      const backward = bfs(nodeId, rev);
+
+      if (type === 'MolecularInitiatingEvent' || type === 'MIE') {
+        // Only include nodes on some path to at least one AO
+        const aoIds = [];
+        forward.forEach(id => {
+          const n = cyInst.getElementById(id);
+          const t = (n.data('type') || '').toString();
+          if (t === 'AdverseOutcome' || t === 'AO') aoIds.push(id);
+        });
+        if (aoIds.length > 0) {
+          const allowed = forward; // restrict to forward-reachable
+          const backFromAOs = bfs(aoIds, rev, allowed);
+          nodeIdsToHighlight = backFromAOs;
+          nodeIdsToHighlight.add(nodeId);
+        } else {
+          nodeIdsToHighlight = forward;
+        }
+      } else if (type === 'AdverseOutcome' || type === 'AO') {
+        nodeIdsToHighlight = backward;
+      } else {
+        // KE or other: highlight upstream and downstream
+        const union = new Set();
+        forward.forEach(id => union.add(id));
+        backward.forEach(id => union.add(id));
+        nodeIdsToHighlight = union;
+      }
+
+      // Highlight nodes and corresponding edges
+      const nodeIdsSet = nodeIdsToHighlight;
+
+      // Nodes
+      nodeIdsSet.forEach(id => {
+        const el = cyInst.getElementById(id);
+        if (el && el.length > 0) {
+          el.removeClass('faded').addClass('highlighted');
+        }
+      });
+
+      // Edges between highlighted nodes
+      baseEdges.forEach(e => {
+        const s = e.data('source'); const t = e.data('target');
+        if (nodeIdsSet.has(s) && nodeIdsSet.has(t)) {
+          e.removeClass('faded').addClass('highlighted');
+        }
+      });
+
+      // Highlight parent hypernodes that contain highlighted nodes
+      const hyperParentIds = new Set();
+      nodeIdsSet.forEach(id => {
+        const n = cyInst.getElementById(id);
+        const parentId = n.data('parent');
+        if (parentId) hyperParentIds.add(parentId);
+      });
+      hyperParentIds.forEach(hid => {
+        const h = cyInst.getElementById(hid);
+        if (h && h.length > 0) h.removeClass('faded').addClass('highlighted');
+      });
+
+      // Hyperedges connecting highlighted hypernodes
+      cyInst.edges('.hyperedge').forEach(e => {
+        const s = e.data('source'); const t = e.data('target');
+        if (hyperParentIds.has(s) && hyperParentIds.has(t)) {
+          e.removeClass('faded').addClass('highlighted');
+        }
+      });
+    } catch (e) {
+      console.warn('applyHighlightForNode error:', e);
+    }
+  };
+
+  // Initialize Cytoscape - Enhanced for dynamic updates
   useEffect(() => {
     if (!containerRef.current) return;
     
-    // Destroy existing instance if it exists
+    // Destroy existing instance if it exists for clean re-initialization
     if (cy) {
+      console.log('HypergraphNetworkGraph: Destroying existing cytoscape instance for dynamic update');
       cy.removeAllListeners();
       cy.destroy();
       setCy(null);
     }
     
-    console.log('HypergraphNetworkGraph: Initializing cytoscape with', 
-      safeData.nodes.length, 'nodes', 
-      hypergraphEnabled ? '(hypergraph mode)' : ''
+    console.log('HypergraphNetworkGraph: Initializing cytoscape with',
+      safeData.nodes.length, 'nodes',
+      safeData.edges.length, 'edges',
+      hypergraphEnabled ? '(hypergraph mode)' : '(normal mode)'
     );
 
     try {
       let nodes = [];
       let hyperNodes = [];
       let hyperEdges = [];
-      let edges = [];
       
-      if (hypergraphEnabled && hypergraphData) {
-        // Use hypergraph data from backend
-        console.log('Using hypergraph data from backend with', hypergraphData.nodes?.length, 'total elements');
-        
-        // Separate regular nodes, hypernodes, and edges from backend data
-        const regularNodes = [];
-        const backendHypernodes = [];
-        const regularEdges = [];
-        const hypernodeConnections = [];
-        
-        // Process nodes from backend
-        hypergraphData.nodes?.forEach(node => {
-          if (node.type === 'type-hypernode' || node.type === 'community-hypernode' || node.type === 'stressor-hypernode') {
-            backendHypernodes.push(node);
-          } else {
-            regularNodes.push(node);
-          }
-        });
-        
-        // Process edges from backend
-        hypergraphData.edges?.forEach(edge => {
-          if (edge.type === 'hypernode-connection' || edge.type === 'community-connection' || 
-              edge.type === 'stressor-connection' || edge.type === 'stressor-aop-connection' || 
-              edge.type === 'stressor-mie-connection' || edge.type === 'stressor-adverse-hyperedge' ||
-              edge.type === 'stressor-hypernode-connection' || edge.type === 'stressor-to-aop-hypernode') {
-            hypernodeConnections.push(edge);
-          } else {
-            regularEdges.push(edge);
-          }
-        });
-        
-        console.log('Backend data breakdown:', {
-          regularNodes: regularNodes.length,
-          hypernodes: backendHypernodes.length,
-          regularEdges: regularEdges.length,
-          hypernodeConnections: hypernodeConnections.length
-        });
-        
-        // Create node-to-hypernode mapping
-        const nodeToHypernode = {};
-        hypernodeConnections.forEach(conn => {
-          if (conn.type === 'hypernode-connection' || conn.type === 'community-connection' || 
-              conn.type === 'stressor-connection') {
-            // These connections go from regular node to hypernode
-            const nodeId = conn.source;
-            const hypernodeId = conn.target;
-            
-            // Find the hypernode
-            const hypernode = backendHypernodes.find(h => h.id === hypernodeId);
-            if (hypernode && hypernode.members?.includes(nodeId)) {
-              nodeToHypernode[nodeId] = hypernodeId;
-            }
-          }
-        });
-        
-        // Calculate hypernode positions
-        const hypernodePositions = calculateHypernodePositions(backendHypernodes.map((h, idx) => ({
-          globalId: idx,
-          originalType: h.original_type || h.type,
-          nodes: h.members?.map(id => ({ id })) || []
-        })));
-        
-        // Create cytoscape nodes from regular nodes
-        nodes = regularNodes.map(node => {
-          const hypernodeId = nodeToHypernode[node.id];
-          const hypernodeIdx = backendHypernodes.findIndex(h => h.id === hypernodeId);
-          
-          // Calculate position within hypernode or standalone
-          let position;
-          if (hypernodeId && hypernodeIdx >= 0) {
-            const hypernode = backendHypernodes[hypernodeIdx];
-            const community = {
-              globalId: hypernodeIdx,
-              nodes: hypernode.members?.map(id => ({ id })) || []
-            };
-            position = calculateNodePositionInHypernode(node, hypernodeIdx, [community], hypernodePositions);
-          } else {
-            position = { x: Math.random() * 400 - 200, y: Math.random() * 400 - 200 };
-          }
-          
-          return {
-            data: {
-              id: node.id,
-              label: node.label || node.id,
-              type: node.type,
-              parent: hypernodeId, // Assign to hypernode if exists
-              isHyper: false,
-              ...node
-            },
-            position: position,
-            classes: `base-node node-${node.type?.toLowerCase() || 'other'}`
-          };
-        });
-        
-        // Create cytoscape hypernodes
-        backendHypernodes.forEach((hypernode, idx) => {
-          const hypernodeType = hypernode.type;
-          let label = hypernode.label;
-          
-          // Special styling for stressor hypernodes
-          if (hypernodeType === 'stressor-hypernode') {
-            label = `Stressors (${hypernode.member_count || 0})`;
-          }
-          
-          hyperNodes.push({
-            data: {
-              id: hypernode.id,
-              label: label,
-              type: 'hypernode',
-              hypernode_type: hypernodeType,
-              original_type: hypernode.original_type || (hypernodeType === 'stressor-hypernode' ? 'Stressor' : 'other'),
-              member_count: hypernode.member_count || hypernode.members?.length || 0,
-              member_nodes: hypernode.members || [],
-              aop: hypernode.aop,
-              isHyper: true
-            },
-            position: hypernodePositions[idx] || { x: 0, y: 0 },
-            classes: `hypernode hypernode-${hypernodeType.toLowerCase()}`
-          });
-        });
-        
-        // Create hyperedges for stressor connection types
-        hypernodeConnections.forEach(conn => {
-          if (conn.type === 'stressor-aop-connection' || conn.type === 'stressor-mie-connection' || 
-              conn.type === 'stressor-adverse-hyperedge' || conn.type === 'stressor-hypernode-connection' || 
-              conn.type === 'stressor-to-aop-hypernode') {
-            hyperEdges.push({
+      // Server-provided chemical-only hypergraph mode (no community nodes)
+      const serverChemicalOnly = !!(hypergraphEnabled && hypergraphData && hypergraphData.config && hypergraphData.config.useChemicalHypernodesOnly);
+      if (serverChemicalOnly) {
+        // Build elements strictly from backend-provided nodes (chemical hypernodes + chemicals)
+        safeData.nodes.forEach((node) => {
+          if (!node || !node.id) return;
+          const t = (node.type || node.original_type || '').toString();
+          if (t === 'chemical-hypernode') {
+            hyperNodes.push({
               data: {
-                id: conn.id,
-                source: conn.source,
-                target: conn.target,
-                type: conn.type,
+                id: node.id,
+                label: node.label || node.id,
+                type: 'hypernode',
+                original_type: 'chemical',
+                member_count: node.member_count || (Array.isArray(node.members) ? node.members.length : 0),
+                members: node.members || node.member_nodes || [],
                 isHyper: true,
-                label: conn.label || conn.aop || 'Stressor Connection'
+                // Dynamic chemical hypernode colors
+                bgColor: hexToRgba(hypernodeColors.chemical, hypernodeTransparency.chemical),
+                borderColor: hexToRgba(hypernodeColors.chemical, Math.min(hypernodeTransparency.chemical + 0.3, 1.0)),
+                borderStyle: 'dashed',
+                legendColor: '#9CA3AF'
               },
-              classes: `hyperedge ${conn.type.replace('-', '_')}`
+              position: undefined,
+              classes: 'hypernode hypernode-chemical'
+            });
+          } else {
+            nodes.push({
+              data: {
+                id: node.id,
+                label: node.label || node.id,
+                type: node.type,
+                parent: node.parent, // backend assigned parent to chemical-hypernode
+                community: undefined,
+                isHyper: false,
+                ...node
+              },
+              position: undefined,
+              classes: `base-node node-${node.type?.toLowerCase() || 'other'} ${isWOENode(node.type) ? 'woe-node' : ''}`
             });
           }
         });
+      }
+      
+      // Build AO/MIE/KE hypernodes whenever hypergraph is enabled OR when the
+      // backend sent chemical-only hypernodes so we still show biological groups.
+      if (hypergraphEnabled || serverChemicalOnly) {
+        // Ensure ALL nodes are grouped into type-based hypernodes
+        console.log('Creating type-based hypernodes - ensuring ALL nodes are grouped');
         
-        // Also add regular edges
-        edges = safeData.edges.map(edge => ({
-          data: {
-            id: edge.id,
-            source: edge.source,
-            target: edge.target,
-            type: edge.type || 'regular',
-            isHyper: false
-          },
-          classes: 'base-edge'
-        }));
-        
-      } else if (hypergraphEnabled) {
-        // Original local hypergraph creation code
-        console.log('Creating hypernodes using type-aware community detection');
-        
-        // Build adjacency list for community detection
-        const adjacencyList = {};
-        const nodeMap = {};
-        
-        // Initialize adjacency list
-        safeData.nodes.forEach(node => {
-          adjacencyList[node.id] = [];
-          nodeMap[node.id] = node;
+        // Group nodes by their type (normalize type names)
+        // Build base set for grouping: exclude chemicals and chemical-hypernodes
+        const baseForGrouping = safeData.nodes.filter(node => {
+          const t = (node.type || node.original_type || '').toString();
+          return t !== 'chemical' && t !== 'chemical-hypernode';
         });
-        
-        // Add edges to adjacency list
-        safeData.edges.forEach(edge => {
-          if (adjacencyList[edge.source] && adjacencyList[edge.target]) {
-            adjacencyList[edge.source].push(edge.target);
-            adjacencyList[edge.target].push(edge.source);
-          }
-        });
-        
-        // Group nodes by type and create hypernodes
-        console.log('Creating type-based hypernodes with maxNodesPerHypernode:', maxNodesPerHypernode);
-        
-        // Group nodes by their type
+
         const nodesByType = {};
-        safeData.nodes.forEach(node => {
-          const type = node.type || 'other';
+        baseForGrouping.forEach(node => {
+          let type = node.type || 'other';
+          
+          // Normalize type names for consistency
+          if (type === 'MolecularInitiatingEvent' || type === 'MIE') {
+            type = 'MolecularInitiatingEvent';
+          } else if (type === 'KeyEvent' || type === 'KE') {
+            type = 'KeyEvent';
+          } else if (type === 'AdverseOutcome' || type === 'AO') {
+            type = 'AdverseOutcome';
+          }
+          
           if (!nodesByType[type]) {
             nodesByType[type] = [];
           }
@@ -670,7 +808,7 @@ const HypergraphNetworkGraph = ({
         
         console.log('Nodes grouped by type:', Object.keys(nodesByType).map(type => `${type}: ${nodesByType[type].length}`).join(', '));
         
-        // Create communities for each type, splitting if necessary
+        // Create communities for each type - ALWAYS create a hypernode even for single nodes
         let allCommunities = [];
         let communityCounter = 0;
         
@@ -678,7 +816,7 @@ const HypergraphNetworkGraph = ({
           console.log(`Processing ${type} nodes: ${typeNodes.length} total`);
           
           if (typeNodes.length <= maxNodesPerHypernode) {
-            // Create single hypernode for this type
+            // Create single hypernode for this type (even if only 1 node)
             console.log(`Creating single hypernode for ${type} with ${typeNodes.length} nodes`);
             allCommunities.push({
               nodes: typeNodes,
@@ -713,9 +851,9 @@ const HypergraphNetworkGraph = ({
           }
         });
         
-        console.log(`Created ${allCommunities.length} hypernodes total`);
+        console.log(`Created ${allCommunities.length} hypernodes total - ALL nodes will be contained`);
         
-        // Find any unassigned nodes and create individual hypernodes for them
+        // Verify ALL nodes are assigned (they should be since we grouped by type above)
         const assignedNodeIds = new Set();
         allCommunities.forEach(community => {
           community.nodes.forEach(node => {
@@ -723,9 +861,11 @@ const HypergraphNetworkGraph = ({
           });
         });
         
-        const unassignedNodes = safeData.nodes.filter(node => !assignedNodeIds.has(node.id));
+        const unassignedNodes = baseForGrouping.filter(node => !assignedNodeIds.has(node.id));
         if (unassignedNodes.length > 0) {
-          console.log(`Creating individual hypernodes for ${unassignedNodes.length} unassigned nodes`);
+          console.warn(`Found ${unassignedNodes.length} unassigned nodes - this should not happen with type-based grouping!`);
+          console.warn('Unassigned nodes:', unassignedNodes.map(n => `${n.id} (${n.type})`));
+          // Create individual hypernodes for any missed nodes
           unassignedNodes.forEach(node => {
             allCommunities.push({
               nodes: [node],
@@ -737,11 +877,23 @@ const HypergraphNetworkGraph = ({
           });
         }
         
+        console.log('Final verification: All communities and their nodes:');
+        allCommunities.forEach((comm, i) => {
+          console.log(`  Community ${i} (${comm.originalType}): ${comm.nodes.map(n => n.id).join(', ')}`);
+        });
+        
         console.log(`Total communities detected: ${allCommunities.length}`);
         allCommunities.forEach((comm, i) => {
           console.log(`Community ${i} (${comm.originalType}): ${comm.nodes.length} nodes`);
         });
         
+        // Assign pastel colors per community and build color map
+        const communityColorMap = new Map();
+        allCommunities.forEach((community) => {
+          const col = getPastelByIndex(community.globalId);
+          communityColorMap.set(community.globalId, col);
+        });
+
         // Create node-to-community mapping
         const nodeToCommunity = {};
         allCommunities.forEach((community, communityIndex) => {
@@ -753,33 +905,119 @@ const HypergraphNetworkGraph = ({
         // Calculate hypernode positions first
         const hypernodePositions = calculateHypernodePositions(allCommunities);
         
-        // Create individual nodes as children of community hypernodes with preset positions
+        // Create individual nodes; assign AO/MIE/KE into community hypernodes,
+        // but keep chemical nodes (and any server-nested nodes) as-is.
         nodes = safeData.nodes.map(node => {
+          const t = (node.type || '').toString();
+          if (t.toLowerCase() === 'chemical') {
+            // Preserve backend-assigned parent and position for chemicals
+            return {
+              data: {
+                ...node, // spread first, then ensure overrides
+                id: node.id,
+                label: node.label || node.id,
+                type: 'chemical',
+                parent: node.parent, // keep parent from backend (chemical-hypernode)
+                community: undefined,
+                isHyper: false
+              },
+              position: undefined,
+              classes: `base-node chemical-node ${!showChemicals ? 'chemical-hidden' : ''}`
+            };
+          }
+          
           const communityGlobalId = nodeToCommunity[node.id];
-          const hypernodeId = communityGlobalId !== undefined ? `community_${communityGlobalId}` : `isolated_${node.id}`;
+          const hypernodeId = communityGlobalId !== undefined ? `community_${communityGlobalId}` : undefined;
           
-          // Calculate position within hypernode
-          const position = calculateNodePositionInHypernode(node, communityGlobalId, allCommunities, hypernodePositions);
+          // Calculate position within hypernode when assigned
+          const position = (communityGlobalId !== undefined)
+            ? calculateNodePositionInHypernode(node, communityGlobalId, allCommunities, hypernodePositions)
+            : undefined;
           
-          console.log(`Node ${node.id} (${node.type}) assigned to hypernode ${hypernodeId} at position (${position.x}, ${position.y})`);
+          if (communityGlobalId === undefined) {
+            console.warn(`No community assignment for base node ${node.id} (${node.type}); leaving ungrouped`);
+          } else {
+            console.log(`Node ${node.id} (${node.type}) -> parent ${hypernodeId}`);
+          }
           
           return {
             data: {
+              ...node, // spread first so overrides below stick
               id: node.id,
               label: node.label || node.id,
               type: node.type,
-              parent: hypernodeId, // Assign to community hypernode
+              parent: hypernodeId, // Assign to type-based hypernode (AO/MIE/KE)
               community: communityGlobalId,
-              isHyper: false,
-              // Include all original node metadata for details panel
-              ...node // This spreads all original properties
+              isHyper: false
             },
-            position: position, // Set preset position
-            classes: `base-node node-${node.type?.toLowerCase() || 'other'}`
+            position,
+            classes: `base-node node-${node.type?.toLowerCase() || 'other'} ${isWOENode(node.type) ? 'woe-node' : ''}`
           };
         });
         
-        // Create hypernodes for each community
+        console.log(`Created ${nodes.length} individual nodes, all should have parent hypernodes`);
+        
+        // Verify all nodes have parents
+        let nodesWithoutParents = nodes.filter(n => !n.data.parent || n.data.parent.startsWith('isolated_'));
+        if (nodesWithoutParents.length > 0) {
+          console.warn(`Found ${nodesWithoutParents.length} nodes without parents. Applying type-based fallback hypernodes...`);
+          
+          // Fallback: create 1 hypernode per biological type and assign any unparented nodes to them
+          const fallbackTypes = [
+            { key: 'MolecularInitiatingEvent', label: 'MolecularInitiatingEvent Group', color: '#86efac' },
+            { key: 'KeyEvent', label: 'KeyEvent Group', color: '#93c5fd' },
+            { key: 'AdverseOutcome', label: 'AdverseOutcome Group', color: '#f9a8d4' }
+          ];
+          
+          const createdFallbacks = new Map();
+          
+          fallbackTypes.forEach(ft => {
+            const typeNodes = nodesWithoutParents.filter(n => (n.data.type === ft.key) ||
+                                                              (ft.key === 'MolecularInitiatingEvent' && n.data.type === 'MIE') ||
+                                                              (ft.key === 'KeyEvent' && n.data.type === 'KE') ||
+                                                              (ft.key === 'AdverseOutcome' && n.data.type === 'AO'));
+            if (typeNodes.length === 0) return;
+            
+            const hid = `fallback_${ft.key.toLowerCase()}`;
+            // Create container if not already created
+            if (!createdFallbacks.has(ft.key)) {
+              hyperNodes.push({
+                data: {
+                  id: hid,
+                  label: `${ft.label} (${typeNodes.length})`,
+                  type: 'hypernode',
+                  original_type: ft.key,
+                  member_count: typeNodes.length,
+                  member_nodes: typeNodes.map(n => n.data.id),
+                  isHyper: true,
+                  bgColor: hexToRgba(ft.color, 0.14),
+                  borderColor: hexToRgba(ft.color, 0.45),
+                  borderStyle: 'solid',
+                  legendColor: ft.color
+                },
+                classes: `hypernode hypernode-${ft.key.toLowerCase()}`
+              });
+              createdFallbacks.set(ft.key, hid);
+            }
+            
+            // Assign parent
+            typeNodes.forEach(n => {
+              n.data.parent = createdFallbacks.get(ft.key);
+            });
+          });
+          
+          // Refresh the missing list after fallback
+          nodesWithoutParents = nodes.filter(n => !n.data.parent || n.data.parent.startsWith('isolated_'));
+          if (nodesWithoutParents.length > 0) {
+            console.error(`After fallback, still ${nodesWithoutParents.length} nodes without parents:`, nodesWithoutParents.map(n => `${n.data.id} (${n.data.type})`));
+          } else {
+            console.log('Fallback succeeded: all nodes are now assigned to hypernode parents');
+          }
+        } else {
+          console.log('SUCCESS: All nodes have been assigned to hypernode parents');
+        }
+        
+        // Create hypernodes for each community with better color scheme
         allCommunities.forEach((community, communityIndex) => {
           const hypernodeId = `community_${community.globalId}`;
           const dominantType = community.dominantType;
@@ -790,10 +1028,37 @@ const HypergraphNetworkGraph = ({
           // Create descriptive label for type-specific communities
           let label;
           if (community.isSplit) {
-            label = `${community.originalType} Group ${community.splitIndex}\n(${community.nodes.length} nodes)`;
+            label = `${community.originalType} Group ${community.splitIndex} (${community.nodes.length})`;
           } else {
-            label = `${community.originalType} Group\n(${community.nodes.length} nodes)`;
+            label = `${community.originalType} Group (${community.nodes.length})`;
           }
+          
+          // Use dynamic colors from state
+          const getTypeColor = (originalType) => {
+            // Normalize type names
+            let normalizedType = originalType;
+            if (originalType === 'MIE') normalizedType = 'MolecularInitiatingEvent';
+            if (originalType === 'KE') normalizedType = 'KeyEvent';
+            if (originalType === 'AO') normalizedType = 'AdverseOutcome';
+            
+            return hypernodeColors[normalizedType] || '#d1d5db'; // fallback to gray-300
+          };
+          
+          const getTypeTransparency = (originalType) => {
+            // Normalize type names
+            let normalizedType = originalType;
+            if (originalType === 'MIE') normalizedType = 'MolecularInitiatingEvent';
+            if (originalType === 'KE') normalizedType = 'KeyEvent';
+            if (originalType === 'AO') normalizedType = 'AdverseOutcome';
+            
+            return hypernodeTransparency[normalizedType] || 0.14; // fallback transparency
+          };
+          
+          const baseCol = getTypeColor(community.originalType);
+          const transparency = getTypeTransparency(community.originalType);
+          const bgCol = hexToRgba(baseCol, transparency);  // dynamic transparency
+          const borderCol = hexToRgba(baseCol, Math.min(transparency + 0.3, 1.0)); // slightly more opaque border
+          const borderStyle = (community.originalType === 'chemical') ? 'dashed' : 'solid';
           
           hyperNodes.push({
             data: {
@@ -805,12 +1070,18 @@ const HypergraphNetworkGraph = ({
               member_nodes: community.nodes.map(n => n.id),
               community_index: community.globalId,
               type_distribution: typeDistribution,
-              isHyper: true
+              isHyper: true,
+              bgColor: bgCol,
+              borderColor: borderCol,
+              legendColor: baseCol,
+              borderStyle
             },
             position: hypernodePositions[community.globalId], // Set preset position
             classes: `hypernode hypernode-${community.originalType.toLowerCase()}`
           });
         });
+        
+        console.log(`Created ${hyperNodes.length} hypernode containers for all node types`);
         
         // Create hyperedges between communities based on meaningful biological connections
         const communityConnections = new Map(); // Use Map to store directional connections with metadata
@@ -873,9 +1144,119 @@ const HypergraphNetworkGraph = ({
             classes: 'hyperedge community-connection'
           });
         });
+
+        // Add chemical→AO hyperedges per AOP (selected) using frontend hypernodes
+        try {
+          // nodeToCommunity map already built above
+          const nodeToComm = nodeToCommunity;
+
+          // Collect chemical and AO community ids per AOP
+          const chemCommsByAop = new Map();
+          const aoCommsByAop = new Map();
+
+          safeData.nodes.forEach(n => {
+            if (!n || !n.id) return;
+            const aopId = n.aop;
+            const t = (n.type || '').toString();
+            const comm = nodeToComm[n.id];
+            if (!aopId || comm === undefined) return;
+
+            if (t === 'chemical') {
+              if (!chemCommsByAop.has(aopId)) chemCommsByAop.set(aopId, new Set());
+              chemCommsByAop.get(aopId).add(comm);
+            }
+            if (t === 'AdverseOutcome' || t === 'AO') {
+              if (!aoCommsByAop.has(aopId)) aoCommsByAop.set(aopId, new Set());
+              aoCommsByAop.get(aopId).add(comm);
+            }
+          });
+
+          // Prefer friendly AOP names if backend provided them
+          const aopNames =
+            (hypergraphData && (hypergraphData.aop_names || hypergraphData.aop_id_to_name)) || {};
+
+          chemCommsByAop.forEach((chemSet, aopId) => {
+            const aoSet = aoCommsByAop.get(aopId);
+            if (!aoSet || aoSet.size === 0) return;
+
+            const aopNum = (aopId && aopId.includes(':')) ? aopId.split(':')[1] : (aopId || '');
+            const aopLabel =
+              aopNames[aopId] ? `AOP ${aopNum}: ${aopNames[aopId]}` :
+              (aopNum ? `AOP ${aopNum}` : (aopId || ''));
+
+            chemSet.forEach(srcComm => {
+              aoSet.forEach(tgtComm => {
+                const edgeId = `hyperedge_chem_${srcComm}_to_${tgtComm}_${aopNum}`;
+                hyperEdges.push({
+                  data: {
+                    id: edgeId,
+                    source: `community_${srcComm}`,
+                    target: `community_${tgtComm}`,
+                    type: 'chemical_hyperedge',
+                    isHyper: true,
+                    aop: aopId,
+                    label: aopLabel
+                  },
+                  classes: `hyperedge chemical-hyperedge ${!showChemicals ? 'chemical-hidden' : ''}`
+                });
+              });
+            });
+          });
+        } catch (e) {
+          console.warn('Failed to add chemical→AO hyperedges:', e);
+        }
         
         console.log(`Created ${hyperNodes.length} hypernodes and ${hyperEdges.length} meaningful hyperedges`);
         console.log('Hyperedge connections:', Array.from(communityConnections.values()));
+
+        // --- Position chemical hypernodes and their children to avoid overlap ---
+        try {
+          const chemHyperNodes = hyperNodes.filter(h => (h.data?.original_type === 'chemical') || (h.classes || '').includes('hypernode-chemical'));
+          if (chemHyperNodes.length > 0) {
+            // Determine a new column to the right of existing community grid
+            const existingXs = Object.values(hypernodePositions || {}).map(p => p.x);
+            const xPad = 350; const yPad = 240; // tighter spacing for chemical column too
+            const chemColX = (existingXs.length > 0 ? Math.max(...existingXs) + xPad : 0);
+
+            // Helper to estimate container size used in styles
+            const estimateContainer = (memberCount) => {
+              const baseWidth = Math.max(140, Math.min(250, 140 + (memberCount * 5)));
+              const baseHeight = Math.max(110, Math.min(200, 110 + (memberCount * 3.5)));
+              return { width: baseWidth, height: baseHeight };
+            };
+
+            chemHyperNodes.forEach((h, idx) => {
+              const memberCount = h.data?.member_count || (Array.isArray(h.data?.member_nodes) ? h.data.member_nodes.length : 0);
+              const { width, height } = estimateContainer(memberCount);
+              const center = { x: chemColX, y: (idx - (chemHyperNodes.length - 1) / 2) * yPad };
+              // Place hypernode itself
+              h.position = center;
+
+              // Place child chemical nodes in a compact grid inside this container
+              const children = nodes.filter(n => n?.data?.parent === h.data.id && (n.data.type === 'chemical'));
+              if (children.length > 0) {
+                const cols = Math.max(1, Math.ceil(Math.sqrt(children.length)));
+                const rows = Math.max(1, Math.ceil(children.length / cols));
+                const innerW = Math.max(60, width - 40);
+                const innerH = Math.max(60, height - 40);
+                const cellX = cols > 1 ? innerW / (cols - 1) : 0;
+                const cellY = rows > 1 ? innerH / (rows - 1) : 0;
+                const startX = center.x - innerW / 2;
+                const startY = center.y - innerH / 2;
+
+                children.forEach((child, i) => {
+                  const r = Math.floor(i / cols);
+                  const c = i % cols;
+                  const x = startX + c * cellX;
+                  const y = startY + r * cellY;
+                  child.position = { x, y };
+                });
+              }
+            });
+          }
+        } catch (e) {
+          console.warn('Chemical hypernode positioning failed:', e);
+        }
       } else {
         // Normal mode - individual nodes
         nodes = safeData.nodes.map(node => ({
@@ -887,25 +1268,27 @@ const HypergraphNetworkGraph = ({
             // Include all original node metadata for details panel
             ...node // This spreads all original properties
           },
-          classes: `base-node node-${node.type?.toLowerCase() || 'other'}`
+          classes: `base-node node-${node.type?.toLowerCase() || 'other'} ${isWOENode(node.type) ? 'woe-node' : ''}`
         }));
       }
       
-      // Prepare edges (only if not already populated in hypergraph mode)
-      if (!hypergraphEnabled || !hypergraphData) {
-        edges = safeData.edges.map(edge => ({
+      // Prepare edges
+      const edges = safeData.edges.map(edge => {
+        const et = (edge.type || edge.relationship || 'regular').toString();
+        const isChemEdge = et.toLowerCase().includes('chemical');
+        return ({
           data: {
             id: edge.id,
             source: edge.source,
             target: edge.target,
-            type: edge.type || 'regular',
+            type: et,
             isHyper: false
           },
-          classes: 'base-edge'
-        }));
-      }
+          classes: `base-edge ${isChemEdge ? 'chemical-edge' : ''} ${isChemEdge && !showChemicals ? 'chemical-hidden' : ''}`
+        });
+      });
 
-      // Update counts
+      // Update counts only (legend removed)
       setHyperElementCounts({ 
         hypernodes: hyperNodes.length, 
         hyperedges: hyperEdges.length 
@@ -924,7 +1307,78 @@ const HypergraphNetworkGraph = ({
         return;
       }
 
-      const cytoscapeInstance = cytoscape({
+      // Build layout options with override support
+      const isComprehensive = !!(sourceGraph && sourceGraph.metadata && sourceGraph.metadata.source === 'comprehensive_search');
+      const wantsForce = !!(sourceGraph && sourceGraph.metadata && sourceGraph.metadata.layout_hint === 'force');
+
+  const buildLayoutOptions = (name) => {
+    switch ((name || '').toLowerCase()) {
+      case 'preset':
+        return { name: 'preset', fit: true, padding: 80 };
+      case 'force':
+      case 'forceatlas2':
+      case 'euler':
+        return {
+          name: 'euler',
+          fit: true,
+          padding: 80,
+          nodeDimensionsIncludeLabels: true,
+          springLength: 120,
+          springCoeff: 0.0008,
+          repulsion: 4500,
+          gravity: -1.0,
+          iterations: 2000,
+          animate: false,
+          randomize: true
+        };
+      // removed unsupported layouts: cose-bilkent, cola
+      case 'dagre':
+        return { name: 'dagre', fit: true, padding: 80, rankDir: 'LR', nodeSep: 50, rankSep: 80 };
+      case 'grid':
+        return { name: 'grid', fit: true, padding: 80 };
+      case 'circle':
+        return { name: 'circle', fit: true, padding: 80 };
+      case 'concentric':
+        return { name: 'concentric', fit: true, padding: 80 };
+      case 'breadthfirst':
+        return { name: 'breadthfirst', fit: true, padding: 80, directed: true, circle: false };
+      default:
+        // Auto behavior for hypergraph:
+        // - comprehensive_search → Preset (columnar hypernodes like screenshots)
+        // - else if layout_hint requests force → Euler
+        // - else → Preset
+        if (hypergraphEnabled) {
+          if (isComprehensive) return buildLayoutOptions('preset');
+          if (wantsForce) return buildLayoutOptions('euler');
+          return buildLayoutOptions('preset');
+        }
+        // Non-hypergraph fallback (not typically used here)
+        return {
+          name: layoutType === 'forceatlas2' ? 'euler' : layoutType,
+          fit: true,
+          padding: 80,
+          nodeDimensionsIncludeLabels: true,
+          uniformNodeDimensions: false,
+          packComponents: true,
+          nodeRepulsion: 4500,
+          idealEdgeLength: 150,
+          edgeElasticity: 0.45,
+          nestingFactor: 0.1,
+          gravity: 0.05,
+          numIter: 2500,
+          tile: true,
+          animate: false,
+          randomize: true,
+          tilingPaddingVertical: 20,
+          tilingPaddingHorizontal: 20
+        };
+    }
+  };
+
+      const chosenLayoutName = (layoutOverride && layoutOverride !== 'auto') ? layoutOverride : 'auto';
+      const layoutOptions = buildLayoutOptions(chosenLayoutName);
+
+  const cytoscapeInstance = cytoscape({
         container: containerRef.current,
         elements: [
           ...hyperNodes, // Add parent nodes first
@@ -950,33 +1404,25 @@ const HypergraphNetworkGraph = ({
               'background-color': (node) => {
                 const type = node.data('type');
                 const isSelected = node.data('is_selected');
+                const isWOE = isWOENode(type);
                 
                 if (isSelected) {
-                  // Bright colors for selected nodes
-                  if (type === 'Stressor') return '#9333ea'; // Bright purple for stressors
-                  if (type === 'MolecularInitiatingEvent' || type === 'MIE') return '#10b981'; // Bright green
-                  if (type === 'KeyEvent' || type === 'KE') return '#3b82f6';  // Bright blue
-                  if (type === 'AdverseOutcome' || type === 'AO') return '#f97316';  // Bright orange
-                  return '#6b7280'; // Gray for others
+                  if (type === 'MolecularInitiatingEvent' || type === 'MIE') return NODE_COLORS.MIE.selected;
+                  if (type === 'KeyEvent' || type === 'KE') return NODE_COLORS.KE.selected;
+                  if (type === 'AdverseOutcome' || type === 'AO') return NODE_COLORS.AO.selected;
+                  if (isWOE) return NODE_COLORS.WOE.selected;
+                  return NODE_COLORS.OTHER.selected;
                 } else {
-                  // Very light pastel colors for non-selected
-                  if (type === 'Stressor') return '#e9d5ff'; // Very light purple for stressors
-                  if (type === 'MolecularInitiatingEvent' || type === 'MIE') return '#bbf7d0'; // Very light green
-                  if (type === 'KeyEvent' || type === 'KE') return '#dbeafe';  // Very light blue
-                  if (type === 'AdverseOutcome' || type === 'AO') return '#fed7aa';  // Very light orange
-                  return '#e5e7eb'; // Very light gray for others
+                  if (type === 'MolecularInitiatingEvent' || type === 'MIE') return NODE_COLORS.MIE.normal;
+                  if (type === 'KeyEvent' || type === 'KE') return NODE_COLORS.KE.normal;
+                  if (type === 'AdverseOutcome' || type === 'AO') return NODE_COLORS.AO.normal;
+                  if (isWOE) return NODE_COLORS.WOE.normal;
+                  return NODE_COLORS.OTHER.normal;
                 }
               },
               'border-width': (node) => node.data('is_selected') ? 3 : 1,
               'border-color': (node) => node.data('is_selected') ? '#000000' : '#6b7280',
-              'shape': (node) => {
-                const type = node.data('type');
-                if (type === 'Stressor') return 'diamond'; // Diamond for stressors
-                if (type === 'MolecularInitiatingEvent' || type === 'MIE') return 'triangle'; // Triangle for MIE
-                if (type === 'KeyEvent' || type === 'KE') return 'round-rectangle';  // Round square for KE
-                if (type === 'AdverseOutcome' || type === 'AO') return 'ellipse';  // Circle for AO
-                return 'ellipse'; // Default circle
-              },
+              'shape': 'ellipse',
               'label': 'data(label)',
               'font-size': `${fontSize}px`,
               'font-weight': 'bold',
@@ -986,26 +1432,24 @@ const HypergraphNetworkGraph = ({
               'text-outline-width': 0,
               'text-max-width': '80px',
               'text-wrap': 'wrap',
-              'opacity': 1.0, // Ensure all nodes are fully opaque
               'z-index': 10
             }
           },
+          // Hidden chemical nodes/hypernodes when toggled off
           {
-            selector: 'node[hypernode_type = "stressor-hypernode"]',
+            selector: '.chemical-hidden',
             style: {
-              'background-color': '#f3f4f6',  // Light gray, fully opaque
-              'border-color': '#888888',
-              'border-width': 2,
+              'display': 'none'
+            }
+          },
+          // WOE nodes - distinct border/shape
+          {
+            selector: 'node.woe-node',
+            style: {
               'border-style': 'dashed',
-              'label': 'data(label)',
-              'text-valign': 'center',
-              'text-halign': 'center',
-              'font-size': '12px',
-              'font-weight': 'bold',
-              'color': '#555',
-              'width': 90,
-              'height': 90,
-              'shape': 'round-rectangle'
+              'border-color': '#a855f7',
+              'border-width': 2,
+              'shape': 'diamond'
             }
           },
           // Edge styling
@@ -1022,71 +1466,98 @@ const HypergraphNetworkGraph = ({
               'z-index': 5
             }
           },
-          // Hypernode compound styling
+          // Hypernode compound styling - clean rectangular containers
           {
             selector: '.hypernode',
             style: {
-              'background-color': (node) => {
-                const originalType = node.data('original_type');
-                const hypernodeType = node.data('hypernode_type');
-                // More visible background colors for hypernodes
-                if (hypernodeType === 'stressor-hypernode' || originalType === 'Stressor') return 'rgba(200, 200, 200, 0.6)'; // Light gray for stressors
-                if (originalType === 'KeyEvent' || originalType === 'KE') return 'rgba(147, 197, 253, 0.6)';  // Light blue
-                if (originalType === 'MolecularInitiatingEvent' || originalType === 'MIE') return 'rgba(134, 239, 172, 0.6)';   // Light green
-                if (originalType === 'AdverseOutcome' || originalType === 'AO') return 'rgba(251, 146, 60, 0.6)';   // Light orange
-                return 'rgba(209, 213, 219, 0.6)'; // Light gray for others
-              },
-              'border-width': 2,
-              'border-color': (node) => {
-                const originalType = node.data('original_type');
-                const hypernodeType = node.data('hypernode_type');
-                // Stronger border colors for better visibility
-                if (hypernodeType === 'stressor-hypernode' || originalType === 'Stressor') return 'rgba(150, 150, 150, 0.8)'; // Gray border for stressors
-                if (originalType === 'KeyEvent' || originalType === 'KE') return 'rgba(59, 130, 246, 0.8)'; // Blue border
-                if (originalType === 'MolecularInitiatingEvent' || originalType === 'MIE') return 'rgba(34, 197, 94, 0.8)'; // Green border
-                if (originalType === 'AdverseOutcome' || originalType === 'AO') return 'rgba(249, 115, 22, 0.8)'; // Orange border
-                return 'rgba(156, 163, 175, 0.5)';
-              },
-              'border-style': (node) => node.data('hypernode_type') === 'stressor-hypernode' ? 'dashed' : 'solid',
-              'shape': (node) => node.data('hypernode_type') === 'stressor-hypernode' ? 'round-rectangle' : 'ellipse',
+              'background-color': (node) => node.data('bgColor') || 'rgba(209, 213, 219, 0.1)',
+              'border-width': 2, // More prominent border for clean look
+              'border-color': (node) => node.data('borderColor') || 'rgba(156, 163, 175, 0.4)',
+              'border-style': (node) => node.data('borderStyle') || 'solid',
+              'shape': 'roundrectangle', // Rounded rectangular containers
               'label': 'data(label)',
-              'font-size': '12px',
-              'font-weight': 'bold',
-              'color': '#374151', // Darker gray text for better readability
+              'font-size': '14px', // Larger, more readable font
+              'font-weight': 'bold', // Bold for clear hierarchy
+              'color': '#374151', // Darker text for better readability
               'text-valign': 'top',
               'text-halign': 'center',
               'text-margin-x': 0,
-              'text-margin-y': (node) => {
-                const memberCount = node.data('member_count') || 1;
-                const baseSize = Math.max(150, Math.min(400, 150 + (memberCount * 6)));
-                // Position label on top of the circular border
-                return `-${(baseSize / 4) - 30}px`; 
-              },
-              'text-background-opacity': 1,
-              'text-background-color': 'white',
-              'text-background-padding': '2px',
+              'text-margin-y': '-10px', // Position label at the top
+              'text-background-opacity': 1, // Solid background for labels
+              'text-background-color': 'rgba(255, 255, 255, 1)', // Solid white
+              'text-background-padding': '4px',
               'text-background-shape': 'roundrectangle',
-              'padding': (node) => {
-                const memberCount = node.data('member_count') || 1;
-                // Dynamic padding based on node count: smaller for fewer nodes
-                const basePadding = Math.max(30, Math.min(60, 30 + (memberCount * 2)));
-                return `${basePadding}px`;
-              },
+              'padding': '15px', // Reduced padding for more compact layout
               'width': (node) => {
                 const memberCount = node.data('member_count') || 1;
-                // Larger size for force-directed layout
-                const baseSize = Math.max(150, Math.min(400, 150 + (memberCount * 6)));
-                return `${baseSize}px`;
+                const originalType = node.data('original_type') || '';
+                
+                // Larger sizing for chemical hypernodes to prevent overlap
+                if (originalType === 'chemical') {
+                  const baseWidth = Math.max(180, Math.min(350, 180 + (memberCount * 12)));
+                  return `${baseWidth}px`;
+                } else {
+                  // Standard sizing for biological hypernodes
+                  const baseWidth = Math.max(160, Math.min(280, 160 + (memberCount * 8)));
+                  return `${baseWidth}px`;
+                }
               },
               'height': (node) => {
                 const memberCount = node.data('member_count') || 1;
-                // Larger size for force-directed layout
-                const baseSize = Math.max(150, Math.min(400, 150 + (memberCount * 6)));
-                return `${baseSize}px`;
+                const originalType = node.data('original_type') || '';
+                
+                // Larger sizing for chemical hypernodes to prevent overlap
+                if (originalType === 'chemical') {
+                  const baseHeight = Math.max(150, Math.min(280, 150 + (memberCount * 10)));
+                  return `${baseHeight}px`;
+                } else {
+                  // Standard sizing for biological hypernodes
+                  const baseHeight = Math.max(130, Math.min(220, 130 + (memberCount * 6)));
+                  return `${baseHeight}px`;
+                }
               },
               'z-index': 0, // Behind individual nodes
-              'z-compound-depth': 'bottom',
-              'opacity': 1.0 // Fully opaque containers
+              'opacity': 0.95 // More visible for clean organization
+            }
+          },
+          // Chemical node styling
+          {
+            selector: 'node[type="chemical"], node.chemical-node',
+            style: {
+              'background-color': '#fbbf24', // amber-400 for chemicals
+              'border-width': 1,
+              'border-color': '#f59e0b', // amber-500 border
+              'color': '#92400e', // amber-800 text
+              'font-size': '10px',
+              'font-weight': 'bold',
+              'shape': 'diamond', // Distinct shape for chemicals
+              'width': '30px',
+              'height': '30px',
+              'text-valign': 'center',
+              'text-halign': 'center',
+              'z-index': 10
+            }
+          },
+          // Chemical connection edge styling
+          {
+            selector: 'edge[type="chemical_connection"]',
+            style: {
+              'width': 2,
+              'line-color': '#f59e0b', // amber-500 to match chemical nodes
+              'line-style': 'dotted',
+              'opacity': 0.8,
+              'curve-style': 'bezier',
+              'target-arrow-shape': 'triangle',
+              'target-arrow-color': '#f59e0b',
+              'arrow-scale': 0.8,
+              'z-index': 8,
+              'label': 'data(label)',
+              'font-size': '8px',
+              'color': '#92400e', // amber-800 for edge labels
+              'text-background-color': 'rgba(255, 255, 255, 0.9)',
+              'text-background-opacity': 1,
+              'text-background-padding': '1px',
+              'text-background-shape': 'roundrectangle'
             }
           },
           // Hyperedge styling
@@ -1101,62 +1572,78 @@ const HypergraphNetworkGraph = ({
               'curve-style': 'bezier',
               'target-arrow-shape': 'triangle',
               'target-arrow-color': '#9ca3af',
-              'arrow-scale': 1.0
+              'arrow-scale': 1.0,
+              // Show labels on hyperedges (e.g., "AOP 315: <name>")
+              'label': 'data(label)',
+              'font-size': '9px',
+              'color': '#374151',
+              'text-background-color': 'rgba(255,255,255,0.9)',
+              'text-background-opacity': 1,
+              'text-background-padding': '1px',
+              'text-background-shape': 'roundrectangle'
             }
           },
-          // Stressor-AOP connection styling
+          // Faded elements (non-path)
           {
-            selector: '.stressor-aop-connection',
+            selector: '.faded',
             style: {
-              'width': 2,
-              'line-color': '#a855f7', // Purple for stressor connections
-              'line-style': 'dotted',
-              'opacity': 0.6,
-              'z-index': 3,
-              'curve-style': 'bezier',
-              'target-arrow-shape': 'triangle',
-              'target-arrow-color': '#a855f7',
-              'arrow-scale': 0.8
+              'opacity': 0.12,
+              'text-opacity': 0.12
             }
           },
-          // Stressor to MIE hypernode connection
           {
-            selector: 'edge[type="stressor-mie-connection"]',
+            selector: 'edge.faded',
+            style: {
+              'width': 1
+            }
+          },
+          // Highlighted elements (path)
+          {
+            selector: '.highlighted',
+            style: {
+              'opacity': 1,
+              'text-opacity': 1,
+              'z-index': 25
+            }
+          },
+          {
+            selector: 'node.highlighted',
+            style: {
+              'border-width': 3,
+              'border-color': '#111827',
+              'background-color': (node) => {
+                const type = node.data('type');
+                const isWOE = isWOENode(type);
+                if (type === 'MolecularInitiatingEvent' || type === 'MIE') return NODE_COLORS.MIE.selected;
+                if (type === 'KeyEvent' || type === 'KE') return NODE_COLORS.KE.selected;
+                if (type === 'AdverseOutcome' || type === 'AO') return NODE_COLORS.AO.selected;
+                if (isWOE) return NODE_COLORS.WOE.selected;
+                return NODE_COLORS.OTHER.selected;
+              },
+              'background-opacity': 1
+            }
+          },
+          {
+            selector: 'edge.highlighted',
             style: {
               'width': 3,
-              'line-color': '#9370DB',
-              'line-style': 'solid',
-              'opacity': 0.8,
-              'z-index': 4,
-              'curve-style': 'bezier',
-              'target-arrow-shape': 'triangle',
-              'target-arrow-color': '#9370DB',
-              'arrow-scale': 1.0,
-              'label': 'data(label)',
-              'font-size': '10px',
-              'text-rotation': 'autorotate'
+              'line-color': '#111827',
+              'target-arrow-color': '#111827',
+              'opacity': 1,
+              'z-index': 15
             }
           },
-          // Stressor to AdverseOutcome hyperedge connection
           {
-            selector: 'edge[type="stressor-adverse-hyperedge"]',
+            selector: '.hypernode.highlighted',
             style: {
-              'width': 2,
-              'line-color': '#9ca3af', // Gray instead of orange for default state
-              'line-style': 'solid',
-              'opacity': 0.8,
-              'z-index': 5,
-              'curve-style': 'bezier',
-              'target-arrow-shape': 'triangle',
-              'target-arrow-color': '#9ca3af', // Gray instead of orange for default state
-              'arrow-scale': 1.0,
-              'label': 'data(label)',
-              'font-size': '10px',
-              'font-weight': 'normal',
-              'text-rotation': 'autorotate',
-              'color': '#6b7280',
-              'text-outline-width': 1,
-              'text-outline-color': '#ffffff'
+              'opacity': 1,
+              'border-width': 1.5
+            }
+          },
+          {
+            selector: '.hypernode.faded',
+            style: {
+              'opacity': 0.18
             }
           },
           // Selected node styling
@@ -1165,63 +1652,11 @@ const HypergraphNetworkGraph = ({
             style: {
               'border-width': 4,
               'border-color': '#ef4444',
-              'z-index': 2000
-            }
-          },
-          {
-            selector: '.path-node',
-            style: {
-              'border-width': 3,
-              'border-color': '#111827',
-              'color': '#111827',
-              'z-index': 1500
-            }
-          },
-          {
-            selector: '.highlighted',
-            style: {
-              'border-width': 4,
-              'border-color': '#ef4444',
-              'z-index': 999
-            }
-          },
-          {
-            selector: '.highlighted-edge',
-            style: {
-              'width': 5,
-              'line-color': '#111827',
-              'target-arrow-color': '#111827',
-              'arrow-scale': 1.2,
-              'opacity': 0.15,
-              'z-index': 0
-            }
-          },
-          {
-            selector: '.hidden',
-            style: {
-              'display': 'none'
-            }
-          },
-          {
-            selector: '.faded',
-            style: {
-              'opacity': 0.1,
-              'z-index': 0
-            }
-          },
-          {
-            selector: '.background-hypernode',
-            style: {
-              'opacity': 0.15,
-              'z-index': 0
+              'z-index': 20
             }
           }
-        ],
-        layout: {
-          name: hypergraphEnabled ? 'preset' : (layoutType === 'forceatlas2' ? 'fcose' : layoutType), // Use preset for manual positioning
-          fit: true,
-          padding: 50
-        }
+  ],
+  layout: layoutOptions
       });
 
       // Preset positioning is already applied via node.position property
@@ -1229,22 +1664,35 @@ const HypergraphNetworkGraph = ({
       // Add event listeners
       cytoscapeInstance.on('tap', 'node', (evt) => {
         const node = evt.target;
-        const nodeData = node.data();
-        console.log('Node clicked:', nodeData);
-        // Modifier-click to add to node chain via SearchPanel imperative handle
-        try {
-          const e = evt.originalEvent;
-          if (e && (e.shiftKey || e.ctrlKey || e.metaKey)) {
-            if (searchPanelRef && searchPanelRef.current && typeof searchPanelRef.current.addToNodeChain === 'function') {
-              searchPanelRef.current.addToNodeChain(nodeData.id);
-            }
-          }
-        } catch (err) {
-          // no-op
-        }
+        console.log('Node clicked:', node.data());
         if (onNodeSelect) {
-          onNodeSelect(nodeData);
+          onNodeSelect(node.data());
         }
+        // Apply pathway highlighting
+        applyHighlightForNode(cytoscapeInstance, node.id());
+      });
+
+      // Right-click (contextmenu) on AO or type-hypernode: show menu to reveal chemicals for that AOP
+      cytoscapeInstance.on('cxttap', 'node', (evt) => {
+        const node = evt.target;
+        const nd = node.data() || {};
+        const ntype = (nd.type || '').toString();
+        const aopId = nd.aop || nd.aop_source || nd.aop_id || '';
+        // Only respond for AO nodes or community hypernodes containing AOs
+        const isAO = ntype === 'AdverseOutcome' || ntype === 'AO';
+        const isTypeHyper = node.hasClass('hypernode') && ((nd.original_type || '').toString().toLowerCase().includes('adverseoutcome'));
+        if (!isAO && !isTypeHyper) return;
+        const rp = evt.renderedPosition || { x: 0, y: 0 };
+        const rect = containerRef.current?.getBoundingClientRect();
+        let menuX = rp.x + 8;
+        let menuY = rp.y + 8;
+        if (rect) {
+          const maxX = rect.width - 180; // menu width cap
+          const maxY = rect.height - 80; // menu height cap
+          menuX = Math.max(6, Math.min(menuX, maxX));
+          menuY = Math.max(6, Math.min(menuY, maxY));
+        }
+        setCtxMenu({ visible: true, x: menuX, y: menuY, aopId, label: nd.label || 'AOP' });
       });
 
       cytoscapeInstance.on('tap', 'edge', (evt) => {
@@ -1257,28 +1705,38 @@ const HypergraphNetworkGraph = ({
 
       cytoscapeInstance.on('tap', (evt) => {
         if (evt.target === cytoscapeInstance) {
-          // Clicked on background - reset to original visualization
+          // Clicked on background
           onNodeSelect && onNodeSelect(null);
           onEdgeSelect && onEdgeSelect(null);
-          
-          // Reset all styling to original state
-          cytoscapeInstance.batch(() => {
-            // Remove all highlight and fade classes
-            cytoscapeInstance.elements().removeClass('highlighted highlighted-edge faded hidden background-hypernode path-node path-edge selected');
-            
-            // Reset all node styles to original
-            cytoscapeInstance.nodes().removeStyle();
-            
-            // Reset all edge styles to original  
-            cytoscapeInstance.edges().removeStyle();
-          });
-          
-          console.log('Background clicked - reset to original visualization');
+          clearHighlights(cytoscapeInstance);
         }
       });
 
       setCy(cytoscapeInstance);
       cyRef.current = cytoscapeInstance;
+
+      // Apply initial chemical visibility (default hidden)
+      try {
+        if (!showChemicals) {
+          cytoscapeInstance.startBatch();
+          cytoscapeInstance.nodes('node[type = "chemical"]').addClass('chemical-hidden');
+          cytoscapeInstance.nodes('.hypernode-chemical').addClass('chemical-hidden');
+          cytoscapeInstance.edges('.chemical-hyperedge').addClass('chemical-hidden');
+          cytoscapeInstance.endBatch();
+        }
+      } catch (e) {
+        console.warn('Failed to apply initial chemical visibility:', e);
+      }
+
+      // Save initial positions for restoring when switching back to preset
+      try {
+        initialPositionsRef.current = {};
+        cytoscapeInstance.nodes().forEach(n => {
+          initialPositionsRef.current[n.id()] = { x: n.position('x'), y: n.position('y') };
+        });
+      } catch (e) {
+        console.warn('Failed to snapshot initial positions:', e);
+      }
 
       console.log('HypergraphNetworkGraph: Cytoscape initialized successfully');
       console.log('Elements in graph:', cytoscapeInstance.elements().length);
@@ -1293,7 +1751,7 @@ const HypergraphNetworkGraph = ({
         }
       }, 100);
 
-      return () => {
+  return () => {
         if (cytoscapeInstance) {
           cytoscapeInstance.removeAllListeners();
           cytoscapeInstance.destroy();
@@ -1302,7 +1760,58 @@ const HypergraphNetworkGraph = ({
     } catch (error) {
       console.error('HypergraphNetworkGraph: Error initializing cytoscape:', error);
     }
-  }, [data, hypergraphData, layoutType, hypergraphEnabled, maxNodesPerHypernode, communityMethod, nodeSizingMode, baseNodeSize]);
+  }, [data, hypergraphData, layoutType, hypergraphEnabled, maxNodesPerHypernode, communityMethod, nodeSizingMode, baseNodeSize, fontSize]);
+
+  // Helper: reveal chemicals for a given AOP ID
+  const revealChemicalsForAOP = (aopId) => {
+    if (!aopId || !cyRef.current) return;
+    const inst = cyRef.current;
+    inst.startBatch();
+    inst.nodes('node[type = "chemical"]').forEach(n => {
+      if ((n.data('aop') || n.data('aop_source') || '') === aopId) {
+        n.removeClass('chemical-hidden');
+        const parentId = n.data('parent');
+        if (parentId) {
+          const p = inst.getElementById(parentId);
+          p && p.removeClass('chemical-hidden');
+        }
+      }
+    });
+    inst.edges('.chemical-hyperedge').forEach(e => {
+      if ((e.data('aop') || '') === aopId) e.removeClass('chemical-hidden');
+    });
+    inst.endBatch();
+    setShowChemicals(true);
+  };
+
+  // Close context menu on Escape
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape') setCtxMenu((m) => ({ ...m, visible: false }));
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+
+  const handleMenuAction = () => {
+    if (ctxMenu.aopId) revealChemicalsForAOP(ctxMenu.aopId);
+    setCtxMenu((m) => ({ ...m, visible: false }));
+  };
+  
+
+  // Additional effect to handle data changes without full re-initialization
+  useEffect(() => {
+    if (!cy || !data) return;
+    
+    console.log('HypergraphNetworkGraph: Data changed, updating elements dynamically');
+    
+    // If we have a cytoscape instance and new data comes in, we can update incrementally
+    // But for hypergraph mode, it's often better to do a full re-initialization
+    // because community detection and hypernode creation is complex
+    
+    // This effect will naturally trigger the main useEffect above due to data dependency
+    
+  }, [data?.nodes?.length, data?.edges?.length, hypergraphData?.nodes?.length]);
 
   // Update selection highlighting
   useEffect(() => {
@@ -1326,187 +1835,15 @@ const HypergraphNetworkGraph = ({
     }
   }, [cy, selectedNode, selectedEdge]);
 
-  // Apply dynamic highlighting based solely on selectedNode (hypergraph-aware)
+  // React to selectedNode changes by applying pathway highlight
   useEffect(() => {
     if (!cy) return;
-
-    // Clear previous highlighting/fade classes, but keep path-node/path-edge from chain
-    cy.elements().removeClass('highlighted highlighted-edge faded hidden background-hypernode');
-
-    if (!selectedNode) return;
-
-    const node = cy.getElementById(selectedNode.id);
-    if (!node || node.length === 0) return;
-
-    // Only compute highlighting for base nodes (isHyper === false)
-    const isBase = node.data('isHyper') === false;
-    if (!isBase) return; // For hypernodes, keep only the selection ring from the other effect
-
-    const normalizeType = (t) => {
-      if (!t) return 'OTHER';
-      if (t === 'MIE' || t === 'MolecularInitiatingEvent') return 'MIE';
-      if (t === 'KE' || t === 'KeyEvent') return 'KE';
-      if (t === 'AO' || t === 'AdverseOutcome') return 'AO';
-      if (t === 'Stressor') return 'Stressor';
-      return 'OTHER';
-    };
-    const isMIE = (n) => normalizeType(n.data('type')) === 'MIE';
-    const isKE = (n) => normalizeType(n.data('type')) === 'KE';
-    const isAO = (n) => normalizeType(n.data('type')) === 'AO';
-    const isStressor = (n) => normalizeType(n.data('type')) === 'Stressor';
-
-    try {
-      // Get the AOP ID of the selected node
-      const selectedAopId = node.data('aop_id') || node.data('aop');
-      
-      if (!selectedAopId) {
-        console.log('No AOP ID found for selected node:', node.data());
-        return;
-      }
-
-      console.log('Highlighting all nodes for AOP:', selectedAopId);
-
-      // Find ALL nodes that belong to the same AOP (MIE, KE, AO, and Stressors)
-      const aopNodes = cy.nodes().filter(n => {
-        if (n.data('isHyper') !== false) return false; // Only base nodes
-        const nodeAopId = n.data('aop_id') || n.data('aop');
-        return nodeAopId === selectedAopId && (isMIE(n) || isKE(n) || isAO(n) || isStressor(n));
-      });
-
-      console.log('Found', aopNodes.length, 'nodes for AOP', selectedAopId);
-
-      // Get all edges between these AOP nodes
-      const aopEdges = aopNodes.edgesWith(aopNodes).filter(e => e.data('isHyper') === false);
-
-      // Get parent hypernodes for these AOP nodes
-      const parentHypernodeIds = new Set();
-      aopNodes.forEach(n => {
-        const parentId = n.data('parent');
-        if (parentId) parentHypernodeIds.add(parentId);
-      });
-
-      // Get hyperedges connecting the parent hypernodes
-      const hyperEdgesInAop = cy.edges().filter(e => {
-        if (!e.data('isHyper')) return false;
-        const src = e.data('source');
-        const tgt = e.data('target');
-        return parentHypernodeIds.has(src) && parentHypernodeIds.has(tgt);
-      });
-
-      if (aopNodes.length === 0) return;
-
-      cy.batch(() => {
-        // First, remove faded class from AOP nodes to ensure they're visible
-        aopNodes.removeClass('faded');
-        
-        // Highlight all nodes from the same AOP with strong styling
-        aopNodes.addClass('path-node');
-        aopNodes.style({
-          'opacity': 1.0,
-          'z-index': 1500,
-          'border-width': 4,
-          'border-color': '#ef4444', // Red border for AOP nodes instead of orange
-          'background-opacity': 1.0,
-          'text-opacity': 1.0,
-          'overlay-opacity': 0 // Remove any overlay that might hide the node
-        });
-
-        // Highlight edges between AOP nodes with bold black styling
-        aopEdges.removeClass('faded');
-        aopEdges.addClass('highlighted-edge');
-        aopEdges.style({
-          'width': 2,
-          'line-color': '#000000',
-          'target-arrow-color': '#000000',
-          'opacity': 1.0,
-          'z-index': 1000,
-          'line-opacity': 1.0
-        });
-
-        hyperEdgesInAop.removeClass('faded');
-        hyperEdgesInAop.addClass('highlighted-edge');
-        hyperEdgesInAop.style({
-          'width': 3,
-          'line-color': '#000000',
-          'target-arrow-color': '#000000',
-          'opacity': 1.0,
-          'z-index': 1000,
-          'line-opacity': 1.0
-        });
-
-        // Highlight the parent hypernodes of AOP nodes
-        const aopHypernodes = cy.nodes('[isHyper = true]').filter((n) => parentHypernodeIds.has(n.id()));
-        aopHypernodes.style({
-          'border-width': 4,
-          'border-color': '#ef4444', // Red border for hypernodes instead of orange
-          'opacity': 1.0,
-          'background-opacity': 0.8, // Semi-transparent so child nodes are visible
-          'z-index': 100 // Lower than child nodes
-        });
-
-        // Fade all other nodes and edges to be very transparent
-        cy.nodes('[isHyper = false]').difference(aopNodes).addClass('faded');
-        cy.edges('[isHyper = false]').difference(aopEdges).addClass('faded').style({
-          'opacity': 0.1,
-          'z-index': 1
-        });
-
-        // Dim hypernodes not part of this AOP
-        cy.nodes('[isHyper = true]').difference(aopHypernodes).addClass('background-hypernode');
-
-        // Fade hyperedges that are not in this AOP to be very transparent
-        cy.edges('[isHyper = true]').difference(hyperEdgesInAop).addClass('faded').style({
-          'opacity': 0.1,
-          'z-index': 1
-        });
-      });
-
-      // Removed auto-zoom on node selection for better user control
-      // cy.animate({ fit: { eles: aopNodes.union(aopEdges).union(hyperEdgesInAop), padding: 80 }, duration: 300 });
-    } catch (e) {
-      console.warn('Hypergraph: AOP highlight failed:', e);
+    if (!selectedNode || !selectedNode.id) {
+      clearHighlights(cy);
+      return;
     }
+    applyHighlightForNode(cy, selectedNode.id);
   }, [cy, selectedNode]);
-
-  // Highlight the explicit selectedNodeChain (independent from selectedNode highlighting)
-  useEffect(() => {
-    if (!cy) return;
-    // Clear previous chain classes only
-    cy.elements().removeClass('path-node path-edge');
-
-    if (!selectedNodeChain || selectedNodeChain.length === 0) return;
-
-    cy.batch(() => {
-      // Mark chain nodes
-      selectedNodeChain.forEach((id) => {
-        const n = cy.getElementById(id);
-        if (n && n.length > 0) {
-          n.addClass('path-node');
-        }
-      });
-
-      // Mark edges between consecutive nodes (both base edges and connecting hyperedges between parents)
-      for (let i = 0; i < selectedNodeChain.length - 1; i++) {
-        const a = selectedNodeChain[i];
-        const b = selectedNodeChain[i + 1];
-        // Base edges in either direction
-        const baseEdge = cy.$(`edge[isHyper = false][source = "${a}"][target = "${b}"], edge[isHyper = false][source = "${b}"][target = "${a}"]`);
-        if (baseEdge && baseEdge.length > 0) baseEdge.addClass('path-edge');
-
-        // Hyperedge between parent hypernodes if both exist
-        const na = cy.getElementById(a);
-        const nb = cy.getElementById(b);
-        if (na && nb && na.length > 0 && nb.length > 0) {
-          const pa = na.data('parent');
-          const pb = nb.data('parent');
-          if (pa && pb) {
-            const hyperEdge = cy.$(`edge[isHyper = true][source = "${pa}"][target = "${pb}"], edge[isHyper = true][source = "${pb}"][target = "${pa}"]`);
-            if (hyperEdge && hyperEdge.length > 0) hyperEdge.addClass('path-edge');
-          }
-        }
-      }
-    });
-  }, [cy, selectedNodeChain]);
 
   // Update node and font sizes dynamically with error handling
   useEffect(() => {
@@ -1538,9 +1875,117 @@ const HypergraphNetworkGraph = ({
 
   }, [cy, baseNodeSize, fontSize, nodeSizingMode]);
 
+  // Update hypernode colors and transparency dynamically
+  useEffect(() => {
+    if (!cy) return;
+
+    try {
+      cy.startBatch();
+      
+      // Update hypernode styles with new colors and transparency
+      cy.nodes('.hypernode').forEach(hypernode => {
+        try {
+          const originalType = hypernode.data('original_type');
+          if (originalType) {
+            // Normalize type names
+            let normalizedType = originalType;
+            if (originalType === 'MIE') normalizedType = 'MolecularInitiatingEvent';
+            if (originalType === 'KE') normalizedType = 'KeyEvent';
+            if (originalType === 'AO') normalizedType = 'AdverseOutcome';
+            
+            const baseColor = hypernodeColors[normalizedType] || '#d1d5db';
+            const transparency = hypernodeTransparency[normalizedType] || 0.14;
+            const bgColor = hexToRgba(baseColor, transparency);
+            const borderColor = hexToRgba(baseColor, Math.min(transparency + 0.3, 1.0));
+            
+            hypernode.style({
+              'background-color': bgColor,
+              'border-color': borderColor
+            });
+          }
+        } catch (nodeError) {
+          console.warn('Error updating hypernode style:', nodeError);
+        }
+      });
+      
+      cy.endBatch();
+      console.log('Updated hypernode colors and transparency');
+    } catch (error) {
+      console.error('Error in hypernode style update:', error);
+    }
+
+  }, [cy, hypernodeColors, hypernodeTransparency]);
+
+  // Re-run layout when layoutOverride changes
+  useEffect(() => {
+    if (!cy) return;
+    try {
+      const name = (layoutOverride || 'auto').toLowerCase();
+      // Helper to construct options (mirror of builder above)
+      const make = (n) => {
+        switch ((n || '').toLowerCase()) {
+          case 'preset': return { name: 'preset', fit: true, padding: 80 };
+          case 'force':
+          case 'forceatlas2':
+          case 'euler':
+            return { name: 'euler', fit: true, padding: 80, nodeDimensionsIncludeLabels: true, springLength: 120, springCoeff: 0.0008, repulsion: 4500, gravity: -1.0, iterations: 2000, animate: false, randomize: true };
+          // removed unsupported layouts: cose-bilkent, cola
+          case 'dagre': return { name: 'dagre', fit: true, padding: 80, rankDir: 'LR', nodeSep: 50, rankSep: 80 };
+          case 'grid': return { name: 'grid', fit: true, padding: 80 };
+          case 'circle': return { name: 'circle', fit: true, padding: 80 };
+          case 'concentric': return { name: 'concentric', fit: true, padding: 80 };
+          case 'breadthfirst': return { name: 'breadthfirst', fit: true, padding: 80, directed: true, circle: false };
+          case 'auto':
+          default: {
+            // Auto: prefer Preset for comprehensive_search in hypergraph; otherwise honor force hint
+            const sg = (hypergraphEnabled && hypergraphData && hypergraphData.metadata) ? hypergraphData : data;
+            const isComprehensive = !!(sg && sg.metadata && sg.metadata.source === 'comprehensive_search');
+            const wantsForce = !!(sg && sg.metadata && sg.metadata.layout_hint === 'force');
+            if (isComprehensive) return make('preset');
+            if (wantsForce) return make('euler');
+            return make('preset');
+          }
+        }
+      };
+
+      if (name === 'preset') {
+        // Restore saved preset positions if available
+        if (initialPositionsRef.current && Object.keys(initialPositionsRef.current).length) {
+          cy.startBatch();
+          cy.nodes().forEach(n => {
+            const p = initialPositionsRef.current[n.id()];
+            if (p) n.position(p);
+          });
+          cy.endBatch();
+        }
+      }
+
+      let layout;
+      try {
+        layout = cy.layout(make(name));
+        layout.run();
+      } catch (err) {
+        console.warn('Layout run failed, falling back to preset:', err);
+        // Fallback to preset positions to avoid blank graph
+        if (initialPositionsRef.current && Object.keys(initialPositionsRef.current).length) {
+          cy.startBatch();
+          cy.nodes().forEach(n => {
+            const p = initialPositionsRef.current[n.id()];
+            if (p) n.position(p);
+          });
+          cy.endBatch();
+        }
+        const fallback = cy.layout({ name: 'preset', fit: true, padding: 80 });
+        fallback.run();
+      }
+    } catch (e) {
+      console.warn('Failed to re-run layout:', e);
+    }
+  }, [cy, layoutOverride, hypergraphEnabled, hypergraphData, data]);
+
   return (
-    <div className="w-full h-full relative bg-gradient-to-br from-slate-50 via-white to-blue-50 overflow-hidden">
-      <div className="absolute top-2 left-2 z-20 bg-white rounded-lg shadow-md max-w-xs">
+    <div className="w-full h-full relative bg-gradient-to-br from-gray-50 via-white to-slate-50 overflow-hidden" onClick={() => ctxMenu.visible && setCtxMenu(m => ({ ...m, visible: false }))}>
+      <div className="absolute top-2 left-2 z-20 bg-white rounded-lg shadow-md max-w-sm">
         {/* Toggle Button */}
         <div className="flex items-center justify-between p-2 border-b border-gray-200">
           <span className="text-xs font-medium text-gray-700">Node Controls</span>
@@ -1549,10 +1994,10 @@ const HypergraphNetworkGraph = ({
             className="text-gray-500 hover:text-gray-700 focus:outline-none"
             title={isPanelCollapsed ? 'Expand panel' : 'Collapse panel'}
           >
-            <svg 
+            <svg
               className={`w-4 h-4 transition-transform duration-200 ${isPanelCollapsed ? 'rotate-180' : ''}`}
-              fill="none" 
-              stroke="currentColor" 
+              fill="none"
+              stroke="currentColor"
               viewBox="0 0 24 24"
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -1564,6 +2009,47 @@ const HypergraphNetworkGraph = ({
         {!isPanelCollapsed && (
           <div className="p-3">
             <div className="flex flex-col space-y-3">
+        {/* Layout selector (trimmed to essentials) */}
+              <div>
+                <label className="block text-xs font-medium text-gray-700 mb-1">Layout</label>
+                <select
+                  value={layoutOverride}
+                  onChange={(e) => setLayoutOverride(e.target.value)}
+                  className="w-full text-xs border border-gray-300 rounded px-2 py-1 bg-white"
+                >
+          <option value="auto">Auto (Square Grid)</option>
+          <option value="euler">Force (Euler)</option>
+                </select>
+              </div>
+              {/* Chemical visibility */}
+              <label className="flex items-center gap-2 text-[11px]">
+                <input
+                  type="checkbox"
+                  checked={showChemicals}
+                  onChange={(e) => {
+                    const checked = e.target.checked;
+                    setShowChemicals(checked);
+                    if (!cyRef.current) return;
+                    const inst = cyRef.current;
+                    inst.startBatch();
+                    // Toggle class on chemical nodes, chemical hypernodes, and chemical hyperedges
+                    const chemNodes = inst.nodes('node.chemical-node, node[type = "chemical"]');
+                    const chemHyper = inst.nodes('.hypernode-chemical');
+                    const chemEdges = inst.edges('.chemical-hyperedge, .chemical-edge');
+                    if (checked) {
+                      chemNodes.removeClass('chemical-hidden');
+                      chemHyper.removeClass('chemical-hidden');
+                      chemEdges.removeClass('chemical-hidden');
+                    } else {
+                      chemNodes.addClass('chemical-hidden');
+                      chemHyper.addClass('chemical-hidden');
+                      chemEdges.addClass('chemical-hidden');
+                    }
+                    inst.endBatch();
+                  }}
+                />
+                Show chemicals
+              </label>
               <div>
                 <label className="block text-xs font-medium text-gray-700 mb-1">Node Sizing Mode</label>
                 <select
@@ -1601,16 +2087,243 @@ const HypergraphNetworkGraph = ({
                   className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
                 />
               </div>
+              
+              {/* Hypernode Color Controls */}
+              {hypergraphEnabled && (
+                <div className="border-t border-gray-200 pt-3">
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="text-xs font-medium text-gray-700">Hypernode Colors</label>
+                    <button
+                      onClick={() => setShowColorControls(!showColorControls)}
+                      className="text-xs text-blue-600 hover:text-blue-800"
+                    >
+                      {showColorControls ? 'Hide' : 'Show'}
+                    </button>
+                  </div>
+                  
+                  {showColorControls && (
+                    <div className="space-y-2">
+                      {/* MIE Controls */}
+                      <div className="flex items-center space-x-2">
+                        <div className="flex-shrink-0">
+                          <div
+                            className="w-4 h-4 rounded border border-gray-300"
+                            style={{ backgroundColor: hypernodeColors.MolecularInitiatingEvent }}
+                          />
+                        </div>
+                        <div className="flex-1">
+                          <label className="block text-xs text-gray-600 mb-1">MIE</label>
+                          <input
+                            type="color"
+                            value={hypernodeColors.MolecularInitiatingEvent}
+                            onChange={(e) => setHypernodeColors(prev => ({
+                              ...prev,
+                              MolecularInitiatingEvent: e.target.value
+                            }))}
+                            className="w-full h-6 border border-gray-300 rounded cursor-pointer"
+                          />
+                          <input
+                            type="range"
+                            min="0"
+                            max="1"
+                            step="0.05"
+                            value={hypernodeTransparency.MolecularInitiatingEvent}
+                            onChange={(e) => setHypernodeTransparency(prev => ({
+                              ...prev,
+                              MolecularInitiatingEvent: parseFloat(e.target.value)
+                            }))}
+                            className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer mt-1"
+                          />
+                          <div className="text-xs text-gray-500">
+                            Opacity: {Math.round(hypernodeTransparency.MolecularInitiatingEvent * 100)}%
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {/* KE Controls */}
+                      <div className="flex items-center space-x-2">
+                        <div className="flex-shrink-0">
+                          <div
+                            className="w-4 h-4 rounded border border-gray-300"
+                            style={{ backgroundColor: hypernodeColors.KeyEvent }}
+                          />
+                        </div>
+                        <div className="flex-1">
+                          <label className="block text-xs text-gray-600 mb-1">KE</label>
+                          <input
+                            type="color"
+                            value={hypernodeColors.KeyEvent}
+                            onChange={(e) => setHypernodeColors(prev => ({
+                              ...prev,
+                              KeyEvent: e.target.value
+                            }))}
+                            className="w-full h-6 border border-gray-300 rounded cursor-pointer"
+                          />
+                          <input
+                            type="range"
+                            min="0"
+                            max="1"
+                            step="0.05"
+                            value={hypernodeTransparency.KeyEvent}
+                            onChange={(e) => setHypernodeTransparency(prev => ({
+                              ...prev,
+                              KeyEvent: parseFloat(e.target.value)
+                            }))}
+                            className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer mt-1"
+                          />
+                          <div className="text-xs text-gray-500">
+                            Opacity: {Math.round(hypernodeTransparency.KeyEvent * 100)}%
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {/* AO Controls */}
+                      <div className="flex items-center space-x-2">
+                        <div className="flex-shrink-0">
+                          <div
+                            className="w-4 h-4 rounded border border-gray-300"
+                            style={{ backgroundColor: hypernodeColors.AdverseOutcome }}
+                          />
+                        </div>
+                        <div className="flex-1">
+                          <label className="block text-xs text-gray-600 mb-1">AO</label>
+                          <input
+                            type="color"
+                            value={hypernodeColors.AdverseOutcome}
+                            onChange={(e) => setHypernodeColors(prev => ({
+                              ...prev,
+                              AdverseOutcome: e.target.value
+                            }))}
+                            className="w-full h-6 border border-gray-300 rounded cursor-pointer"
+                          />
+                          <input
+                            type="range"
+                            min="0"
+                            max="1"
+                            step="0.05"
+                            value={hypernodeTransparency.AdverseOutcome}
+                            onChange={(e) => setHypernodeTransparency(prev => ({
+                              ...prev,
+                              AdverseOutcome: parseFloat(e.target.value)
+                            }))}
+                            className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer mt-1"
+                          />
+                          <div className="text-xs text-gray-500">
+                            Opacity: {Math.round(hypernodeTransparency.AdverseOutcome * 100)}%
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {/* Chemical Controls */}
+                      <div className="flex items-center space-x-2">
+                        <div className="flex-shrink-0">
+                          <div
+                            className="w-4 h-4 rounded border border-gray-300"
+                            style={{ backgroundColor: hypernodeColors.chemical }}
+                          />
+                        </div>
+                        <div className="flex-1">
+                          <label className="block text-xs text-gray-600 mb-1">Chemical</label>
+                          <input
+                            type="color"
+                            value={hypernodeColors.chemical}
+                            onChange={(e) => setHypernodeColors(prev => ({
+                              ...prev,
+                              chemical: e.target.value
+                            }))}
+                            className="w-full h-6 border border-gray-300 rounded cursor-pointer"
+                          />
+                          <input
+                            type="range"
+                            min="0"
+                            max="1"
+                            step="0.05"
+                            value={hypernodeTransparency.chemical}
+                            onChange={(e) => setHypernodeTransparency(prev => ({
+                              ...prev,
+                              chemical: parseFloat(e.target.value)
+                            }))}
+                            className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer mt-1"
+                          />
+                          <div className="text-xs text-gray-500">
+                            Opacity: {Math.round(hypernodeTransparency.chemical * 100)}%
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {/* Reset Button */}
+                      <button
+                        onClick={() => {
+                          setHypernodeColors({
+                            MolecularInitiatingEvent: '#86efac',
+                            KeyEvent: '#93c5fd',
+                            AdverseOutcome: '#f9a8d4',
+                            chemical: '#9CA3AF'
+                          });
+                          setHypernodeTransparency({
+                            MolecularInitiatingEvent: 0.14,
+                            KeyEvent: 0.14,
+                            AdverseOutcome: 0.14,
+                            chemical: 0.18
+                          });
+                        }}
+                        className="w-full text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-2 py-1 rounded border border-gray-300 mt-2"
+                      >
+                        Reset to Defaults
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         )}
       </div>
+
+      {/* Legend Panel - Removed per user request */}
       
       {/* Subtle background pattern for visual depth */}
-      <div className="absolute inset-0 opacity-30">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(59,130,246,0.15)_1px,transparent_0)] bg-[length:20px_20px]"></div>
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(156,163,175,0.08)_1px,transparent_0)] bg-[length:30px_30px]"></div>
       </div>
       
+      {/* Context menu overlay */}
+      {ctxMenu.visible && (
+        <div
+          style={{
+            position: 'absolute',
+            left: ctxMenu.x,
+            top: ctxMenu.y,
+            zIndex: 50,
+            background: 'white',
+            border: '1px solid #e5e7eb',
+            borderRadius: 8,
+            boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
+            minWidth: 200,
+            padding: 4
+          }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div style={{ padding: '6px 10px', fontSize: 12, color: '#6b7280' }}>
+            AOP: {ctxMenu.label || ctxMenu.aopId}
+          </div>
+          <button
+            onClick={handleMenuAction}
+            style={{
+              display: 'block',
+              width: '100%',
+              textAlign: 'left',
+              padding: '8px 10px',
+              background: 'transparent',
+              border: 'none',
+              cursor: 'pointer'
+            }}
+          >
+            Show chemicals for this AOP
+          </button>
+        </div>
+      )}
+
       <div 
         ref={containerRef} 
         className="relative z-10 w-full h-full rounded-lg shadow-inner"

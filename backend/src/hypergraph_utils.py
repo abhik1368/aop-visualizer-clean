@@ -291,111 +291,85 @@ class HypergraphProcessor:
             logger.error(f"Fallback community detection failed: {e}")
             return {'method': 'error', 'communities': [], 'modularity': 0, 'node_communities': {}}
     
-    def group_nodes_by_type(self, nodes: List[Dict], min_group_size: int = 1) -> Dict[str, Any]:
-        """Group nodes by their type - creates ONE hypernode per type"""
+    def group_nodes_by_type(self, nodes: List[Dict], min_group_size: int = 4) -> Dict[str, Any]:
+        """Group nodes by their type for hyperedge creation"""
         type_groups = defaultdict(list)
         
         for node in nodes:
             node_type = node.get('type', 'Unknown')
-            # Skip stressor nodes as they're handled separately
-            if node_type != 'Stressor':
-                type_groups[node_type].append(node['id'])
+            type_groups[node_type].append(node)
         
-        # Create ONE group per type containing ALL nodes of that type
-        groups = {}
-        for node_type, members in type_groups.items():
-            # Always create a single group for each type, no splitting
-            groups[node_type] = {
-                'members': members,
-                'size': len(members)
-            }
+        # Filter groups by minimum size
+        valid_groups = {}
+        for node_type, group_nodes in type_groups.items():
+            if len(group_nodes) >= min_group_size:
+                valid_groups[node_type] = {
+                    'type': node_type,
+                    'members': [node['id'] for node in group_nodes],
+                    'size': len(group_nodes),
+                    'nodes': group_nodes
+                }
         
+        logger.info(f"Node grouping: {len(valid_groups)} valid groups from {len(type_groups)} total types")
         
         return {
-            'groups': groups,
-            'total_groups': len(groups)
+            'groups': valid_groups,
+            'total_types': len(type_groups),
+            'valid_groups': len(valid_groups),
+            'min_group_size': min_group_size
         }
     
     def create_hypergraph_elements(self, nodes: List[Dict], edges: List[Dict], 
-                                 min_nodes: int = 1, use_communities: bool = True,
-                                 use_type_groups: bool = True, community_data: Optional[Dict] = None,
-                                 exclude_stressor_hypernodes: bool = False) -> Dict[str, Any]:
+                                 min_nodes: int = 4, use_communities: bool = True,
+                                 use_type_groups: bool = True, community_data: Optional[Dict] = None) -> Dict[str, Any]:
         """Create hypergraph elements including hypernodes and hyperedges"""
-        
-        # Deduplicate input edges first
-        print(f"\n=== DEDUPLICATING INPUT EDGES ===")
-        original_edge_count = len(edges)
-        seen_edges = set()
-        unique_edges = []
-        
-        for edge in edges:
-            source = edge.get('source', '')
-            target = edge.get('target', '')
-            edge_type = edge.get('type', '')
-            edge_key = f"{source}->{target}:{edge_type}"
-            
-            if edge_key not in seen_edges:
-                seen_edges.add(edge_key)
-                unique_edges.append(edge)
-            else:
-                print(f"🗑️ Removed duplicate input edge: {source} → {target} ({edge_type})")
-        
-        edges = unique_edges
-        input_duplicates_removed = original_edge_count - len(edges)
-        print(f"Removed {input_duplicates_removed} duplicate input edges")
-        print(f"Final unique input edges: {len(edges)}")
         
         hypernodes = []
         hyperedges = []
         hypernode_connections = []
+        # Consistent colors for type-based hypernodes: same type -> same color
+        # Match frontend pastel palette (memory: KE=#93c5fd, MIE=#86efac, AO=#f9a8d4)
+        type_group_colors = {
+            'MOLECULARINITIATINGEVENT': '#86efac',  # MIE
+            'MIE': '#86efac',
+            'KEYEVENT': '#93c5fd',                 # KE
+            'KEY_EVENT': '#93c5fd',
+            'KE': '#93c5fd',
+            'ADVERSEOUTCOME': '#f9a8d4',           # AO
+            'AO': '#f9a8d4',
+        }
+        # Types we should never create type-hypernodes for (even if present)
+        disallowed_type_groups = {
+            'KEY_EVENT_RELATIONSHIP',
+            'WEIGHT_OF_EVIDENCE', 'WOE',
+            'TISSUE', 'ORGAN'
+        }
         
-        # Helper to robustly extract numeric AOP ID from various formats, e.g., 'Aop:315', 'AOP:315', '315'
-        def _extract_aop_id(val: Any) -> str:
-            if not isinstance(val, str):
-                try:
-                    return ''.join(ch for ch in str(val) if ch.isdigit())
-                except Exception:
-                    return ''
-            parts = val.split(':')
-            candidate = parts[-1] if parts else val
-            return ''.join(ch for ch in candidate if ch.isdigit())
-        
-        # Create type-based hypernodes (split by max size per hypernode)
-        # Always create type-based hypernodes regardless of use_type_groups setting
-        # Always create hypernodes for all types, but split into chunks of size <= min_nodes
-        type_groups = self.group_nodes_by_type(nodes, min_group_size=1)
-
-        try:
-            max_per_hypernode = max(1, int(min_nodes))
-        except Exception:
-            max_per_hypernode = 1
-
-        for group_type, group_data in type_groups['groups'].items():
-            members = list(group_data['members'])
-            total = len(members)
-            if total == 0:
-                continue
-
-            # Chunk members into groups of size <= max_per_hypernode
-            chunk_index = 0
-            for start in range(0, total, max_per_hypernode):
-                chunk = members[start:start + max_per_hypernode]
-                chunk_index += 1
-                hypernode_id = f"type-hypernode-{group_type}-{chunk_index}" if total > max_per_hypernode else f"type-hypernode-{group_type}"
-
+        # Create type-based hypernodes
+        if use_type_groups:
+            type_groups = self.group_nodes_by_type(nodes, min_nodes)
+            
+            for group_type, group_data in type_groups['groups'].items():
+                group_key = str(group_type).replace(' ', '').upper()
+                if group_key in disallowed_type_groups:
+                    # Skip unwanted group types entirely
+                    continue
+                hypernode_id = f"type-hypernode-{group_type}"
+                
                 hypernode = {
                     'id': hypernode_id,
-                    'label': f"{group_type} Group {chunk_index} ({len(chunk)})" if total > max_per_hypernode else f"{group_type} Group ({len(chunk)})",
+                    'label': f"{group_type} Group ({group_data['size']})",
                     'type': 'type-hypernode',
                     'original_type': group_type,
-                    'member_count': len(chunk),
-                    'members': chunk
+                    'color': type_group_colors.get(group_key),
+                    'member_count': group_data['size'],
+                    'members': group_data['members']
                 }
-
+                
                 hypernodes.append(hypernode)
-
-                # Create connections from members to this hypernode chunk
-                for member_id in chunk:
+                
+                # Create connections from members to hypernode
+                for member_id in group_data['members']:
                     hypernode_connections.append({
                         'id': f"{member_id}-{hypernode_id}",
                         'source': member_id,
@@ -404,198 +378,59 @@ class HypergraphProcessor:
                         'weight': 0.5
                     })
         
-        # Community-based hypernodes disabled per user request
-        # Use only type-based hypernodes with max nodes per hypernode splitting
-        
-        # Create stressor hypernodes for ALL AOPs (removed restriction)
-        stressor_nodes = [n for n in nodes if n.get('type') == 'Stressor']
-        if stressor_nodes and not exclude_stressor_hypernodes:
-            # Group stressors by AOP
-            stressors_by_aop = defaultdict(list)
-            logger.info(f"\n=== GROUPING {len(stressor_nodes)} STRESSOR NODES BY AOP ===")
-            for stressor in stressor_nodes:
-                aop_raw = stressor.get('aop_id') or stressor.get('aop') or ''
-                aop_key = _extract_aop_id(aop_raw) or 'unknown'
-                if aop_key and aop_key != 'unknown':
-                    stressors_by_aop[aop_key].append(stressor)
-                    if len(stressors_by_aop) <= 5:  # Log first few for debugging
-                        logger.info(f"Added stressor to AOP {aop_key}: {stressor.get('id', 'no-id')}")
-            logger.info(f"Stressors grouped by ALL AOPs: {dict((k, len(v)) for k, v in stressors_by_aop.items())}")
-            logger.info(f"Creating stressor hypernodes for {len(stressors_by_aop)} AOPs: {list(stressors_by_aop.keys())}")
-            for aop_key, aop_stressors in stressors_by_aop.items():
-                if len(aop_stressors) > 0:
-                    hypernode_id = f"stressor-hypernode-aop-{aop_key}"
-                    # Get the AOP name from the first stressor (all stressors in group have same AOP name)
-                    aop_name = aop_stressors[0].get('aop_name', '') if aop_stressors else ''
-                    aop_id = aop_stressors[0].get('aop_id', aop_key) if aop_stressors else aop_key
+        # Create community-based hypernodes
+        if use_communities and community_data and community_data.get('communities'):
+            # Build a quick lookup for node types
+            node_by_id = {n['id']: n for n in nodes}
+            for i, community in enumerate(community_data['communities']):
+                if community['size'] >= min_nodes:
+                    hypernode_id = f"community-hypernode-{i}"
+                    # Determine dominant type in this community
+                    type_counts = Counter()
+                    for member_id in community['members']:
+                        n = node_by_id.get(member_id)
+                        if not n:
+                            continue
+                        t = str(n.get('type', 'Unknown')).replace(' ', '').upper()
+                        type_counts[t] += 1
+                    dominant_type_key = None
+                    dominant_type = None
+                    if type_counts:
+                        dominant_type_key, _ = type_counts.most_common(1)[0]
+                        # Map back to a readable label if possible
+                        if dominant_type_key in ('KEYEVENT', 'KEY_EVENT', 'KE'):
+                            dominant_type = 'KeyEvent'
+                        elif dominant_type_key in ('MOLECULARINITIATINGEVENT', 'MIE'):
+                            dominant_type = 'MolecularInitiatingEvent'
+                        elif dominant_type_key in ('ADVERSEOUTCOME', 'AO'):
+                            dominant_type = 'AdverseOutcome'
+                        else:
+                            dominant_type = dominant_type_key
+                    color = type_group_colors.get(dominant_type_key)
                     
-                    # Create descriptive label with AOP ID and name
-                    if aop_name:
-                        aop_label = f"AOP {aop_id}: {aop_name}"
-                    else:
-                        aop_label = f"AOP{aop_key}"
-                    
-                    stressor_names_preview = ', '.join(s.get('label', 'Unknown') for s in aop_stressors[:2])
-                    if len(aop_stressors) > 2:
-                        stressor_names_preview += f" +{len(aop_stressors)-2} more"
                     hypernode = {
                         'id': hypernode_id,
-                        'label': f"Stressors ({aop_label})",
-                        'description': f"{len(aop_stressors)} stressors: {stressor_names_preview}",
-                        'type': 'stressor-hypernode',
-                        'aop': aop_key,
-                        'aop_id': aop_id,
-                        'aop_name': aop_name,  # Store the AOP name for use in hyperedges
-                        'member_count': len(aop_stressors),
-                        'members': [s['id'] for s in aop_stressors],
-                        'stressor_names': [s.get('label', s.get('name', 'Unknown')) for s in aop_stressors]
-                    }
-                    hypernodes.append(hypernode)
-                    logger.info(f"Created stressor hypernode {hypernode_id} for AOP {aop_key} with {len(aop_stressors)} stressors")
-                    # Create connections from stressor nodes to their hypernode
-                    for stressor in aop_stressors:
-                        hypernode_connections.append({
-                            'id': f"{stressor['id']}-{hypernode_id}",
-                            'source': stressor['id'],
-                            'target': hypernode_id,
-                            'type': 'stressor-connection',
-                            'weight': 1.0,
-                            'label': aop_label,
-                            'aop': aop_key
-                        })
-                    # Note: Specific connection to AdverseOutcome hypernodes is handled later
-                    logger.info(f"Created stressor hypernode {hypernode_id} for {aop_label} with {len(aop_stressors)} stressors")
-            
-            logger.info(f"\n=== STRESSOR HYPERNODE SUMMARY ===")
-            logger.info(f"Created {len(stressors_by_aop)} stressor hypernodes for {len(stressor_nodes)} stressor nodes")
-            
-            # Log final connection summary
-            stressor_connections = [conn for conn in hypernode_connections if conn.get('type') == 'stressor-mie-connection']
-            logger.info(f"Total stressor-MIE connections created: {len(stressor_connections)}")
-            
-            if stressor_connections:
-                logger.info("Stressor-MIE connections:")
-                for conn in stressor_connections:
-                    logger.info(f"  ✓ {conn['source']} → {conn['target']} (AOP {conn.get('aop', 'unknown')})")
-            else:
-                logger.warning("⚠️  No stressor-MIE connections were created!")
-                
-            # Log stressor hypernode details
-            stressor_hypernodes = [hn for hn in hypernodes if hn.get('type') == 'stressor-hypernode']
-            logger.info(f"Stressor hypernodes created:")
-            for hn in stressor_hypernodes:
-                logger.info(f"  • {hn['id']}: {hn['label']} (AOP {hn.get('aop', 'unknown')}, {hn.get('member_count', 0)} members)")
-        elif stressor_nodes and exclude_stressor_hypernodes:
-            logger.info(f"Skipped creating stressor hypernodes for {len(stressor_nodes)} stressor nodes (excluded for comprehensive pathway search)")
-        elif not stressor_nodes:
-            logger.info("No stressor nodes found in the dataset")
-        else:
-            logger.info("Stressor hypernode creation was skipped for unknown reasons")
-
-        # Ensure every individual stressor node is connected to its AOP hypernode
-        stressor_hypernodes = [h for h in hypernodes if h.get('type') == 'stressor-hypernode']
-        aop_hypernode_map = {h.get('aop_id'): h for h in stressor_hypernodes}
-        
-        for stressor in stressor_nodes:
-            aop_raw = stressor.get('aop_id') or stressor.get('aop') or ''
-            aop_key = _extract_aop_id(aop_raw) or 'unknown'
-            target_hypernode = aop_hypernode_map.get(aop_key)
-            
-            if target_hypernode:
-                # Check if already connected
-                already_connected = any(
-                    conn.get('source') == stressor['id'] and conn.get('target') == target_hypernode['id']
-                    for conn in hypernode_connections
-                )
-                
-                if not already_connected:
-                    hypernode_connections.append({
-                        'id': f"stressor-{stressor['id']}-to-aop-{target_hypernode['id']}",
-                        'source': stressor['id'],
-                        'target': target_hypernode['id'],
-                        'type': 'stressor-to-aop-hypernode',
-                        'weight': 1.0,
-                        'label': f"AOP{aop_key}",
-                        'aop': aop_key
-                    })
-                    logger.info(f"Connected stressor {stressor['id']} to AOP{aop_key} hypernode")
-
-        # Connect stressor hypernodes directly to AdverseOutcome hypernodes with labeled hyperedges
-        stressor_hypernodes = [h for h in hypernodes if h.get('type') == 'stressor-hypernode']
-        adverse_outcome_hypernodes = [h for h in hypernodes if h.get('type') == 'type-hypernode' and 'AdverseOutcome' in h.get('original_type', '')]
-        
-        print(f"\n=== CONNECTING STRESSOR TO ADVERSE OUTCOME HYPERNODES ===")
-        print(f"Found {len(stressor_hypernodes)} stressor hypernodes")
-        print(f"Found {len(adverse_outcome_hypernodes)} AdverseOutcome hypernodes")
-        
-        # Connect each stressor hypernode to AdverseOutcome hypernodes with labeled hyperedge
-        connections_created = 0
-        for stressor_hn in stressor_hypernodes:
-            aop_key = stressor_hn.get('aop', 'unknown')
-            aop_id = stressor_hn.get('aop_id', aop_key)
-            aop_name = stressor_hn.get('aop_name', '')
-            
-            # Create label with AOP ID only for better aesthetics
-            hyperedge_label = f"AOP {aop_id}"
-            
-            # Connect to the first available AdverseOutcome hypernode
-            if adverse_outcome_hypernodes:
-                target_hypernode = adverse_outcome_hypernodes[0]  # Use first AdverseOutcome hypernode
-                connection_id = f"stressor-to-adverse-{stressor_hn['id']}-{target_hypernode['id']}"
-                
-                # Check if connection already exists
-                already_connected = any(
-                    conn.get('source') == stressor_hn['id'] and conn.get('target') == target_hypernode['id']
-                    for conn in hypernode_connections
-                )
-                
-                if not already_connected:
-                    hyperedge = {
-                        'id': connection_id,
-                        'source': stressor_hn['id'],
-                        'target': target_hypernode['id'],
-                        'type': 'stressor-adverse-hyperedge',
-                        'weight': 1.0,
-                        'label': hyperedge_label,
-                        'aop': aop_key,
-                        'aop_name': aop_name,
-                        'description': f"Connection from stressors to adverse outcome via {hyperedge_label}"
+                        'label': f"Community {i+1} ({community['size']})",
+                        'type': 'community-hypernode',
+                        'member_count': community['size'],
+                        'members': community['members'],
+                        'modularity_contribution': community.get('modularity_contribution', 0),
+                        'dominant_type': dominant_type,
+                        'type_distribution': dict(type_counts),
+                        'color': color,
                     }
                     
-                    hypernode_connections.append(hyperedge)
-                    connections_created += 1
-                    print(f"✅ CONNECTED: {stressor_hn['id']} → {target_hypernode['id']} via hyperedge '{hyperedge_label}'")
-                else:
-                    print(f"⚠️ Connection already exists: {stressor_hn['id']} → {target_hypernode['id']}")
-            else:
-                print(f"⚠️ No AdverseOutcome hypernodes found for stressor {stressor_hn['id']}")
-        
-        print(f"Created {connections_created} stressor-to-adverse-outcome connections")
-        print(f"Total connections now: {len(hypernode_connections)}")
-        
-        # Remove duplicate edges - deduplicate by source-target pair
-        print(f"\n=== DEDUPLICATING EDGES ===")
-        original_count = len(hypernode_connections)
-        seen_connections = set()
-        unique_connections = []
-        
-        for conn in hypernode_connections:
-            # Create a unique key based on source, target, and type
-            source = conn.get('source', '')
-            target = conn.get('target', '')
-            conn_type = conn.get('type', '')
-            connection_key = f"{source}->{target}:{conn_type}"
-            
-            if connection_key not in seen_connections:
-                seen_connections.add(connection_key)
-                unique_connections.append(conn)
-            else:
-                print(f"🗑️ Removed duplicate: {source} → {target} ({conn_type})")
-        
-        hypernode_connections = unique_connections
-        duplicates_removed = original_count - len(hypernode_connections)
-        print(f"Removed {duplicates_removed} duplicate connections")
-        print(f"Final unique connections: {len(hypernode_connections)}")
+                    hypernodes.append(hypernode)
+                    
+                    # Create connections from members to hypernode
+                    for member_id in community['members']:
+                        hypernode_connections.append({
+                            'id': f"{member_id}-{hypernode_id}",
+                            'source': member_id,
+                            'target': hypernode_id,
+                            'type': 'community-connection',
+                            'weight': 0.3
+                        })
         
         # Calculate statistics
         stats = {
@@ -604,9 +439,7 @@ class HypergraphProcessor:
             'hypernodes': len(hypernodes),
             'hypernode_connections': len(hypernode_connections),
             'total_nodes': len(nodes) + len(hypernodes),
-            'total_edges': len(edges) + len(hypernode_connections),
-            'stressor_nodes': len(stressor_nodes),
-            'stressor_hypernodes': len([h for h in hypernodes if h.get('type') == 'stressor-hypernode'])
+            'total_edges': len(edges) + len(hypernode_connections)
         }
         
         logger.info(f"Hypergraph creation: {stats['hypernodes']} hypernodes, {stats['hypernode_connections']} connections")
@@ -614,13 +447,12 @@ class HypergraphProcessor:
         return {
             'hypernodes': hypernodes,
             'hypernode_connections': hypernode_connections,
-            'edges': edges,  # Return deduplicated edges
             'stats': stats,
             'config': {
                 'min_nodes': min_nodes,
                 'use_communities': use_communities,
                 'use_type_groups': use_type_groups,
-                'exclude_stressor_hypernodes': exclude_stressor_hypernodes
+                'type_group_colors': type_group_colors
             }
         }
     
@@ -707,7 +539,7 @@ def detect_communities(nodes: List[Dict], edges: List[Dict], method: str = 'louv
     return method_map[method](**kwargs)
 
 def create_hypergraph(nodes: List[Dict], edges: List[Dict], min_nodes: int = 4, 
-                     community_method: str = 'louvain', exclude_stressor_hypernodes: bool = False, **kwargs) -> Dict[str, Any]:
+                     community_method: str = 'louvain', **kwargs) -> Dict[str, Any]:
     """Convenience function for hypergraph creation"""
     processor = HypergraphProcessor()
     processor.build_networkx_graph(nodes, edges)
@@ -718,7 +550,7 @@ def create_hypergraph(nodes: List[Dict], edges: List[Dict], min_nodes: int = 4,
     # Create hypergraph elements
     hypergraph_data = processor.create_hypergraph_elements(
         nodes, edges, min_nodes=min_nodes, 
-        community_data=community_data, exclude_stressor_hypernodes=exclude_stressor_hypernodes, **kwargs
+        community_data=community_data, **kwargs
     )
     
     # Add community data and network properties

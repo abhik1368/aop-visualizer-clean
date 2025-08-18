@@ -121,6 +121,8 @@ const PerplexityAnalysisPanel = ({
   const renderContentWithLinks = (content, citations = []) => {
     if (!content) return content;
     
+    console.log('Rendering content with citations:', citations);
+    
     // First highlight bioentities
     const highlightedContent = highlightBioentities(content);
     
@@ -133,13 +135,37 @@ const PerplexityAnalysisPanel = ({
       if (index % 2 === 1) {
         const refNum = parseInt(part);
         
-        // Try to get the actual citation URL (array is 0-indexed, references are 1-indexed)
-        const citationUrl = citations[refNum - 1];
-        const actualUrl = typeof citationUrl === 'string' ? citationUrl : citationUrl?.url;
+        // Try to get the actual citation from various possible formats
+        let actualUrl = null;
+        let citationTitle = `Reference ${refNum}`;
         
-        // If we have an actual citation URL, use it; otherwise fall back to keyword search
-        const linkUrl = actualUrl || `https://pubmed.ncbi.nlm.nih.gov/?term=${encodeURIComponent(query.split(' ').slice(0, 3).join(' ') + ' reference ' + refNum)}`;
-        const linkTitle = actualUrl ? `View citation ${refNum}` : `Search PubMed for reference ${refNum}`;
+        if (citations && citations.length > 0) {
+          const citationData = citations[refNum - 1]; // Array is 0-indexed, references are 1-indexed
+          
+          if (typeof citationData === 'string') {
+            // Citation is just a URL string
+            actualUrl = citationData;
+          } else if (typeof citationData === 'object' && citationData) {
+            // Citation is an object with URL and possibly title
+            actualUrl = citationData.url || citationData.link || citationData.href;
+            citationTitle = citationData.title || citationData.name || citationTitle;
+          }
+        }
+        
+        // If we still don't have a URL, try alternative citation formats
+        if (!actualUrl && citations && citations.length > 0) {
+          // Sometimes citations are in different formats
+          const firstCitation = citations[0];
+          if (typeof firstCitation === 'object' && firstCitation) {
+            console.log('Citation object structure:', Object.keys(firstCitation));
+          }
+        }
+        
+        // Fallback: create search URL if no direct citation URL
+        const linkUrl = actualUrl || `https://pubmed.ncbi.nlm.nih.gov/?term=${encodeURIComponent(query.split(' ').slice(0, 3).join(' '))}`;
+        const linkTitle = actualUrl ? citationTitle : `Search PubMed for: ${query.split(' ').slice(0, 3).join(' ')}`;
+        
+        console.log(`Reference ${refNum}: URL = ${linkUrl}, Title = ${linkTitle}`);
         
         return (
           <a
@@ -148,7 +174,7 @@ const PerplexityAnalysisPanel = ({
             target="_blank"
             rel="noopener noreferrer"
             className={`inline-flex items-center px-1 py-0.5 text-xs rounded hover:bg-primary/20 transition-colors ${
-              actualUrl ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-primary/10 text-primary'
+              actualUrl ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
             }`}
             title={linkTitle}
           >
@@ -165,12 +191,42 @@ const PerplexityAnalysisPanel = ({
   // Extract current AOP from graphData or selected node
   const currentAOP = graphData?.currentAOP || selectedNode?.aop || '';
   
-  // Auto-generate query based on selected node
+  // Auto-generate query based on selected node with enhanced information
   useEffect(() => {
     if (selectedNode && !query) {
       const nodeLabel = selectedNode.label || selectedNode.id;
       const nodeType = selectedNode.type || 'element';
-      const autoQuery = `Can you analyze the biological significance of ${nodeLabel} (${nodeType}) in the context of adverse outcome pathways? What AOPs is this element involved in and what are the key mechanisms?`;
+      
+      // Extract additional node information for more informed analysis
+      let enhancedNodeInfo = nodeLabel;
+      let additionalContext = '';
+      
+      // Check for ontology information
+      if (selectedNode.ontology_term && selectedNode.ontology_term.trim()) {
+        additionalContext += `\nOntology Term: ${selectedNode.ontology_term}`;
+      }
+      
+      if (selectedNode.ontology_id && selectedNode.ontology_id.trim()) {
+        additionalContext += `\nOntology ID: ${selectedNode.ontology_id}`;
+      }
+      
+      // Check for change information
+      if (selectedNode.change && selectedNode.change.trim()) {
+        additionalContext += `\nChange: ${selectedNode.change}`;
+      }
+      
+      // Check for secondary term information
+      if (selectedNode.secondary_term && selectedNode.secondary_term.trim()) {
+        additionalContext += `\nSecondary Term: ${selectedNode.secondary_term}`;
+      }
+      
+      // Check for aryl hydrocarbon receptor (AhR) specific information
+      const nodeText = (nodeLabel + ' ' + (selectedNode.ontology_term || '') + ' ' + (selectedNode.secondary_term || '')).toLowerCase();
+      if (nodeText.includes('aryl hydrocarbon receptor') || nodeText.includes('ahr')) {
+        additionalContext += `\nNote: This relates to the aryl hydrocarbon receptor (AhR) pathway`;
+      }
+      
+      const autoQuery = `Can you analyze the biological significance of ${enhancedNodeInfo} (${nodeType}) in the context of adverse outcome pathways?${additionalContext ? '\n\nAdditional Information:' + additionalContext : ''}\n\nWhat AOPs is this element involved in and what are the key mechanisms?`;
       setQuery(autoQuery);
     }
   }, [selectedNode, query]);
@@ -205,9 +261,31 @@ Please focus on:
           enhancedQuery += `\n\nCurrent AOP context: ${currentAOP}`;
         }
         
-        // Add selected node context for drug analysis
+        // Add selected node context for drug analysis with enhanced information
         if (selectedNode) {
-          enhancedQuery += `\n\nFocus on drugs affecting: ${selectedNode.label || selectedNode.id} (${selectedNode.type || 'Unknown type'})`;
+          let nodeContext = `${selectedNode.label || selectedNode.id} (${selectedNode.type || 'Unknown type'})`;
+          
+          // Add ontology information if available
+          if (selectedNode.ontology_term) {
+            nodeContext += `\n  - Ontology Term: ${selectedNode.ontology_term}`;
+          }
+          if (selectedNode.ontology_id) {
+            nodeContext += `\n  - Ontology ID: ${selectedNode.ontology_id}`;
+          }
+          if (selectedNode.change) {
+            nodeContext += `\n  - Change: ${selectedNode.change}`;
+          }
+          if (selectedNode.secondary_term) {
+            nodeContext += `\n  - Secondary Term: ${selectedNode.secondary_term}`;
+          }
+          
+          // Special note for aryl hydrocarbon receptor
+          const nodeText = (selectedNode.label + ' ' + (selectedNode.ontology_term || '') + ' ' + (selectedNode.secondary_term || '')).toLowerCase();
+          if (nodeText.includes('aryl hydrocarbon receptor') || nodeText.includes('ahr')) {
+            nodeContext += `\n  - Note: Aryl hydrocarbon receptor (AhR) pathway involvement`;
+          }
+          
+          enhancedQuery += `\n\nFocus on drugs affecting: ${nodeContext}`;
         }
       }
 
@@ -232,16 +310,41 @@ Please focus on:
       });
 
       console.log('Response status:', response.status);
+      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
 
       if (!response.ok) {
         let errorMessage = `HTTP error! status: ${response.status}`;
+        let errorDetails = null;
+        
         try {
-          const errorData = await response.json();
-          errorMessage = errorData.error || errorMessage;
-          console.log('Error response:', errorData);
+          // Try to get the response text first
+          const responseText = await response.text();
+          console.log('Raw error response:', responseText);
+          
+          // Try to parse as JSON
+          if (responseText) {
+            try {
+              errorDetails = JSON.parse(responseText);
+              console.log('Parsed error response:', errorDetails);
+              errorMessage = errorDetails.error || errorDetails.message || errorMessage;
+              
+              // Check for specific API error types
+              if (errorDetails.type === 'api_key_missing') {
+                errorMessage = 'Perplexity API key is not configured. Please add PERPLEXITY_API_KEY to your backend .env file.';
+              } else if (errorDetails.type === 'api_quota_exceeded') {
+                errorMessage = 'Perplexity API quota exceeded. Please check your API usage or upgrade your plan.';
+              } else if (errorDetails.type === 'api_invalid_request') {
+                errorMessage = 'Invalid request to Perplexity API. Please check your query format.';
+              }
+            } catch (jsonError) {
+              console.log('Response is not valid JSON:', jsonError);
+              errorMessage = responseText.length > 200 ? `${responseText.substring(0, 200)}...` : responseText;
+            }
+          }
         } catch (parseError) {
-          console.log('Could not parse error response:', parseError);
+          console.log('Could not read error response:', parseError);
         }
+        
         throw new Error(errorMessage);
       }
 
@@ -266,11 +369,49 @@ Please focus on:
       
     } catch (error) {
       console.error('Analysis error:', error);
+      console.error('Error stack:', error.stack);
+      
+      let userFriendlyError;
+      
       if (error.name === 'TypeError' && error.message.includes('fetch')) {
-        setAnalysisError('Cannot connect to backend server. Please make sure the backend is running on http://localhost:5001');
+        userFriendlyError = `Cannot connect to backend server. Please ensure:
+• Backend is running on http://localhost:5001
+• No firewall blocking the connection
+• Backend server started successfully without errors`;
+      } else if (error.message.includes('500')) {
+        userFriendlyError = `Backend server error (500). Common causes:
+• Missing PERPLEXITY_API_KEY in backend .env file
+• Invalid API key or expired subscription
+• Backend server configuration error
+• Check backend console for detailed error logs`;
+      } else if (error.message.includes('403')) {
+        userFriendlyError = `API access forbidden (403). Please check:
+• Valid PERPLEXITY_API_KEY in backend .env file
+• API key has proper permissions
+• Account subscription is active`;
+      } else if (error.message.includes('400')) {
+        userFriendlyError = `Bad request (400). Possible issues:
+• Query format is invalid
+• Request parameters are incorrect
+• API quota exceeded or invalid API key`;
+      } else if (error.message.includes('429')) {
+        userFriendlyError = `Rate limit exceeded (429). Please:
+• Wait a moment before trying again
+• Check your API usage limits
+• Consider upgrading your API plan`;
+      } else if (error.message.includes('Perplexity API error')) {
+        userFriendlyError = `Perplexity API Error: ${error.message}
+        
+Common solutions:
+• Verify PERPLEXITY_API_KEY is set in backend .env
+• Check API key validity at perplexity.ai
+• Ensure sufficient API credits/quota
+• Check backend server logs for details`;
       } else {
-        setAnalysisError(error.message || 'Analysis failed. Please check your connection and try again.');
+        userFriendlyError = error.message || 'Analysis failed. Please check your connection and try again.';
       }
+      
+      setAnalysisError(userFriendlyError);
     } finally {
       setAnalysisLoading(false);
     }
@@ -312,7 +453,29 @@ Please focus on:
         }
         
         if (selectedNode) {
-          moreQuery += `\n\nFocus node: ${selectedNode.label || selectedNode.id} (${selectedNode.type || 'Unknown type'})`;
+          let nodeContext = `${selectedNode.label || selectedNode.id} (${selectedNode.type || 'Unknown type'})`;
+          
+          // Add ontology information if available
+          if (selectedNode.ontology_term) {
+            nodeContext += `\n  - Ontology Term: ${selectedNode.ontology_term}`;
+          }
+          if (selectedNode.ontology_id) {
+            nodeContext += `\n  - Ontology ID: ${selectedNode.ontology_id}`;
+          }
+          if (selectedNode.change) {
+            nodeContext += `\n  - Change: ${selectedNode.change}`;
+          }
+          if (selectedNode.secondary_term) {
+            nodeContext += `\n  - Secondary Term: ${selectedNode.secondary_term}`;
+          }
+          
+          // Special note for aryl hydrocarbon receptor
+          const nodeText = (selectedNode.label + ' ' + (selectedNode.ontology_term || '') + ' ' + (selectedNode.secondary_term || '')).toLowerCase();
+          if (nodeText.includes('aryl hydrocarbon receptor') || nodeText.includes('ahr')) {
+            nodeContext += `\n  - Note: Aryl hydrocarbon receptor (AhR) pathway involvement`;
+          }
+          
+          moreQuery += `\n\nFocus node: ${nodeContext}`;
         }
       }
       
@@ -536,12 +699,68 @@ Please focus on:
                 <span className="text-sm font-medium">Scientific Analysis</span>
               </div>
               <div className="p-4 bg-muted/30 rounded-lg text-sm whitespace-pre-wrap border">
-                {renderContentWithLinks(analysisResult.analysis.content)}
+                {renderContentWithLinks(analysisResult.analysis.content, analysisResult.analysis.citations)}
               </div>
             </div>
           )}
 
-
+          {/* Citations Section */}
+          {analysisResult.analysis?.citations && analysisResult.analysis.citations.length > 0 && (
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <BookOpen className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm font-medium">Sources & References</span>
+                <Badge variant="outline" className="text-xs">
+                  {analysisResult.analysis.citations.length} sources
+                </Badge>
+              </div>
+              <div className="p-3 bg-blue-50/50 rounded-lg border border-blue-200/50">
+                <div className="space-y-2">
+                  {analysisResult.analysis.citations.map((citation, index) => {
+                    // Handle different citation formats
+                    let url = null;
+                    let title = `Reference ${index + 1}`;
+                    let snippet = '';
+                    
+                    if (typeof citation === 'string') {
+                      url = citation;
+                      title = citation.length > 60 ? `${citation.substring(0, 60)}...` : citation;
+                    } else if (typeof citation === 'object' && citation) {
+                      url = citation.url || citation.link || citation.href;
+                      title = citation.title || citation.name || url || `Reference ${index + 1}`;
+                      snippet = citation.snippet || citation.description || '';
+                    }
+                    
+                    return (
+                      <div key={index} className="flex items-start gap-2 p-2 bg-white rounded border border-blue-100">
+                        <Badge variant="secondary" className="text-xs mt-0.5 flex-shrink-0">
+                          [{index + 1}]
+                        </Badge>
+                        <div className="flex-1 min-w-0">
+                          {url ? (
+                            <a
+                              href={url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline break-all"
+                            >
+                              {title}
+                              <ExternalLink className="h-3 w-3 inline ml-1" />
+                            </a>
+                          ) : (
+                            <span className="text-sm font-medium text-gray-700">{title}</span>
+                          )}
+                          {snippet && (
+                            <p className="text-xs text-gray-600 mt-1 line-clamp-2">{snippet}</p>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* More Analysis Button */}
           {!showMoreAnalysis && (

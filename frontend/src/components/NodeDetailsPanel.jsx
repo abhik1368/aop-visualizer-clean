@@ -13,27 +13,61 @@ const NodeDetailsPanel = ({ selectedNode, selectedEdge, graphData }) => {
   // Use selectedNode as the primary node source
   const node = selectedNode;
 
-  // Function to find all AOPs connected to this node
+  // Function to find all AOPs that contain this node
   const getConnectedAOPs = (nodeId) => {
-    if (!graphData || !graphData.nodes || !graphData.edges) return [];
+    if (!node) return [];
     
     const connectedAOPs = new Set();
     
-    // Find all edges connected to this node
-    graphData.edges.forEach(edge => {
-      if (edge.source === nodeId || edge.target === nodeId) {
-        if (edge.aop) {
-          connectedAOPs.add(edge.aop);
-        }
-      }
-    });
-    
-    // Also include the node's own AOP
-    if (node?.aop) {
-      connectedAOPs.add(node.aop);
+    // Primary source: Use aop_sources from merged data (most comprehensive)
+    if (node.aop_sources && Array.isArray(node.aop_sources)) {
+      node.aop_sources.forEach(aop => connectedAOPs.add(aop));
+      console.log(`Node ${nodeId} belongs to AOPs from aop_sources:`, node.aop_sources);
     }
     
-    return Array.from(connectedAOPs).sort();
+    // Fallback 1: Use node's own AOP property
+    if (node.aop) {
+      connectedAOPs.add(node.aop);
+      console.log(`Node ${nodeId} has direct AOP property:`, node.aop);
+    }
+    
+    // Fallback 2: Search through edges for AOP information
+    if (graphData && graphData.edges) {
+      graphData.edges.forEach(edge => {
+        if (edge.source === nodeId || edge.target === nodeId) {
+          if (edge.aop) {
+            connectedAOPs.add(edge.aop);
+          }
+          if (edge.aop_sources && Array.isArray(edge.aop_sources)) {
+            edge.aop_sources.forEach(aop => connectedAOPs.add(aop));
+          }
+        }
+      });
+    }
+    
+    // Fallback 3: Search through all nodes for any that mention this node
+    if (graphData && graphData.nodes) {
+      graphData.nodes.forEach(n => {
+        if (n.id === nodeId && n.aop_sources) {
+          if (Array.isArray(n.aop_sources)) {
+            n.aop_sources.forEach(aop => connectedAOPs.add(aop));
+          }
+        }
+      });
+    }
+    
+    const result = Array.from(connectedAOPs).sort((a, b) => {
+      // Sort numerically if both are numbers, otherwise alphabetically
+      const numA = parseInt(a.toString().match(/\d+/)?.[0]);
+      const numB = parseInt(b.toString().match(/\d+/)?.[0]);
+      if (!isNaN(numA) && !isNaN(numB)) {
+        return numA - numB;
+      }
+      return a.toString().localeCompare(b.toString());
+    });
+    
+    console.log(`Final connected AOPs for node ${nodeId}:`, result);
+    return result;
   };
 
   useEffect(() => {
@@ -116,27 +150,100 @@ const NodeDetailsPanel = ({ selectedNode, selectedEdge, graphData }) => {
             <h4 className="font-medium text-base">{node.label}</h4>
           </div>
 
-          {/* AOP Information */}
-          {(node.aop || node.aop_source || node.aop_title) && (
-            <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-md">
-              <label className="text-sm font-medium text-blue-800 dark:text-blue-200">AOP Information</label>
-              <div className="space-y-1 mt-1">
-                {(() => {
-                  const connectedAOPs = getConnectedAOPs(node.id);
-                  return connectedAOPs.length > 0 && (
-                    <div className="text-sm">
-                      <span className="text-muted-foreground">Connected AOPs:</span> {connectedAOPs.join(', ')}
-                    </div>
-                  );
-                })()}
-                {node.aop_title && (
-                  <div className="text-sm">
-                    <span className="text-muted-foreground">AOP Title:</span> {node.aop_title}
+          {/* Enhanced AOP Information with Cross-Pathway Analysis */}
+          {(() => {
+            const connectedAOPs = getConnectedAOPs(node.id);
+            const aopAssociations = node.aop_associations || [];
+            const crossPathwayCount = node.cross_pathway_count || 0;
+            const isCrossPathway = node.is_cross_pathway || false;
+            
+            if (connectedAOPs.length > 0 || aopAssociations.length > 0 || node.aop || node.aop_source || node.aop_title) {
+              return (
+                <div className={`p-3 rounded-md ${isCrossPathway ? 'bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800' : 'bg-blue-50 dark:bg-blue-900/20'}`}>
+                  <div className="flex items-center gap-2 mb-2">
+                    <label className={`text-sm font-medium ${isCrossPathway ? 'text-purple-800 dark:text-purple-200' : 'text-blue-800 dark:text-blue-200'}`}>
+                      AOP Network Information
+                    </label>
+                    {isCrossPathway && (
+                      <Badge variant="secondary" className="text-xs bg-purple-100 text-purple-800 dark:bg-purple-800 dark:text-purple-100">
+                        🔗 Cross-Pathway
+                      </Badge>
+                    )}
                   </div>
-                )}
-              </div>
-            </div>
-          )}
+                  
+                  <div className="space-y-3 mt-2">
+                    {/* Cross-pathway highlighting */}
+                    {isCrossPathway && crossPathwayCount > 1 && (
+                      <div className="bg-purple-100 dark:bg-purple-800/30 p-2 rounded border border-purple-200 dark:border-purple-700">
+                        <div className="text-sm font-medium text-purple-800 dark:text-purple-200 mb-1">
+                          🌐 Cross-Pathway Node
+                        </div>
+                        <div className="text-xs text-purple-700 dark:text-purple-300">
+                          This node appears across <strong>{crossPathwayCount} different AOP pathways</strong>, indicating its importance in multiple biological processes.
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* AOP Associations (from comprehensive search) */}
+                    {aopAssociations.length > 0 && (
+                      <div className="text-sm">
+                        <span className="text-muted-foreground font-medium">Pathway Associations:</span>
+                        <div className="mt-1 flex flex-wrap gap-1">
+                          {aopAssociations.map((aop, index) => (
+                            <Badge
+                              key={index}
+                              variant="secondary"
+                              className={`text-xs ${isCrossPathway ? 'bg-purple-100 text-purple-800 hover:bg-purple-200 dark:bg-purple-800 dark:text-purple-100' : 'bg-blue-100 text-blue-800 hover:bg-blue-200 dark:bg-blue-800 dark:text-blue-100'}`}
+                            >
+                              {aop}
+                            </Badge>
+                          ))}
+                        </div>
+                        <div className="text-xs text-muted-foreground mt-1">
+                          Appears in {aopAssociations.length} AOP pathway{aopAssociations.length !== 1 ? 's' : ''} (comprehensive analysis)
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* Legacy connected AOPs */}
+                    {connectedAOPs.length > 0 && aopAssociations.length === 0 && (
+                      <div className="text-sm">
+                        <span className="text-muted-foreground font-medium">Connected AOPs:</span>
+                        <div className="mt-1 flex flex-wrap gap-1">
+                          {connectedAOPs.map((aop, index) => (
+                            <Badge
+                              key={index}
+                              variant="secondary"
+                              className="text-xs bg-blue-100 text-blue-800 hover:bg-blue-200 dark:bg-blue-800 dark:text-blue-100"
+                            >
+                              {aop}
+                            </Badge>
+                          ))}
+                        </div>
+                        <div className="text-xs text-muted-foreground mt-1">
+                          This node appears in {connectedAOPs.length} AOP{connectedAOPs.length !== 1 ? 's' : ''}
+                        </div>
+                      </div>
+                    )}
+                    
+                    {node.aop_title && (
+                      <div className="text-sm">
+                        <span className="text-muted-foreground font-medium">AOP Title:</span>
+                        <div className="mt-1">{node.aop_title}</div>
+                      </div>
+                    )}
+                    
+                    {node.aop_source && (
+                      <div className="text-sm">
+                        <span className="text-muted-foreground font-medium">Primary AOP:</span> {node.aop_source}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            }
+            return null;
+          })()}
 
           {/* Node Properties */}
           <div className="space-y-2">
@@ -175,14 +282,44 @@ const NodeDetailsPanel = ({ selectedNode, selectedEdge, graphData }) => {
               </div>
             )}
 
-            {/* Search Match Information */}
+            {/* Enhanced Search Match Information */}
             {node.is_search_match && (
-              <div className="bg-green-50 dark:bg-green-900/20 p-2 rounded-md">
-                <div className="text-sm text-green-800 dark:text-green-200">
-                  ✅ Search Match
-                  {node.search_query && (
-                    <div className="text-xs mt-1">Query: "{node.search_query}"</div>
-                  )}
+              <div className="bg-green-50 dark:bg-green-900/20 p-3 rounded-md border border-green-200 dark:border-green-800">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="text-sm font-medium text-green-800 dark:text-green-200">
+                    🎯 Direct Search Match
+                  </div>
+                  <Badge variant="secondary" className="text-xs bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100">
+                    Relevant
+                  </Badge>
+                </div>
+                
+                {node.matched_terms && node.matched_terms.length > 0 && (
+                  <div className="text-xs text-green-700 dark:text-green-300 mb-2">
+                    <div className="font-medium mb-1">Matched terms:</div>
+                    <div className="flex flex-wrap gap-1">
+                      {node.matched_terms.slice(0, 5).map((term, index) => (
+                        <span key={index} className="bg-green-100 dark:bg-green-800/30 px-2 py-1 rounded text-xs">
+                          {term}
+                        </span>
+                      ))}
+                      {node.matched_terms.length > 5 && (
+                        <span className="text-green-600 dark:text-green-400">
+                          +{node.matched_terms.length - 5} more
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                )}
+                
+                {node.search_query && (
+                  <div className="text-xs text-green-700 dark:text-green-300">
+                    Original query: "{node.search_query}"
+                  </div>
+                )}
+                
+                <div className="text-xs text-green-600 dark:text-green-400 mt-2">
+                  This node was identified as directly relevant to your biological term search.
                 </div>
               </div>
             )}
