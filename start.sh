@@ -2,7 +2,7 @@
 
 # AOP Network Visualizer - Startup Script
 
-echo "🚀 Starting AOP Network Visualizer..."
+echo " Starting AOP Network Visualizer..."
 echo ""
 
 # Check if we're on Windows (Git Bash/WSL) or Unix
@@ -23,25 +23,25 @@ command_exists() {
 echo "🔍 Checking dependencies..."
 
 if ! command_exists node; then
-    echo "❌ Node.js is not installed. Please install Node.js 16+ from https://nodejs.org/"
+    echo " Node.js is not installed. Please install Node.js 16+ from https://nodejs.org/"
     exit 1
 fi
 
 if ! command_exists $PYTHON_CMD; then
-    echo "❌ Python is not installed. Please install Python 3.8+ from https://python.org/"
+    echo " Python is not installed. Please install Python 3.8+ from https://python.org/"
     exit 1
 fi
 
 if ! command_exists npm; then
-    echo "❌ npm is not installed. Please install npm (usually comes with Node.js)"
+    echo " npm is not installed. Please install npm (usually comes with Node.js)"
     exit 1
 fi
 
-echo "✅ All dependencies found!"
+echo " All dependencies found!"
 echo ""
 
 # Setup and start backend
-echo "🐍 Setting up Python backend..."
+echo " Setting up Python backend..."
 cd backend
 
 # Create virtual environment if it doesn't exist
@@ -60,7 +60,7 @@ fi
 
 pip install -r requirements.txt
 
-echo "🚀 Starting backend server..."
+echo " Starting backend server..."
 $PYTHON_CMD src/main.py &
 BACKEND_PID=$!
 
@@ -68,7 +68,7 @@ cd ..
 
 # Setup and start frontend
 echo ""
-echo "⚛️  Setting up React frontend..."
+echo "  Setting up React frontend..."
 cd frontend
 
 # Install dependencies if node_modules doesn't exist
@@ -77,19 +77,19 @@ if [ ! -d "node_modules" ]; then
     npm install
 fi
 
-echo "🚀 Starting frontend development server..."
+echo " Starting frontend development server..."
 npm run dev &
 FRONTEND_PID=$!
 
 cd ..
 
 echo ""
-echo "🎉 AOP Network Visualizer is starting up!"
+echo " AOP Network Visualizer is starting up!"
 echo ""
-echo "📍 Frontend: http://localhost:5173"
-echo "📍 Backend:  http://localhost:5001"
+echo " Frontend: http://localhost:5173"
+echo " Backend:  http://localhost:5001"
 echo ""
-echo "💡 Press Ctrl+C to stop both servers"
+echo " Press Ctrl+C to stop both servers"
 echo ""
 
 # Wait for both processes

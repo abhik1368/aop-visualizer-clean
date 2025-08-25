@@ -319,6 +319,197 @@ def get_aops():
     """Get list of all AOPs"""
     return jsonify(aop_data.get("aops", []))
 
+@app.route("/search_aops")
+def search_aops():
+    """Search AOPs by exact term and return ALL matching and associated AOPs with their names"""
+    search_term = request.args.get("term", "").strip()
+    
+    if not search_term:
+        return jsonify({"error": "term parameter required"}), 400
+    
+    # Get the aop_id_to_name mapping
+    aop_names = aop_data.get("aop_id_to_name", {})
+    directly_matching_aops = set()
+    
+    # Search for EXACT matches in node labels (like the specific_term_search endpoint)
+    nodes_with_exact_matches = set()
+    for node in aop_data.get("nodes", {}).values():
+        node_label = node.get("label", "")
+        
+        # EXACT match (case insensitive)
+        if search_term.lower() == node_label.lower():
+            nodes_with_exact_matches.add(node.get("id"))
+            node_aop = node.get("aop")
+            if node_aop:
+                directly_matching_aops.add(node_aop)
+    
+    # If no exact matches found, fall back to partial matching
+    if not directly_matching_aops:
+        # Search through AOP names for the term
+        for aop_id, aop_name in aop_names.items():
+            if search_term.lower() in aop_name.lower():
+                directly_matching_aops.add(aop_id)
+        
+        # Also search through node labels and ontology terms for partial matches
+        for node in aop_data.get("nodes", {}).values():
+            searchable_text = " ".join([
+                node.get("label", ""),
+                node.get("ontology_term", ""),
+                node.get("secondary_term", "")
+            ]).lower()
+            
+            if search_term.lower() in searchable_text:
+                nodes_with_exact_matches.add(node.get("id"))
+                node_aop = node.get("aop")
+                if node_aop:
+                    directly_matching_aops.add(node_aop)
+    
+    # Find ALL AOPs that share nodes with the directly matching AOPs (comprehensive relationship search)
+    all_associated_aops = set(directly_matching_aops)
+    
+    # Get all nodes from directly matching AOPs
+    nodes_in_matching_aops = set()
+    for node in aop_data.get("nodes", {}).values():
+        if node.get("aop") in directly_matching_aops:
+            nodes_in_matching_aops.add(node.get("id"))
+    
+    # Also include the exact matching nodes
+    nodes_in_matching_aops.update(nodes_with_exact_matches)
+    
+    # Find ALL AOPs that contain any of these nodes (shared pathway components)
+    for node in aop_data.get("nodes", {}).values():
+        if node.get("id") in nodes_in_matching_aops:
+            node_aop = node.get("aop")
+            if node_aop:
+                all_associated_aops.add(node_aop)
+    
+    # Also check ALL edges for additional cross-pathway relationships
+    for edge in aop_data.get("edges", []):
+        source_id = edge.get("source")
+        target_id = edge.get("target")
+        edge_aop = edge.get("aop")
+        
+        # If this edge connects to nodes we're interested in
+        if source_id in nodes_in_matching_aops or target_id in nodes_in_matching_aops:
+            if edge_aop:
+                all_associated_aops.add(edge_aop)
+            
+            # Also add AOPs of the connected nodes
+            for node in aop_data.get("nodes", {}).values():
+                if node.get("id") in [source_id, target_id]:
+                    node_aop = node.get("aop")
+                    if node_aop:
+                        all_associated_aops.add(node_aop)
+    
+    # Build the final result list
+    matching_aops = []
+    for aop_id in all_associated_aops:
+        aop_name = aop_names.get(aop_id, f"AOP {aop_id}")
+        is_direct_match = aop_id in directly_matching_aops
+        
+        matching_aops.append({
+            "id": aop_id,
+            "name": aop_name,
+            "direct_match": is_direct_match
+        })
+    
+    # Sort by direct matches first, then by name
+    matching_aops.sort(key=lambda x: (not x["direct_match"], x["name"]))
+    
+    return jsonify({
+        "search_term": search_term,
+        "matching_aops": matching_aops,
+        "total_found": len(matching_aops),
+        "direct_matches": len([aop for aop in matching_aops if aop["direct_match"]]),
+        "associated_matches": len([aop for aop in matching_aops if not aop["direct_match"]])
+    })
+
+@app.route("/comprehensive_term_search", methods=["GET"])
+def comprehensive_term_search():
+    """
+    NEW: Clean data-based comprehensive term search.
+    Uses preprocessed clean data for accurate, fast searching.
+    """
+    try:
+        from clean_data_loader import get_clean_data_loader
+        
+        # Get search term (single term, no splitting)
+        search_term = request.args.get('terms', '').strip()
+        if not search_term:
+            return jsonify({"success": False, "error": "terms parameter required"}), 400
+        
+        logger.info(f"Clean comprehensive term search for: '{search_term}'")
+        
+        # Get clean data loader
+        clean_loader = get_clean_data_loader()
+        if not clean_loader.loaded:
+            return jsonify({"success": False, "error": "Clean data not loaded"})
+        
+        # Find all AOPs containing the search term
+        matching_aop_ids, entity_details = clean_loader.find_aops_by_search_term(search_term)
+        
+        if not matching_aop_ids:
+            return jsonify({
+                "success": True,
+                "search_terms": [search_term],
+                "matching_aops": [],
+                "total_aops": 0,
+                "graph_data": {"nodes": [], "edges": []},
+                "message": f"No AOPs found containing: {search_term}"
+            })
+        
+        # Get complete network for all matching AOPs
+        network_data = clean_loader.get_complete_aop_network(matching_aop_ids)
+        
+        # Prepare AOP metadata
+        aop_names = clean_loader.get_aop_names_mapping()
+        aop_list = []
+        for aop_id in matching_aop_ids:
+            aop_name = aop_names.get(aop_id, f"AOP {aop_id}")
+            node_count = len([n for n in network_data['nodes'] if aop_id in n.get('all_aops', [])])
+            
+            # Find which entities in this AOP matched the search
+            matching_entities = [e for e in entity_details if aop_id in e['aop_ids']]
+            
+            aop_list.append({
+                "id": aop_id,
+                "name": aop_name,
+                "matching_terms": [search_term],
+                "node_count": node_count,
+                "matching_entities": [e['name'] for e in matching_entities]
+            })
+        
+        # Add matched_terms to nodes for highlighting
+        for node in network_data['nodes']:
+            node['matched_terms'] = []
+            node_label = node.get('label', '').lower()
+            if search_term.lower() in node_label:
+                node['matched_terms'] = [search_term]
+        
+        return jsonify({
+            "success": True,
+            "search_terms": [search_term],
+            "matching_aops": aop_list,
+            "total_aops": len(matching_aop_ids),
+            "entity_details": entity_details,
+            "graph_data": {
+                "nodes": network_data['nodes'],
+                "edges": network_data['edges'],
+                "metadata": {
+                    "source": "clean_comprehensive_term_search",
+                    "search_terms": [search_term],
+                    "total_nodes": len(network_data['nodes']),
+                    "total_edges": len(network_data['edges']),
+                    "aop_count": len(matching_aop_ids),
+                    "clean_data": True
+                }
+            }
+        })
+        
+    except Exception as e:
+        logger.error(f"Error in clean comprehensive_term_search: {e}")
+        return jsonify({"success": False, "error": str(e)}), 500
+
 @app.route("/aop_graph")
 def get_aop_graph():
     """Get graph data for a specific AOP"""
@@ -1465,22 +1656,12 @@ def search_key_events():
         if not aop_data or 'nodes' not in aop_data:
             return jsonify({"success": False, "error": "No AOP data loaded"})
         
-        # Prepare search terms (split query and create variations)
+        # EXACT search terms only - NO biological expansions
         search_terms = [query.lower()]
         query_words = query.lower().split()
         search_terms.extend(query_words)
         
-        # Add common biological term variations
-        if 'ache' in query.lower() or 'acetylcholinesterase' in query.lower():
-            search_terms.extend(['acetylcholinesterase', 'ache', 'cholinesterase', 'acetylcholine'])
-        if 'inhibition' in query.lower():
-            search_terms.extend(['inhibit', 'inhibitor', 'inhibitory'])
-        if 'dna' in query.lower():
-            search_terms.extend(['deoxyribonucleic', 'genetic', 'genomic'])
-        if 'oxidative' in query.lower() or 'stress' in query.lower():
-            search_terms.extend(['ros', 'reactive oxygen', 'oxidative stress', 'antioxidant'])
-        
-        logger.info(f"Expanded search terms: {search_terms}")
+        logger.info(f"Exact search terms (no expansions): {search_terms}")
         
         # Search through all nodes
         matching_nodes = []
@@ -1493,7 +1674,7 @@ def search_key_events():
             if not isinstance(node_data, dict):
                 continue
                 
-            node_label = (node_data.get('label', '') or '').lower()
+            node_label = (node_data.get('label', '') or '').lower().strip()
             node_type = node_data.get('type', '')
             node_aop = node_data.get('aop', 'unknown')
             
@@ -1506,10 +1687,11 @@ def search_key_events():
             node_matches = False
             
             for term in search_terms:
-                if term in node_label:
+                term_trimmed = term.strip()
+                if term_trimmed in node_label:
                     node_matches = True
                     # Higher score for exact matches and longer terms
-                    if term == query.lower():
+                    if term_trimmed == query.lower().strip():
                         relevance_score += 10  # Exact query match
                     elif len(term) > 3:
                         relevance_score += 5   # Substantial term match
@@ -1634,7 +1816,9 @@ def find_comprehensive_associated_network(query_terms, matching_nodes, include_c
     """
     global aop_data
     
+    logger.info(f"=== COMPREHENSIVE NETWORK FUNCTION CALLED ===")
     logger.info(f"Comprehensive network analysis for query terms: {query_terms}")
+    logger.info(f"Found {len(matching_nodes)} matching nodes, cross_pathway: {include_cross_pathway}")
     
     nodes_dict = aop_data.get('nodes', {})
     edges_list = aop_data.get('edges', [])
@@ -1689,7 +1873,7 @@ def find_comprehensive_associated_network(query_terms, matching_nodes, include_c
         node_type = node_data.get('type', '')
         node_label = (node_data.get('label', '') or '').lower()
         
-        # Include ALL nodes from connected AOPs
+        # Include nodes from connected AOPs - prioritize connected nodes
         if node_aop in connected_aops:
             event_id = node_id.replace('node_', 'Event:') if node_id.startswith('node_') else node_id
             
@@ -1879,8 +2063,59 @@ def find_comprehensive_associated_network(query_terms, matching_nodes, include_c
             'query_matches': len([n for n in aop_nodes if n.get('is_query_match', False)])
         }
     
+    # Filter out lone nodes and isolated subgraphs
+    # First, build a graph of connections
+    from collections import defaultdict, deque
+    
+    graph = defaultdict(set)
+    nodes_with_edges = set()
+    
+    for edge in comprehensive_edges:
+        source = edge.get('source')
+        target = edge.get('target')
+        if source and target:
+            graph[source].add(target)
+            graph[target].add(source)
+            nodes_with_edges.add(source)
+            nodes_with_edges.add(target)
+    
+    # Find connected components that contain initial matching nodes
+    initial_node_set = set(initial_node_ids)
+    connected_to_matches = set()
+    
+    # BFS from each initial match to find all connected nodes
+    for start_node in initial_node_set:
+        if start_node in graph:
+            visited = set()
+            queue = deque([start_node])
+            
+            while queue:
+                node = queue.popleft()
+                if node in visited:
+                    continue
+                visited.add(node)
+                connected_to_matches.add(node)
+                
+                for neighbor in graph[node]:
+                    if neighbor not in visited:
+                        queue.append(neighbor)
+    
+    # Keep only nodes that are connected to initial matches OR are initial matches themselves
+    filtered_nodes = [
+        node for node in comprehensive_nodes 
+        if node.get('id') in connected_to_matches or node.get('id') in initial_node_set
+    ]
+    
+    logger.info(f"=== FILTERING DEBUG ===")
+    logger.info(f"Filtering nodes: {len(comprehensive_nodes)} total nodes, {len(comprehensive_edges)} edges, {len(nodes_with_edges)} nodes with edges")
+    logger.info(f"Filtered out {len(comprehensive_nodes) - len(filtered_nodes)} lone nodes (no edges)")
+    if len(comprehensive_nodes) > len(filtered_nodes):
+        sample_lone = [n for n in comprehensive_nodes if n.get('id') not in nodes_with_edges][:3]
+        logger.info(f"Sample lone nodes: {[n.get('id') for n in sample_lone]}")
+    logger.info(f"=== END FILTERING DEBUG ===")
+    
     return {
-        'comprehensive_nodes': comprehensive_nodes,
+        'comprehensive_nodes': filtered_nodes,
         'comprehensive_edges': comprehensive_edges,
         'connected_aops': list(connected_aops),
         'initial_aops': list(initial_aops),
@@ -1889,7 +2124,7 @@ def find_comprehensive_associated_network(query_terms, matching_nodes, include_c
         'aop_statistics': aop_statistics,
         'edge_statistics': edge_stats,
         'stats': {
-            'total_node_count': len(comprehensive_nodes),
+            'total_node_count': len(filtered_nodes),
             'total_edge_count': len(comprehensive_edges),
             'connected_aop_count': len(connected_aops),
             'initial_aop_count': len(initial_aops),
@@ -1928,137 +2163,163 @@ def comprehensive_pathway_search():
         liver_fibrosis_keywords = ['liver fibrosis', 'fibrosis', 'aop 494', 'aop:494', 'stellate', 'collagen accumulation']
         is_liver_fibrosis_query = any(keyword in query.lower() for keyword in liver_fibrosis_keywords)
         
-        # Enhanced search with biological term variations and ontology matching
-        search_terms = [query.lower()]
-        query_words = query.lower().split()
-        search_terms.extend(query_words)
+        # NEW LOGIC: Search directly in TSV files for exact matches
+        logger.info(f"Searching for '{query}' in TSV files...")
         
-        # Add comprehensive biological term variations
-        biological_expansions = {
-            'acetylcholinesterase': ['ache', 'cholinesterase', 'acetylcholine', 'neurotransmitter'],
-            'ache': ['acetylcholinesterase', 'cholinesterase', 'acetylcholine'],
-            'dna': ['deoxyribonucleic', 'genetic', 'genomic', 'nucleotide', 'chromosome'],
-            'oxidative': ['ros', 'reactive oxygen', 'free radical', 'antioxidant', 'redox'],
-            'stress': ['oxidative stress', 'cellular stress', 'metabolic stress'],
-            'inflammation': ['inflammatory', 'immune response', 'cytokine', 'interleukin'],
-            'apoptosis': ['cell death', 'programmed cell death', 'caspase'],
-            'proliferation': ['cell division', 'mitosis', 'growth', 'hyperplasia'],
-            'fibrosis': ['collagen', 'scar tissue', 'fibrous', 'fibrotic'],
-            'carcinoma': ['cancer', 'tumor', 'neoplasm', 'malignant'],
-            'hepatic': ['liver', 'hepatocyte', 'hepatotoxic'],
-            'renal': ['kidney', 'nephrotoxic', 'glomerular'],
-            'cardiac': ['heart', 'cardiotoxic', 'myocardial']
-        }
-        
-        for term in query_words:
-            if term in biological_expansions:
-                search_terms.extend(biological_expansions[term])
-        
-        logger.info(f"Expanded search terms: {search_terms[:10]}...")  # Log first 10 for brevity
-        
-        # Search through all nodes with enhanced matching
-        matching_nodes = []
+        # Step 1: Find matching AOPs from aop_ke_mie_ao.tsv
         matching_aops = set()
-        node_aop_associations = {}  # node_id -> set of AOPs
-        aop_node_counts = {}  # aop -> count of matching nodes
+        matching_events = set()
+        aop_events = {}  # aop -> list of events
         
-        nodes_dict = aop_data['nodes']
-        
-        for node_id, node_data in nodes_dict.items():
-            if not isinstance(node_data, dict):
-                continue
-                
-            node_label = (node_data.get('label', '') or '').lower()
-            node_type = node_data.get('type', '')
-            node_aop = node_data.get('aop', 'unknown')
-            ontology_term = (node_data.get('ontology_term', '') or '').lower()
+        try:
+            base_path = os.path.dirname(os.path.abspath(__file__))
+            aop_ke_mie_ao_path = os.path.join(base_path, "aop_ke_mie_ao.tsv")
             
-            # Only search MIE, KE, and AO nodes
-            if node_type not in ['KeyEvent', 'MolecularInitiatingEvent', 'AdverseOutcome']:
-                continue
+            with open(aop_ke_mie_ao_path, "r", encoding="utf-8") as f:
+                reader = csv.reader(f, delimiter="\t")
+                for row in reader:
+                    if len(row) >= 4:
+                        aop, event, event_type, label = row[0], row[1], row[2], row[3]
+                        
+                        # Check if query matches the label (contains match, case insensitive with trimming)
+                        if query.lower().strip() in label.lower().strip():
+                            matching_aops.add(aop)
+                            matching_events.add(event)
+                            
+                            if aop not in aop_events:
+                                aop_events[aop] = []
+                            aop_events[aop].append({
+                                'event': event,
+                                'type': event_type,
+                                'label': label
+                            })
             
-            # Enhanced matching: label, ontology terms, and biological variations
-            relevance_score = 0
-            node_matches = False
-            matched_terms = []
+            logger.info(f"Found {len(matching_aops)} AOPs with '{query}': {list(matching_aops)}")
             
-            for term in search_terms:
-                # Label matching
-                if term in node_label:
-                    node_matches = True
-                    matched_terms.append(f"label:{term}")
-                    if term == query.lower():
-                        relevance_score += 15  # Exact query match in label
-                    elif len(term) > 3:
-                        relevance_score += 8   # Substantial term match
-                    else:
-                        relevance_score += 2   # Partial match
-                
-                # Ontology term matching
-                if term in ontology_term:
-                    node_matches = True
-                    matched_terms.append(f"ontology:{term}")
-                    relevance_score += 5   # Ontology match
+        except Exception as e:
+            logger.error(f"Error reading TSV files: {e}")
+            return jsonify({"success": False, "error": f"Error reading data files: {str(e)}"}), 500
+        
+        if not matching_aops:
+            logger.info(f"No AOPs found matching '{query}'")
+            return jsonify({
+                "success": True,
+                "query": query,
+                "message": f"No AOPs found matching '{query}'",
+                "graph_data": {"nodes": [], "edges": []},
+                "comprehensive_network_insights": {}
+            })
+        
+        # Step 2: Get ALL events from the matching AOPs and track type priorities
+        all_events_in_aops = set()
+        nodes_by_event = {}
+        event_types = {}  # event_id -> list of types it appears as
+        
+        try:
+            with open(aop_ke_mie_ao_path, "r", encoding="utf-8") as f:
+                reader = csv.reader(f, delimiter="\t")
+                for row in reader:
+                    if len(row) >= 4:
+                        aop, event, event_type, label = row[0], row[1], row[2], row[3]
+                        
+                        if aop in matching_aops:
+                            all_events_in_aops.add(event)
+                            
+                            # Track all types this event appears as
+                            if event not in event_types:
+                                event_types[event] = []
+                            event_types[event].append(event_type)
+                            
+                            # Store the node data (will be updated with priority type later)
+                            nodes_by_event[event] = {
+                                'id': f'node_{event}',
+                                'event_id': event,
+                                'label': label,
+                                'type': event_type,
+                                'aop': aop,
+                                'is_search_match': query.lower() == label.lower()
+                            }
+        except Exception as e:
+            logger.error(f"Error reading events: {e}")
+        
+        # Step 2.5: Apply type priority - AdverseOutcome > MolecularInitiatingEvent > KeyEvent
+        type_priority = {'AdverseOutcome': 3, 'MolecularInitiatingEvent': 2, 'KeyEvent': 1}
+        
+        for event_id, types in event_types.items():
+            # Find the highest priority type for this event
+            best_type = max(types, key=lambda t: type_priority.get(t, 0))
             
-            if node_matches:
-                # Track node-AOP associations
-                if node_id not in node_aop_associations:
-                    node_aop_associations[node_id] = set()
-                node_aop_associations[node_id].add(node_aop)
+            # Update the node with the highest priority type
+            if event_id in nodes_by_event:
+                old_type = nodes_by_event[event_id]['type']
+                nodes_by_event[event_id]['type'] = best_type
                 
-                # Count matching nodes per AOP
-                aop_node_counts[node_aop] = aop_node_counts.get(node_aop, 0) + 1
-                
-                matching_nodes.append({
-                    'id': node_id,
-                    'label': node_data.get('label', node_id),
-                    'type': node_type,
-                    'aop': node_aop,
-                    'ontology': node_data.get('ontology', ''),
-                    'ontology_term': node_data.get('ontology_term', ''),
-                    'relevance_score': relevance_score,
-                    'matched_terms': matched_terms,
-                    'is_search_match': True
-                })
-                matching_aops.add(node_aop)
+                if old_type != best_type:
+                    logger.info(f"Event {event_id} converted from {old_type} to {best_type}")
         
-        # Sort by relevance and limit pathways for performance
-        matching_nodes.sort(key=lambda x: x.get('relevance_score', 0), reverse=True)
+        logger.info(f"Type conversions applied - events processed: {len(event_types)}")
         
-        # Limit AOPs for performance but prioritize by node count
-        sorted_aops = sorted(matching_aops, key=lambda aop: aop_node_counts.get(aop, 0), reverse=True)
-        selected_aops = sorted_aops[:max_pathways]
-        # If user requested specific AOPs, restrict to those (preserving ranking where possible)
-        if requested_aops:
-            requested_set = set(requested_aops)
-            ranked = [a for a in sorted_aops if a in requested_set]
-            # Include any requested that didn't get into sorted_aops due to zero matches, as a fallback
-            ranked += [a for a in requested_aops if a not in ranked]
-            # Enforce max_pathways bound
-            selected_aops = ranked[:max_pathways] if ranked else requested_aops[:max_pathways]
+        logger.info(f"Found {len(all_events_in_aops)} total events in matching AOPs")
         
-        logger.info(f"Found {len(matching_nodes)} matching nodes across {len(matching_aops)} AOPs, selected top {len(selected_aops)} AOPs")
+        # Step 3: Get relationships from aop_ke_ker.tsv for these events
+        matching_edges = []
         
-        # Use the enhanced universal comprehensive network discovery
-        comprehensive_network = find_comprehensive_associated_network(
-            query_words, matching_nodes, include_cross_pathway_edges
-        )
+        try:
+            aop_ke_ker_path = os.path.join(base_path, "aop_ke_ker.tsv")
+            
+            with open(aop_ke_ker_path, "r", encoding="utf-8") as f:
+                reader = csv.reader(f, delimiter="\t")
+                for row in reader:
+                    if len(row) >= 6:
+                        aop, source_event, target_event, relationship, adjacency, confidence = row[0], row[1], row[2], row[3], row[4], row[5]
+                        
+                        # Include edge if both events are in our matching AOPs
+                        if source_event in all_events_in_aops and target_event in all_events_in_aops:
+                            matching_edges.append({
+                                'id': f'{source_event}-{target_event}',
+                                'source': f'node_{source_event}',
+                                'target': f'node_{target_event}',
+                                'relationship': relationship,
+                                'adjacency': adjacency,
+                                'confidence': confidence,
+                                'aop': aop
+                            })
+        except Exception as e:
+            logger.error(f"Error reading relationships: {e}")
         
-        # Build comprehensive response
+        logger.info(f"Found {len(matching_edges)} relationships between events")
+        
+        # Step 4: Build the final node list (only nodes that have edges)
+        nodes_in_edges = set()
+        for edge in matching_edges:
+            nodes_in_edges.add(edge['source'])
+            nodes_in_edges.add(edge['target'])
+        
+        final_nodes = []
+        for event_id, node_data in nodes_by_event.items():
+            node_id = f'node_{event_id}'
+            if node_id in nodes_in_edges:
+                final_nodes.append(node_data)
+        
+        logger.info(f"Final result: {len(final_nodes)} nodes, {len(matching_edges)} edges")
+        
+        # All processing complete - no additional logic needed
+        logger.info(f"TSV-based search complete: {len(final_nodes)} nodes, {len(matching_edges)} edges from {len(matching_aops)} AOPs")
+        
+        # Build simple TSV-based response (no complex network discovery needed)
         graph_data = {
-            'nodes': comprehensive_network['comprehensive_nodes'],
-            'edges': comprehensive_network['comprehensive_edges'],
+            'nodes': final_nodes,
+            'edges': matching_edges,
             'metadata': {
                 'search_query': query,
-                'search_terms_used': search_terms[:10],  # First 10 for brevity
-                'pathway_type': 'comprehensive_cross_pathway_analysis',
-                'included_aops': [{'id': aop, 'matching_nodes': aop_node_counts.get(aop, 0)} for aop in selected_aops],
-                'connected_aops': comprehensive_network['connected_aops'],
-                'initial_aops': comprehensive_network['initial_aops'],
-                'shared_events': comprehensive_network['shared_events'],
-                'stats': comprehensive_network['stats'],
-                'aop_statistics': comprehensive_network['aop_statistics'],
-                'edge_statistics': comprehensive_network['edge_statistics'],
+                'pathway_type': 'tsv_based_comprehensive_search',
+                'included_aops': [{'id': aop, 'matching_nodes': len([n for n in final_nodes if n['aop'] == aop])} for aop in matching_aops],
+                'connected_aops': list(matching_aops),
+                'stats': {
+                    'total_node_count': len(final_nodes),
+                    'total_edge_count': len(matching_edges),
+                    'connected_aop_count': len(matching_aops)
+                },
                 'cross_pathway_enabled': include_cross_pathway_edges,
                 'search_term_node': None,
                 'requested_aops': requested_aops,
@@ -2066,46 +2327,246 @@ def comprehensive_pathway_search():
             }
         }
         
-        # Enhanced response with comprehensive network insights
+        # Simple TSV-based response
         response_data = {
             'success': True,
             'query': query,
-            'matching_nodes_summary': matching_nodes[:20],  # First 20 for summary
-            'total_matches': len(matching_nodes),
+            'matching_nodes_summary': final_nodes[:20],  # First 20 for summary
+            'total_matches': len(final_nodes),
             'total_aops': len(matching_aops),
-            'selected_aops': selected_aops,
+            'selected_aops': list(matching_aops),
             'graph_data': graph_data,
             'comprehensive_network_insights': {
-                'connected_aop_count': len(comprehensive_network['connected_aops']),
-                'shared_event_count': len(comprehensive_network['shared_events']),
-                'cross_aop_connections': comprehensive_network['edge_statistics']['cross_aop'],
-                'shared_event_analysis': comprehensive_network['shared_event_analysis'],
-                'aop_statistics': comprehensive_network['aop_statistics']
+                'connected_aop_count': len(matching_aops),
+                'shared_event_count': 0,  # Not using complex network analysis
+                'cross_aop_connections': len(matching_edges),
+                'aop_statistics': {aop: {'node_count': len([n for n in final_nodes if n['aop'] == aop])} for aop in matching_aops}
             }
         }
         
         # Add liver fibrosis specific verification if detected
         if is_liver_fibrosis_query:
             liver_aops = ['Aop:494', 'Aop:144', 'Aop:383', 'Aop:38']
-            found_liver_aops = [aop for aop in liver_aops if aop in comprehensive_network['connected_aops']]
+            found_liver_aops = [aop for aop in liver_aops if aop in matching_aops]
             
             response_data['liver_fibrosis_verification'] = {
                 'detected': True,
-                'aop_494_verified': 'Aop:494' in comprehensive_network['connected_aops'],
-                'related_aops_found': found_liver_aops,
-                'liver_specific_shared_events': [
-                    event_id for event_id, analysis in comprehensive_network['shared_event_analysis'].items()
-                    if any('liver' in str(label).lower() or 'fibrosis' in str(label).lower() 
-                           for label in analysis.get('node_labels', []))
-                ]
+                'aop_494_verified': 'Aop:494' in matching_aops,
+                'related_aops_found': found_liver_aops
             }
         
-        logger.info(f"Comprehensive search completed: {comprehensive_network['stats']['total_node_count']} nodes, {comprehensive_network['stats']['total_edge_count']} edges, {comprehensive_network['stats']['cross_aop_connections']} cross-pathway connections")
+        logger.info(f"TSV-based comprehensive search completed: {len(final_nodes)} nodes, {len(matching_edges)} edges from {len(matching_aops)} AOPs")
         
         return jsonify(response_data)
         
     except Exception as e:
         logger.error(f"Error in comprehensive_pathway_search: {e}")
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route("/specific_term_search", methods=["GET"])
+def specific_term_search():
+    """
+    Specific term-based search for exact biological terms like 'N/A, Liver fibrosis'.
+    Does NOT use expanded terms - only searches for exact matches to avoid nasty networks.
+    Pulls nodes associated with the specific term and their cross-pathway connections via aop_ke_ker relationships.
+    """
+    try:
+        query = request.args.get('query', '').strip()
+        include_cross_pathway = request.args.get('cross_pathway', 'true').lower() == 'true'
+        
+        if not query:
+            return jsonify({"success": False, "error": "Query parameter is required"})
+        
+        logger.info(f"Specific term search for: '{query}' (cross_pathway: {include_cross_pathway})")
+        
+        global aop_data
+        if not aop_data or 'nodes' not in aop_data:
+            return jsonify({"success": False, "error": "No AOP data loaded"})
+        
+        # Search for EXACT matches only - no expansion
+        matching_nodes = []
+        matching_aops = set()
+        node_aop_map = {}  # node_id -> aop_id
+        
+        nodes_dict = aop_data['nodes']
+        
+        for node_id, node_data in nodes_dict.items():
+            if not isinstance(node_data, dict):
+                continue
+                
+            node_label = node_data.get('label', '')
+            node_type = node_data.get('type', '')
+            node_aop = node_data.get('aop', 'unknown')
+            
+            # Only search MIE, KE, and AO nodes
+            if node_type not in ['KeyEvent', 'MolecularInitiatingEvent', 'AdverseOutcome']:
+                continue
+            
+            # EXACT match only - case insensitive but no partial matching
+            # Strip whitespace from both query and node_label for better matching
+            if query.lower().strip() == node_label.lower().strip():
+                matching_nodes.append({
+                    'id': node_id,
+                    'label': node_data.get('label', node_id),
+                    'type': node_type,
+                    'aop': node_aop,
+                    'ontology': node_data.get('ontology', ''),
+                    'ontology_term': node_data.get('ontology_term', ''),
+                    'is_search_match': True,
+                    'match_type': 'exact_term'
+                })
+                matching_aops.add(node_aop)
+                node_aop_map[node_id] = node_aop
+        
+        logger.info(f"Found {len(matching_nodes)} exact matches across {len(matching_aops)} AOPs")
+        
+        if not matching_nodes:
+            return jsonify({
+                "success": True,
+                "nodes": [],
+                "edges": [],
+                "metadata": {
+                    "search_query": query,
+                    "search_type": "specific_term_exact_match",
+                    "total_matches": 0,
+                    "message": f"No exact matches found for '{query}'"
+                }
+            })
+        
+        # Get all connected nodes within the matching AOPs first
+        aop_nodes = []
+        aop_edges = []
+        
+        # Get edges from aop_ke_ker relationships
+        edges_list = aop_data.get('edges', [])
+        
+        for aop_id in matching_aops:
+            # Get all nodes for this AOP
+            for node_id, node_data in nodes_dict.items():
+                if isinstance(node_data, dict) and node_data.get('aop') == aop_id:
+                    if node_data.get('type') in ['KeyEvent', 'MolecularInitiatingEvent', 'AdverseOutcome']:
+                        is_original_match = node_id in node_aop_map
+                        aop_nodes.append({
+                            'id': node_id,
+                            'label': node_data.get('label', node_id),
+                            'type': node_data.get('type', ''),
+                            'aop': aop_id,
+                            'ontology': node_data.get('ontology', ''),
+                            'ontology_term': node_data.get('ontology_term', ''),
+                            'is_search_match': is_original_match,
+                            'match_type': 'exact_term' if is_original_match else 'same_aop'
+                        })
+            
+            # Get edges for this AOP
+            for edge_data in edges_list:
+                if isinstance(edge_data, dict) and edge_data.get('aop') == aop_id:
+                    edge_id = edge_data.get('id', f"{edge_data.get('source')}-{edge_data.get('target')}")
+                    aop_edges.append({
+                        'id': edge_id,
+                        'source': edge_data.get('source'),
+                        'target': edge_data.get('target'),
+                        'relationship': edge_data.get('relationship', ''),
+                        'confidence': edge_data.get('confidence', ''),
+                        'adjacency': edge_data.get('adjacency', ''),
+                        'aop': aop_id
+                    })
+        
+        # Find cross-pathway connections if requested
+        cross_pathway_nodes = []
+        cross_pathway_edges = []
+        
+        if include_cross_pathway:
+            # Find nodes that appear in multiple AOPs (cross-pathway nodes)
+            node_aop_count = {}
+            for node_id, node_data in nodes_dict.items():
+                if isinstance(node_data, dict):
+                    node_label = node_data.get('label', '')
+                    node_type = node_data.get('type', '')
+                    if node_type in ['KeyEvent', 'MolecularInitiatingEvent', 'AdverseOutcome']:
+                        if node_label not in node_aop_count:
+                            node_aop_count[node_label] = []
+                        node_aop_count[node_label].append({
+                            'node_id': node_id,
+                            'aop': node_data.get('aop'),
+                            'node_data': node_data
+                        })
+            
+            # Find cross-pathway nodes (same label, different AOPs)
+            for label, node_list in node_aop_count.items():
+                if len(node_list) > 1:  # Cross-pathway node
+                    aops_for_label = set(item['aop'] for item in node_list)
+                    if aops_for_label.intersection(matching_aops):  # Connected to our original matches
+                        for item in node_list:
+                            if item['aop'] not in matching_aops:  # Different AOP
+                                cross_pathway_nodes.append({
+                                    'id': item['node_id'],
+                                    'label': item['node_data'].get('label', item['node_id']),
+                                    'type': item['node_data'].get('type', ''),
+                                    'aop': item['aop'],
+                                    'ontology': item['node_data'].get('ontology', ''),
+                                    'ontology_term': item['node_data'].get('ontology_term', ''),
+                                    'is_cross_pathway': True,
+                                    'match_type': 'cross_pathway_connection'
+                                })
+                                
+                                # Get edges for this cross-pathway AOP
+                                for edge_data in edges_list:
+                                    if isinstance(edge_data, dict) and edge_data.get('aop') == item['aop']:
+                                        edge_id = edge_data.get('id', f"{edge_data.get('source')}-{edge_data.get('target')}")
+                                        cross_pathway_edges.append({
+                                            'id': edge_id,
+                                            'source': edge_data.get('source'),
+                                            'target': edge_data.get('target'),
+                                            'relationship': edge_data.get('relationship', ''),
+                                            'confidence': edge_data.get('confidence', ''),
+                                            'adjacency': edge_data.get('adjacency', ''),
+                                            'aop': item['aop'],
+                                            'is_cross_pathway': True
+                                        })
+        
+        # Combine all nodes and edges
+        all_nodes = aop_nodes + cross_pathway_nodes
+        all_edges = aop_edges + cross_pathway_edges
+        
+        # Remove duplicates
+        unique_nodes = {}
+        for node in all_nodes:
+            if node['id'] not in unique_nodes:
+                unique_nodes[node['id']] = node
+        
+        unique_edges = {}
+        for edge in all_edges:
+            if edge['id'] not in unique_edges:
+                unique_edges[edge['id']] = edge
+        
+        final_nodes = list(unique_nodes.values())
+        final_edges = list(unique_edges.values())
+        
+        logger.info(f"Final network: {len(final_nodes)} nodes, {len(final_edges)} edges")
+        
+        return jsonify({
+            "success": True,
+            "nodes": final_nodes,
+            "edges": final_edges,
+            "metadata": {
+                "search_query": query,
+                "search_type": "specific_term_exact_match",
+                "pathway_type": "specific_term_network",
+                "total_matches": len(matching_nodes),
+                "original_matching_aops": list(matching_aops),
+                "cross_pathway_included": include_cross_pathway,
+                "cross_pathway_aops": len(set(node['aop'] for node in cross_pathway_nodes)),
+                "stats": {
+                    "original_nodes": len(aop_nodes),
+                    "cross_pathway_nodes": len(cross_pathway_nodes),
+                    "total_nodes": len(final_nodes),
+                    "total_edges": len(final_edges)
+                }
+            }
+        })
+        
+    except Exception as e:
+        logger.error(f"Error in specific_term_search: {e}")
         return jsonify({"success": False, "error": str(e)}), 500
 
 @app.route("/liver_fibrosis_verification", methods=["GET"])
