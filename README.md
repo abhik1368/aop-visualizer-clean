@@ -62,3 +62,8 @@ Create a `.env` file in `backend` if you need to set any secrets or config for F
 - Commit lockfiles for reproducibility:
   - Frontend: `package-lock.json` (or `pnpm-lock.yaml` if you switch to pnpm and commit the lockfile).
   - Backend: keep `requirements.txt` up to date.
+ 
+<img width="1016" height="497" alt="image" src="https://github.com/user-attachments/assets/41685589-c395-4dda-92c0-644bdfcedb1a" />
+
+<img width="1019" height="594" alt="Screenshot 2025-08-19 152021" src="https://github.com/user-attachments/assets/474816d3-b00f-4698-9d7a-2223f4483d2c" />
+
