@@ -1,6 +1,6 @@
 # AOP Network Visualizer
 
-This repo excludes `node_modules` and other build artifacts. Use the steps below to install dependencies and run the app locally on Windows.
+This repo excludes `node_modules` and other build artifacts. Use the steps below to install dependencies and run the app locally on Windows. The article for this tool is available @ [bioarxiv](https://www.biorxiv.org/content/10.1101/2025.08.25.672239v1) 
 
 ## Prerequisites
 - Node.js 20+ (includes npm)
