@@ -36,11 +36,11 @@ const isWOENode = (nodeTypeRaw) => {
 };
 
 const NODE_COLORS = {
-  MIE: { normal: '#bbf7d0', selected: '#10b981' },
-  KE: { normal: '#dbeafe', selected: '#3b82f6' },
-  AO: { normal: '#f9a8d4', selected: '#ec4899' },
+  MIE: { normal: '#6ee7b7', selected: '#10b981' },
+  KE: { normal: '#60a5fa', selected: '#2563eb' },
+  AO: { normal: '#f472b6', selected: '#ec4899' },
   WOE: { normal: '#e9d5ff', selected: '#a855f7' },
-  OTHER: { normal: '#e5e7eb', selected: '#6b7280' }
+  OTHER: { normal: '#e5e7eb', selected: '#374151' }
 };
 
 // Simple connected components for community detection
@@ -149,8 +149,9 @@ const calculateNodePositionInHypernode = (node, communityGlobalId, communities, 
   
   // Calculate hypernode size based on member count - optimized for chemical nodes
   const memberCount = community.nodes.length;
-  const baseSize = Math.max(140, Math.min(320, 140 + (memberCount * 8))); // Larger size for better chemical node spacing
-  const availableRadius = (baseSize / 2) - 30;
+  // Smaller initial hypernode size and gentler growth by member count
+  const baseSize = Math.max(110, Math.min(220, 110 + (memberCount * 5)));
+  const availableRadius = (baseSize / 2) - 25;
   
   // Use force-directed positioning within the hypernode
   return forceDirectedPositionInHypernode(node, community, hypernodePos, availableRadius);
@@ -158,8 +159,8 @@ const calculateNodePositionInHypernode = (node, communityGlobalId, communities, 
 
 // Enhanced force-directed algorithm with guaranteed no overlaps - optimized for chemical nodes
 const forceDirectedPositionInHypernode = (targetNode, community, center, maxRadius) => {
-  const nodeRadius = 25; // Smaller node radius for chemical nodes
-  const minDistance = nodeRadius * 2.8; // Increased minimum distance for better separation (70px)
+  const nodeRadius = 22; // slightly smaller for tighter packing
+  const minDistance = nodeRadius * 2.2; // ~48px separation: compact but non-overlapping
   
   if (community.nodes.length === 1) {
     return { x: center.x, y: center.y };
@@ -181,18 +182,18 @@ const forceDirectedPositionInHypernode = (targetNode, community, center, maxRadi
     
     return {
       id: node.id,
-      x: gridX + (Math.random() - 0.5) * 15, // Small random offset
-      y: gridY + (Math.random() - 0.5) * 15,
+      x: gridX + (Math.random() - 0.5) * 3, // Minimal random offset to avoid immediate overlap
+      y: gridY + (Math.random() - 0.5) * 3,
       vx: 0,
       vy: 0
     };
   });
   
-  // Enhanced force simulation for chemical node separation
-  const iterations = 200; // More iterations for better final positioning
-  const damping = 0.88; // Higher damping for stability
-  const repulsionStrength = 3500; // Increased repulsion for chemical nodes
-  const centeringStrength = 0.06; // Gentler centering to allow better spread
+  // Force simulation tuned for compact, non-jittery separation
+  const iterations = 110; // fewer iterations to minimize motion
+  const damping = 0.95; // higher damping for stability
+  const repulsionStrength = 2000; // lower repulsion for tighter packing
+  const centeringStrength = 0.18; // stronger centering to keep nodes away from corners
   
   for (let iter = 0; iter < iterations; iter++) {
     // Reset forces
@@ -230,17 +231,22 @@ const forceDirectedPositionInHypernode = (targetNode, community, center, maxRadi
       }
     }
     
-    // Minimal centering force to maximize spread
+    // Compact centering to keep nodes away from corners and reduce jitter
     positions.forEach(pos => {
       const dx = center.x - pos.x;
       const dy = center.y - pos.y;
       const distance = Math.sqrt(dx * dx + dy * dy);
-      
-      // Apply gentle centering only when nodes get too far from center
-      if (distance > maxRadius * 0.8) {
-        const force = centeringStrength * (distance - maxRadius * 0.8);
-        pos.fx += (dx / distance) * force;
-        pos.fy += (dy / distance) * force;
+      if (distance > 0) {
+        // Base centering applied always
+        const baseForce = centeringStrength * distance;
+        pos.fx += (dx / distance) * baseForce;
+        pos.fy += (dy / distance) * baseForce;
+        // Extra pull near the boundary to avoid corner clustering
+        if (distance > maxRadius * 0.55) {
+          const edgeForce = centeringStrength * (distance - maxRadius * 0.55) * 1.3;
+          pos.fx += (dx / distance) * edgeForce;
+          pos.fy += (dy / distance) * edgeForce;
+        }
       }
     });
     
@@ -256,9 +262,9 @@ const forceDirectedPositionInHypernode = (targetNode, community, center, maxRadi
       const dy = pos.y - center.y;
       const distance = Math.sqrt(dx * dx + dy * dy);
       
-      if (distance > maxRadius * 0.85) { // Allow more spread within hypernode
-        pos.x = center.x + (dx / distance) * maxRadius * 0.85;
-        pos.y = center.y + (dy / distance) * maxRadius * 0.85;
+      if (distance > maxRadius * 0.55) { // tighter boundary to keep nodes compact
+        pos.x = center.x + (dx / distance) * maxRadius * 0.55;
+        pos.y = center.y + (dy / distance) * maxRadius * 0.55;
         // Reset velocity when hitting boundary
         pos.vx *= 0.3;
         pos.vy *= 0.3;
@@ -274,10 +280,10 @@ const forceDirectedPositionInHypernode = (targetNode, community, center, maxRadi
       const distance = Math.sqrt(dx * dx + dy * dy);
       
       if (distance < minDistance) {
-        // Enhanced separation for chemical nodes
-        const overlap = minDistance - distance + 5; // Extra buffer
-        const separationX = (dx / distance) * (overlap / 2);
-        const separationY = (dy / distance) * (overlap / 2);
+        // Compact separation with small buffer
+        const overlap = minDistance - distance + 4;
+        const separationX = (dx / distance) * (overlap * 0.5);
+        const separationY = (dy / distance) * (overlap * 0.5);
         
         positions[i].x += separationX;
         positions[i].y += separationY;
@@ -287,10 +293,10 @@ const forceDirectedPositionInHypernode = (targetNode, community, center, maxRadi
         // Ensure still within bounds but allow more spread
         [positions[i], positions[j]].forEach(pos => {
           const distFromCenter = Math.sqrt((pos.x - center.x) ** 2 + (pos.y - center.y) ** 2);
-          if (distFromCenter > maxRadius * 0.85) {
+          if (distFromCenter > maxRadius * 0.55) {
             const angle = Math.atan2(pos.y - center.y, pos.x - center.x);
-            pos.x = center.x + Math.cos(angle) * maxRadius * 0.85;
-            pos.y = center.y + Math.sin(angle) * maxRadius * 0.85;
+            pos.x = center.x + Math.cos(angle) * maxRadius * 0.55;
+            pos.y = center.y + Math.sin(angle) * maxRadius * 0.55;
           }
         });
       }
@@ -318,7 +324,7 @@ const HypergraphNetworkGraph = ({
   communityData = null
 }) => {
   // State for node size and font size controls
-  const [baseNodeSize, setBaseNodeSize] = useState(35);
+  const [baseNodeSize, setBaseNodeSize] = useState(24);
   const [fontSize, setFontSize] = useState(9);
   const [nodeSizingMode, setNodeSizingMode] = useState('betweenness'); // 'fixed', 'degree', 'betweenness'
   const [isPanelCollapsed, setIsPanelCollapsed] = useState(false);
@@ -345,7 +351,7 @@ const HypergraphNetworkGraph = ({
   const [cy, setCy] = useState(null);
   const [hyperElementCounts, setHyperElementCounts] = useState({ hypernodes: 0, hyperedges: 0 });
   // Layout override for hypergraph (Auto = metadata-driven)
-  const [layoutOverride, setLayoutOverride] = useState('auto'); // 'auto' | 'preset' | 'euler' | 'dagre' | 'grid' | 'circle' | 'concentric' | 'breadthfirst'
+  const [layoutOverride, setLayoutOverride] = useState('euler'); // default to force/euler only
   const initialPositionsRef = useRef({});
   // Chemical visibility controls
   const [showChemicals, setShowChemicals] = useState(false); // default disabled per user request
@@ -1323,13 +1329,16 @@ const HypergraphNetworkGraph = ({
           fit: true,
           padding: 80,
           nodeDimensionsIncludeLabels: true,
-          springLength: 120,
-          springCoeff: 0.0008,
-          repulsion: 4500,
-          gravity: -1.0,
-          iterations: 2000,
+          // Compact-but-separated tuning
+          springLength: 90,
+          springCoeff: 0.0007,
+          repulsion: 3000,
+          gravity: 0.6,
+          iterations: 1300,
+          // Disable animation to eliminate jitter; deterministic start
           animate: false,
-          randomize: true
+          animationDuration: 700,
+          randomize: false
         };
       // removed unsupported layouts: cose-bilkent, cola
       case 'dagre':
@@ -1365,10 +1374,11 @@ const HypergraphNetworkGraph = ({
           edgeElasticity: 0.45,
           nestingFactor: 0.1,
           gravity: 0.05,
-          numIter: 2500,
+          numIter: 2200,
           tile: true,
-          animate: false,
-          randomize: true,
+          animate: true,
+          animationDuration: 600,
+          randomize: false,
           tilingPaddingVertical: 20,
           tilingPaddingHorizontal: 20
         };
@@ -1395,7 +1405,7 @@ const HypergraphNetworkGraph = ({
         zoomingEnabled: true,
         userZoomingEnabled: true,
         style: [
-          // Individual node styling - colored circles
+          // Individual node styling - solid shapes with strong contrast
           {
             selector: 'node',
             style: {
@@ -1420,9 +1430,16 @@ const HypergraphNetworkGraph = ({
                   return NODE_COLORS.OTHER.normal;
                 }
               },
-              'border-width': (node) => node.data('is_selected') ? 3 : 1,
-              'border-color': (node) => node.data('is_selected') ? '#000000' : '#6b7280',
-              'shape': 'ellipse',
+              'background-opacity': 1,
+              'border-width': (node) => node.data('is_selected') ? 3 : 2,
+              'border-color': (node) => node.data('is_selected') ? '#000000' : '#374151',
+              'shape': (node) => {
+                const type = node.data('type');
+                if (type === 'MolecularInitiatingEvent' || type === 'MIE') return 'triangle';
+                if (type === 'KeyEvent' || type === 'KE') return 'rectangle';
+                if (type === 'AdverseOutcome' || type === 'AO') return 'ellipse';
+                return 'roundrectangle';
+              },
               'label': 'data(label)',
               'font-size': `${fontSize}px`,
               'font-weight': 'bold',
@@ -1466,13 +1483,13 @@ const HypergraphNetworkGraph = ({
               'z-index': 5
             }
           },
-          // Hypernode compound styling - clean rectangular containers
+          // Hypernode compound styling - solid rectangular containers with higher contrast
           {
             selector: '.hypernode',
             style: {
-              'background-color': (node) => node.data('bgColor') || 'rgba(209, 213, 219, 0.1)',
-              'border-width': 2, // More prominent border for clean look
-              'border-color': (node) => node.data('borderColor') || 'rgba(156, 163, 175, 0.4)',
+              'background-color': (node) => node.data('bgColor') || 'rgba(229, 231, 235, 1)',
+              'border-width': 3,
+              'border-color': (node) => node.data('borderColor') || '#374151',
               'border-style': (node) => node.data('borderStyle') || 'solid',
               'shape': 'roundrectangle', // Rounded rectangular containers
               'label': 'data(label)',
@@ -1483,22 +1500,19 @@ const HypergraphNetworkGraph = ({
               'text-halign': 'center',
               'text-margin-x': 0,
               'text-margin-y': '-10px', // Position label at the top
-              'text-background-opacity': 1, // Solid background for labels
-              'text-background-color': 'rgba(255, 255, 255, 1)', // Solid white
-              'text-background-padding': '4px',
-              'text-background-shape': 'roundrectangle',
-              'padding': '15px', // Reduced padding for more compact layout
+              'text-background-opacity': 0,
+              'padding': '10px', // Smaller padding for compact hypernodes
               'width': (node) => {
                 const memberCount = node.data('member_count') || 1;
                 const originalType = node.data('original_type') || '';
                 
                 // Larger sizing for chemical hypernodes to prevent overlap
                 if (originalType === 'chemical') {
-                  const baseWidth = Math.max(180, Math.min(350, 180 + (memberCount * 12)));
+                  const baseWidth = Math.max(160, Math.min(260, 160 + (memberCount * 8)));
                   return `${baseWidth}px`;
                 } else {
                   // Standard sizing for biological hypernodes
-                  const baseWidth = Math.max(160, Math.min(280, 160 + (memberCount * 8)));
+                  const baseWidth = Math.max(140, Math.min(220, 140 + (memberCount * 6)));
                   return `${baseWidth}px`;
                 }
               },
@@ -1508,11 +1522,11 @@ const HypergraphNetworkGraph = ({
                 
                 // Larger sizing for chemical hypernodes to prevent overlap
                 if (originalType === 'chemical') {
-                  const baseHeight = Math.max(150, Math.min(280, 150 + (memberCount * 10)));
+                  const baseHeight = Math.max(130, Math.min(210, 130 + (memberCount * 6)));
                   return `${baseHeight}px`;
                 } else {
                   // Standard sizing for biological hypernodes
-                  const baseHeight = Math.max(130, Math.min(220, 130 + (memberCount * 6)));
+                  const baseHeight = Math.max(110, Math.min(180, 110 + (memberCount * 5)));
                   return `${baseHeight}px`;
                 }
               },
@@ -1551,15 +1565,12 @@ const HypergraphNetworkGraph = ({
               'target-arrow-color': '#f59e0b',
               'arrow-scale': 0.8,
               'z-index': 8,
-              'label': 'data(label)',
-              'font-size': '8px',
-              'color': '#92400e', // amber-800 for edge labels
-              'text-background-color': 'rgba(255, 255, 255, 0.9)',
-              'text-background-opacity': 1,
-              'text-background-padding': '1px',
-              'text-background-shape': 'roundrectangle'
-            }
-          },
+            'label': 'data(label)',
+            'font-size': '8px',
+            'color': '#92400e', // amber-800 for edge labels
+            'text-background-opacity': 0
+          }
+        },
           // Hyperedge styling
           {
             selector: '.hyperedge',
@@ -1574,15 +1585,12 @@ const HypergraphNetworkGraph = ({
               'target-arrow-color': '#9ca3af',
               'arrow-scale': 1.0,
               // Show labels on hyperedges (e.g., "AOP 315: <name>")
-              'label': 'data(label)',
-              'font-size': '9px',
-              'color': '#374151',
-              'text-background-color': 'rgba(255,255,255,0.9)',
-              'text-background-opacity': 1,
-              'text-background-padding': '1px',
-              'text-background-shape': 'roundrectangle'
-            }
-          },
+            'label': 'data(label)',
+            'font-size': '9px',
+            'color': '#374151',
+            'text-background-opacity': 0
+          }
+        },
           // Faded elements (non-path)
           {
             selector: '.faded',
@@ -1661,6 +1669,56 @@ const HypergraphNetworkGraph = ({
 
       // Preset positioning is already applied via node.position property
 
+      // Helper: Pack visible children inside each hypernode on a clean grid with guaranteed no overlap
+      const packChildrenInParents = (cyInst) => {
+        try {
+          const parents = cyInst.nodes(':parent:visible');
+          if (parents.length === 0) return;
+          cyInst.startBatch();
+          parents.forEach((parent) => {
+            const children = parent.children(':visible');
+            if (children.length === 0) return;
+
+            // Determine inner area based on explicit width/height of the hypernode
+            const innerPadX = 10; // match style padding
+            const innerPadY = 10;
+            const parentWidth = Math.max(parent.width(), parent.boundingBox().w) - innerPadX * 2;
+            const parentHeight = Math.max(parent.height(), parent.boundingBox().h) - innerPadY * 2;
+            const center = parent.position();
+
+            // Compute max child dimensions to set cell size
+            let maxW = 0, maxH = 0;
+            children.forEach((ch) => {
+              maxW = Math.max(maxW, ch.width());
+              maxH = Math.max(maxH, ch.height());
+            });
+            const cellW = Math.max(30, Math.ceil(maxW) + 16); // add buffer to avoid touching
+            const cellH = Math.max(30, Math.ceil(maxH) + 14);
+
+            const cols = Math.max(1, Math.floor(parentWidth / cellW));
+            const rows = Math.max(1, Math.ceil(children.length / cols));
+
+            // Ensure grid fits within parent bounds
+            const gridW = Math.min(cols * cellW, parentWidth);
+            const gridH = Math.min(rows * cellH, parentHeight);
+
+            const startX = center.x - gridW / 2 + cellW / 2;
+            const startY = center.y - gridH / 2 + cellH / 2;
+
+            children.forEach((ch, idx) => {
+              const r = Math.floor(idx / cols);
+              const c = idx % cols;
+              const x = startX + c * cellW;
+              const y = startY + r * cellH;
+              ch.position({ x, y });
+            });
+          });
+          cyInst.endBatch();
+        } catch (e) {
+          console.warn('Failed to pack children in parents:', e);
+        }
+      };
+
       // Add event listeners
       cytoscapeInstance.on('tap', 'node', (evt) => {
         const node = evt.target;
@@ -1714,6 +1772,54 @@ const HypergraphNetworkGraph = ({
 
       setCy(cytoscapeInstance);
       cyRef.current = cytoscapeInstance;
+
+      // Initial child packing to guarantee no overlap inside hypernodes
+      setTimeout(() => packChildrenInParents(cytoscapeInstance), 50);
+
+      // Resolve residual overlaps after layout completes (hypernodes only), then re-pack children
+      cytoscapeInstance.on('layoutstop', () => {
+        try {
+          // Only adjust compound parent nodes to avoid moving inner children
+          const nodes = cytoscapeInstance.nodes(':parent:visible');
+          if (nodes.length < 2) return;
+          const passes = 4; // balanced passes for separation without visible jitter
+          cytoscapeInstance.startBatch();
+          for (let k = 0; k < passes; k++) {
+            let moved = false;
+            nodes.forEach((n1, i) => {
+              const b1 = n1.boundingBox({ includeLabels: true });
+              const c1x = (b1.x1 + b1.x2) / 2;
+              const c1y = (b1.y1 + b1.y2) / 2;
+              nodes.forEach((n2, j) => {
+                if (i >= j) return;
+                const b2 = n2.boundingBox({ includeLabels: true });
+                const c2x = (b2.x1 + b2.x2) / 2;
+                const c2y = (b2.y1 + b2.y2) / 2;
+                const ox = Math.min(b1.x2, b2.x2) - Math.max(b1.x1, b2.x1);
+                const oy = Math.min(b1.y2, b2.y2) - Math.max(b1.y1, b2.y1);
+                // Add small margin to treat near-touching as overlap
+                if (ox > -10 && oy > -10) {
+                  const pushScale = 0.5; // moderate push to avoid visible jumps
+                  const pushX = (c1x < c2x ? -1 : 1) * (Math.max(ox, 0) + 4) * pushScale;
+                  const pushY = (c1y < c2y ? -1 : 1) * (Math.max(oy, 0) + 4) * pushScale;
+                  const p1 = n1.position();
+                  const p2 = n2.position();
+                  n1.position({ x: p1.x + pushX, y: p1.y + pushY });
+                  n2.position({ x: p2.x - pushX, y: p2.y - pushY });
+                  moved = true;
+                }
+              });
+            });
+            if (!moved) break;
+          }
+          cytoscapeInstance.endBatch();
+          // Avoid additional fit/center to prevent sudden reflows
+          // Re-pack children to guarantee no overlap inside hypernodes
+          packChildrenInParents(cytoscapeInstance);
+        } catch (err) {
+          console.warn('Hypergraph collision resolution error:', err);
+        }
+      });
 
       // Apply initial chemical visibility (default hidden)
       try {
@@ -1928,7 +2034,7 @@ const HypergraphNetworkGraph = ({
           case 'force':
           case 'forceatlas2':
           case 'euler':
-            return { name: 'euler', fit: true, padding: 80, nodeDimensionsIncludeLabels: true, springLength: 120, springCoeff: 0.0008, repulsion: 4500, gravity: -1.0, iterations: 2000, animate: false, randomize: true };
+            return { name: 'euler', fit: true, padding: 80, nodeDimensionsIncludeLabels: true, springLength: 90, springCoeff: 0.0007, repulsion: 3000, gravity: 0.6, iterations: 1300, animate: false, randomize: false };
           // removed unsupported layouts: cose-bilkent, cola
           case 'dagre': return { name: 'dagre', fit: true, padding: 80, rankDir: 'LR', nodeSep: 50, rankSep: 80 };
           case 'grid': return { name: 'grid', fit: true, padding: 80 };
@@ -2017,7 +2123,6 @@ const HypergraphNetworkGraph = ({
                   onChange={(e) => setLayoutOverride(e.target.value)}
                   className="w-full text-xs border border-gray-300 rounded px-2 py-1 bg-white"
                 >
-          <option value="auto">Auto (Square Grid)</option>
           <option value="euler">Force (Euler)</option>
                 </select>
               </div>

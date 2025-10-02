@@ -15,8 +15,10 @@ import {
   Target,
   Users,
   Filter,
-  Palette
+  Palette,
+  ChevronDown
 } from 'lucide-react';
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/components/ui/collapsible';
 
 const HypergraphControls = ({ 
   onHypergraphToggle, 
@@ -33,15 +35,17 @@ const HypergraphControls = ({
   const [localMinNodes, setLocalMinNodes] = useState(minNodes);
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [communityStats, setCommunityStats] = useState(null);
+  const [controlsOpen, setControlsOpen] = useState(() => {
+    try {
+      return localStorage.getItem('hypergraphControlsOpen') !== '0';
+    } catch {
+      return true;
+    }
+  });
 
   // Layout options with descriptions - using reliable built-in layouts
   const layoutOptions = [
-    { value: 'forceatlas2', label: 'ForceAtlas2', description: 'Physics-based with good separation' },
-    { value: 'cose-bilkent', label: 'COSE Bilkent', description: 'Compound spring embedder' },
-    { value: 'grid', label: 'Grid', description: 'Organized grid layout' },
-    { value: 'circle', label: 'Circle', description: 'Circular arrangement' },
-    { value: 'concentric', label: 'Concentric', description: 'Concentric circles by importance' },
-    { value: 'breadthfirst', label: 'Hierarchical', description: 'Tree-like hierarchical layout' }
+    { value: 'forceatlas2', label: 'Force (Euler)', description: 'Physics-based with good separation' }
   ];
 
   // Community detection methods
@@ -93,33 +97,49 @@ const HypergraphControls = ({
   };
 
   return (
-    <Card className="p-4 space-y-4 bg-card/95 backdrop-blur-sm border-2">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Network className="h-5 w-5 text-primary" />
-          <h3 className="font-semibold text-lg">Hypergraph Controls</h3>
+    <Card className="p-4 bg-card/95 backdrop-blur-sm border-2">
+      <Collapsible
+        open={controlsOpen}
+        onOpenChange={(open) => {
+          setControlsOpen(open);
+          try { localStorage.setItem('hypergraphControlsOpen', open ? '1' : '0'); } catch {}
+        }}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Network className="h-5 w-5 text-primary" />
+            <h3 className="font-semibold text-lg">Hypergraph Controls</h3>
+          </div>
+          <div className="flex items-center gap-1">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowAdvanced(!showAdvanced)}
+              title={showAdvanced ? 'Hide advanced' : 'Show advanced'}
+            >
+              <Settings className="h-4 w-4" />
+            </Button>
+            <CollapsibleTrigger asChild>
+              <Button variant="ghost" size="icon" className="h-7 w-7" title={controlsOpen ? 'Collapse' : 'Expand'}>
+                <ChevronDown className={`h-4 w-4 transition-transform ${controlsOpen ? '' : '-rotate-90'}`} />
+              </Button>
+            </CollapsibleTrigger>
+          </div>
         </div>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => setShowAdvanced(!showAdvanced)}
-        >
-          <Settings className="h-4 w-4" />
-        </Button>
-      </div>
 
-      {/* Hypergraph Toggle */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <GitBranch className="h-4 w-4 text-muted-foreground" />
-          <span className="text-sm font-medium">Enable Hypergraph</span>
-        </div>
-        <Switch
-          checked={hypergraphEnabled}
-          onCheckedChange={onHypergraphToggle}
-        />
-      </div>
+        <CollapsibleContent className="space-y-4 mt-3">
+          {/* Hypergraph Toggle */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <GitBranch className="h-4 w-4 text-muted-foreground" />
+              <span className="text-sm font-medium">Enable Hypergraph</span>
+            </div>
+            <Switch
+              checked={hypergraphEnabled}
+              onCheckedChange={onHypergraphToggle}
+            />
+          </div>
 
       {hypergraphEnabled && (
         <>
@@ -299,22 +319,24 @@ const HypergraphControls = ({
         </>
       )}
 
-      {/* Graph Statistics */}
-      {graphData && (
-        <>
-          <Separator />
-          <div className="grid grid-cols-2 gap-4 text-sm">
-            <div className="text-center">
-              <div className="font-semibold text-lg">{graphData.nodes?.length || 0}</div>
-              <div className="text-muted-foreground">Nodes</div>
-            </div>
-            <div className="text-center">
-              <div className="font-semibold text-lg">{graphData.edges?.length || 0}</div>
-              <div className="text-muted-foreground">Edges</div>
-            </div>
-          </div>
-        </>
-      )}
+          {/* Graph Statistics */}
+          {graphData && (
+            <>
+              <Separator />
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div className="text-center">
+                  <div className="font-semibold text-lg">{graphData.nodes?.length || 0}</div>
+                  <div className="text-muted-foreground">Nodes</div>
+                </div>
+                <div className="text-center">
+                  <div className="font-semibold text-lg">{graphData.edges?.length || 0}</div>
+                  <div className="text-muted-foreground">Edges</div>
+                </div>
+              </div>
+            </>
+          )}
+        </CollapsibleContent>
+      </Collapsible>
     </Card>
   );
 };

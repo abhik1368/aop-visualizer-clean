@@ -4,7 +4,8 @@ import euler from 'cytoscape-euler';
 import dagre from 'cytoscape-dagre';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { ZoomIn, ZoomOut, RotateCcw, Download, Settings } from 'lucide-react';
+import { ZoomIn, ZoomOut, RotateCcw, Download, Settings, ChevronDown } from 'lucide-react';
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/components/ui/collapsible';
 
 // Register layout extensions
 cytoscape.use(euler);
@@ -29,7 +30,14 @@ const NetworkGraph = ({
   const cyRef = useRef(null);
   const containerRef = useRef(null);
   const [cy, setCy] = useState(null);
-  const [layoutName, setLayoutName] = useState('euler'); // Default to force-like layout
+  const [layoutName, setLayoutName] = useState('force_atlas'); // Default to requested force atlas style
+  const [controlsOpen, setControlsOpen] = useState(() => {
+    try {
+      return localStorage.getItem('networkControlsOpen') !== '0';
+    } catch {
+      return true;
+    }
+  });
 
   // Map compactness slider (0..100) to layout params - Optimized for compact rectangular layout
   const layoutParamsFromCompactness = (value) => {
@@ -39,6 +47,46 @@ const NetworkGraph = ({
     const gravity = 0.25 + t * 0.01;       // Strong gravity to pull nodes together
     const nodeSeparation = 30 - t * 0.2;   // Minimal separation between nodes
     return { nodeRepulsion, idealEdgeLength, gravity, nodeSeparation };
+  };
+
+  // Lightweight post-layout collision resolver to reduce node overlap
+  const resolveCollisions = (cyInst) => {
+    if (!cyInst) return;
+    const nodes = cyInst.nodes(':visible');
+    if (nodes.length < 2) return;
+
+    const iterations = 3; // few passes are enough for small adjustments
+    cyInst.startBatch();
+    for (let it = 0; it < iterations; it++) {
+      let moved = false;
+      nodes.forEach((n1, i) => {
+        const bb1 = n1.boundingBox({ includeLabels: true });
+        const cx1 = (bb1.x1 + bb1.x2) / 2;
+        const cy1 = (bb1.y1 + bb1.y2) / 2;
+        nodes.forEach((n2, j) => {
+          if (i >= j) return;
+          const bb2 = n2.boundingBox({ includeLabels: true });
+          const cx2 = (bb2.x1 + bb2.x2) / 2;
+          const cy2 = (bb2.y1 + bb2.y2) / 2;
+
+          const overlapX = Math.min(bb1.x2, bb2.x2) - Math.max(bb1.x1, bb2.x1);
+          const overlapY = Math.min(bb1.y2, bb2.y2) - Math.max(bb1.y1, bb2.y1);
+          if (overlapX > 0 && overlapY > 0) {
+            // Push nodes apart along the dominant overlap axis
+            const pushX = (cx1 < cx2 ? -1 : 1) * (overlapX + 2) * 0.5;
+            const pushY = (cy1 < cy2 ? -1 : 1) * (overlapY + 2) * 0.5;
+
+            const p1 = n1.position();
+            const p2 = n2.position();
+            n1.position({ x: p1.x + pushX, y: p1.y + pushY });
+            n2.position({ x: p2.x - pushX, y: p2.y - pushY });
+            moved = true;
+          }
+        });
+      });
+      if (!moved) break;
+    }
+    cyInst.endBatch();
   };
 
   // Incremental update of elements without full re-render
@@ -138,14 +186,14 @@ const NetworkGraph = ({
       // Use different layout configurations based on layout type
       let layoutConfig = {};
       
-  if (layoutName === 'euler') {
+  if (layoutName === 'euler' || layoutName === 'force_atlas') {
     // Force-directed configuration with Euler
     layoutConfig = {
       name: 'euler',
       animate: false,
       fit: autoFitOnUpdate,
       padding: 20,
-    randomize: true,
+    randomize: false,
     springLength: Math.max(50, idealEdgeLength),
     springCoeff: 0.0008,
     repulsion: Math.max(2000, nodeRepulsion),
@@ -160,7 +208,7 @@ const NetworkGraph = ({
         // Default configuration for other layouts
         layoutConfig = {
           name: layoutName,
-          animate: false,
+          animate: true,
           fit: autoFitOnUpdate,
       padding: 30
         };
@@ -363,19 +411,20 @@ const NetworkGraph = ({
               
               // Default colors matching target image
               switch (nodeType) {
-                case 'MolecularInitiatingEvent': return '#86efac'; // light green
-                case 'KeyEvent': return '#93c5fd'; // light blue
-                case 'AdverseOutcome': return '#fb923c'; // light orange
+                case 'MolecularInitiatingEvent': return '#6ee7b7'; // richer green
+                case 'KeyEvent': return '#60a5fa'; // richer blue
+                case 'AdverseOutcome': return '#f472b6'; // richer pink
                 default: return '#d1d5db'; // light gray
               }
             },
+            'background-opacity': 1,
             'label': 'data(label)',
             'text-valign': 'center',
             'text-halign': 'center',
             'color': '#1f2937',
             'text-outline-color': '#ffffff',
-            'text-outline-width': 0.5,
-            'font-size': '11px', // Smaller, consistent font size
+            'text-outline-width': 0,
+            'font-size': '9px', // Smaller, consistent font size
             'font-family': 'Arial, sans-serif',
             'font-weight': (ele) => {
               const isSearchMatch = ele.data('is_search_match');
@@ -388,61 +437,76 @@ const NetworkGraph = ({
               
               // Special sizing for hypernodes - much smaller
               if (type.includes('hypernode') || type.includes('chemical-hypernode')) {
-                return Math.max(100, Math.min(180, label.length * 2 + 40)); // Smaller hypernodes
+                return Math.max(60, Math.min(120, label.length * 1.5 + 30)); // Smaller hypernodes
               }
               
-              // Standard node sizing
-              const baseSize = Math.max(80, Math.min(140, label.length * 3 + 50));
-              return isSearchMatch ? baseSize * 1.1 : baseSize;
+              // Standard node sizing. For MIE/KE/AO enforce equal width/height (square/circle/triangle)
+              const compactSize = Math.max(40, Math.min(70, label.length * 1.5 + 30));
+              const baseSize = Math.max(45, Math.min(85, label.length * 2 + 30));
+              const size = (type === 'MolecularInitiatingEvent' || type === 'MIE' ||
+                             type === 'KeyEvent' || type === 'KE' ||
+                             type === 'AdverseOutcome' || type === 'AO') ? compactSize : baseSize;
+              return isSearchMatch ? size * 1.1 : size;
             },
             'height': (ele) => {
               const isSearchMatch = ele.data('is_search_match');
               const type = ele.data('type') || '';
+              const label = ele.data('label') || '';
               
               // Special sizing for hypernodes - much smaller
               if (type.includes('hypernode') || type.includes('chemical-hypernode')) {
-                return 40; // Much smaller height for hypernodes
+                return 28; // Much smaller height for hypernodes
               }
               
-              // Standard node height
-              const baseSize = 45;
+              // Enforce equal dimensions for MIE (triangle), KE (square), AO (circle)
+              if (type === 'MolecularInitiatingEvent' || type === 'MIE' ||
+                  type === 'KeyEvent' || type === 'KE' ||
+                  type === 'AdverseOutcome' || type === 'AO') {
+                const size = Math.max(40, Math.min(70, label.length * 1.5 + 30));
+                return isSearchMatch ? size * 1.1 : size;
+              }
+              
+              // Default rectangular height for other types
+              const baseSize = 36;
               return isSearchMatch ? baseSize * 1.1 : baseSize;
             },
-            'shape': 'roundrectangle', // Rectangular nodes like target image
+            'shape': (ele) => {
+              const nodeType = ele.data('type');
+              if (nodeType === 'MolecularInitiatingEvent' || nodeType === 'MIE') return 'triangle';
+              if (nodeType === 'KeyEvent' || nodeType === 'KE') return 'rectangle';
+              if (nodeType === 'AdverseOutcome' || nodeType === 'AO') return 'ellipse';
+              return 'roundrectangle';
+            },
             'border-width': (ele) => {
               const isSearchMatch = ele.data('is_search_match');
               const isCrossPathway = ele.data('is_cross_pathway');
               if (isSearchMatch) return 3;
               if (isCrossPathway) return 2;
-              return 1.5;
+              return 2;
             },
             'border-color': (ele) => {
               const isSearchMatch = ele.data('is_search_match');
               const isCrossPathway = ele.data('is_cross_pathway');
               if (isSearchMatch) return '#f59e0b'; // golden border for search matches
               if (isCrossPathway) return '#8b5cf6'; // purple border for cross-pathway
-              return '#64748b';
+              return '#1f2937';
             },
             'text-wrap': 'wrap',
-            'text-max-width': '140px' // Wider text for rectangular nodes
+            'text-max-width': '110px' // Slightly narrower to match reduced sizes
           }
         },
         {
           // Special styling for search match nodes
           selector: 'node[is_search_match]',
           style: {
-            'overlay-color': '#f59e0b',
-            'overlay-opacity': 0.3,
-            'overlay-padding': '6px'
+            'overlay-opacity': 0
           }
         },
         {
           // Special styling for cross-pathway nodes
           selector: 'node[is_cross_pathway]',
           style: {
-            'overlay-color': '#8b5cf6',
-            'overlay-opacity': 0.2,
-            'overlay-padding': '4px'
+            'overlay-opacity': 0
           }
         },
         {
@@ -512,9 +576,7 @@ const NetworkGraph = ({
             },
             'font-size': '10px',
             'color': theme === 'dark' ? '#ffffff' : '#000000',
-            'text-background-color': theme === 'dark' ? '#1f2937' : '#ffffff',
-            'text-background-opacity': 0.8,
-            'text-background-padding': '2px'
+            'text-background-opacity': 0
           }
         },
         {
@@ -534,19 +596,41 @@ const NetworkGraph = ({
           }
         }
       ],
-      layout: {
-        name: 'preset', // We'll handle layout manually for mixed approach
+      layout: (['force_atlas', 'euler'].includes(layoutName) ? {
+        name: 'euler',
         animate: true,
-        animationDuration: 800,
+        animationDuration: 700,
         fit: true,
-        padding: 30
-      },
+        padding: 40,
+        nodeDimensionsIncludeLabels: true,
+        randomize: false,
+        springLength: 90,
+        springCoeff: 0.0006,
+        repulsion: 9000,
+        gravity: -0.7,
+        iterations: 1800
+      } : {
+        name: layoutName,
+        animate: true,
+        animationDuration: 600,
+        fit: true,
+        padding: 40
+      }),
       minZoom: 0.1,
       maxZoom: 3,
       wheelSensitivity: 0.2
     });
 
     // Event handlers (defensive)
+    cytoscapeInstance.on('layoutstop', () => {
+      try {
+        resolveCollisions(cytoscapeInstance);
+        cytoscapeInstance.fit();
+        cytoscapeInstance.center();
+      } catch (err) {
+        console.warn('Collision resolution error:', err);
+      }
+    });
     cytoscapeInstance.on('tap', 'node', (evt) => {
       try {
         const node = evt.target;
@@ -603,17 +687,17 @@ const NetworkGraph = ({
       });
 
       const layout = cytoscapeInstance.layout({
-        name: 'euler',
+        name: layoutName === 'force_atlas' ? 'euler' : layoutName,
         animate: true,
-        animationDuration: 1200,
+        animationDuration: 700,
         fit: true,
         padding: 40,
-        randomize: true,
-        springLength: 100,
-        springCoeff: 0.0008,
-        repulsion: 14000,
-        gravity: -1.0,
-        iterations: 3000
+        randomize: false,
+        springLength: 95,
+        springCoeff: 0.0006,
+        repulsion: 9000,
+        gravity: -0.7,
+        iterations: 1800
       });
 
       layout.run();
@@ -641,7 +725,7 @@ const NetworkGraph = ({
           });
           hyperLayout.run();
         }
-      }, 1600);
+      }, 1200);
     };
 
     // Enhanced function to position nested chemical nodes within hypernode containers with guaranteed no overlap
@@ -756,13 +840,15 @@ const NetworkGraph = ({
     };
 
     // Apply the guaranteed non-overlapping layout
+    // Only apply the extra force/non-overlap passes for force layouts
     setTimeout(() => {
-      applyNonOverlappingLayout();
-      
-      // Apply nested positioning after main layout settles
-      setTimeout(() => {
-        applyNestedNodePositioning();
-      }, 2000);
+      if (['force_atlas', 'euler'].includes(layoutName)) {
+        applyNonOverlappingLayout();
+        // Apply nested positioning after main layout settles
+        setTimeout(() => {
+          applyNestedNodePositioning();
+        }, 1500);
+      }
     }, 100);
 
     setCy(cytoscapeInstance);
@@ -1019,24 +1105,43 @@ const NetworkGraph = ({
   const handleLayoutChange = (newLayout) => {
     setLayoutName(newLayout);
     if (cy) {
-      const layout = cy.layout({
-        name: newLayout,
-        animate: true,
-        animationDuration: 1000,
-        fit: true,
-        padding: 50
-      });
-      layout.run();
+      try {
+        // Use tailored options for force vs. non-force layouts
+        const isForce = ['force_atlas', 'euler'].includes(newLayout);
+        const layout = cy.layout(isForce ? {
+          name: 'euler',
+          animate: true,
+          animationDuration: 700,
+          fit: true,
+          padding: 50,
+          randomize: false,
+          springLength: 95,
+          springCoeff: 0.0006,
+          repulsion: 9000,
+          gravity: -0.7,
+          iterations: 1800
+        } : {
+          name: newLayout,
+          animate: true,
+          animationDuration: 600,
+          fit: true,
+          padding: 50
+        });
+        layout.run();
+        cy.fit(undefined, 50);
+        cy.center();
+      } catch (err) {
+        console.warn('Layout change failed, falling back to grid:', err);
+        const fallback = cy.layout({ name: 'grid', fit: true, padding: 50 });
+        fallback.run();
+        cy.fit(undefined, 50);
+        cy.center();
+      }
     }
   };
 
     const layouts = [
-      { name: 'euler', label: 'Force (Euler)' },
-      { name: 'dagre', label: 'Dagre (Hierarchical)' },
-      { name: 'grid', label: 'Grid' },
-      { name: 'circle', label: 'Circle' },
-      { name: 'concentric', label: 'Concentric' },
-      { name: 'breadthfirst', label: 'Breadthfirst' }
+      { name: 'force_atlas', label: 'Force Atlas (Euler)' }
     ];
 
   return (
@@ -1060,122 +1165,111 @@ const NetworkGraph = ({
         </div>
       )}
       
-      {/* Controls */}
+      {/* Controls (collapsible) */}
       <Card className="absolute top-4 left-4 p-2 bg-card/90 backdrop-blur-sm">
-        <div className="flex flex-col gap-2">
-          <div className="flex gap-1">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleZoomIn}
-              title="Zoom In"
-            >
-              <ZoomIn className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleZoomOut}
-              title="Zoom Out"
-            >
-              <ZoomOut className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleReset}
-              title="Fit to View"
-            >
-              <RotateCcw className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleExport}
-              title="Export PNG"
-            >
-              <Download className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleCSVExport}
-              title="Export CSV"
-            >
-              📊
-            </Button>
-          </div>
-          
-          <select
-            value={layoutName}
-            onChange={(e) => handleLayoutChange(e.target.value)}
-            className="text-xs p-1 border border-border rounded bg-background"
-          >
-            {layouts.map(layout => (
-              <option key={layout.name} value={layout.name}>
-                {layout.label}
-              </option>
-            ))}
-          </select>
-
-          {/* Compactness control */}
-          <div className="mt-1">
-            <div className="text-[10px] text-muted-foreground mb-1">Compactness</div>
-            <input
-              type="range"
-              min="0"
-              max="100"
-              value={compactness}
-              onChange={(e) => onCompactnessChange && onCompactnessChange(parseInt(e.target.value))}
-              className="w-40"
-            />
+        <Collapsible
+          open={controlsOpen}
+          onOpenChange={(open) => {
+            setControlsOpen(open);
+            try {
+              localStorage.setItem('networkControlsOpen', open ? '1' : '0');
+            } catch {}
+          }}
+        >
+          <div className="flex items-center justify-between">
+            <div className="text-xs font-medium">Controls</div>
+            <CollapsibleTrigger asChild>
+              <Button variant="ghost" size="icon" className="h-6 w-6" title={controlsOpen ? 'Collapse' : 'Expand'}>
+                <ChevronDown className={`h-4 w-4 transition-transform ${controlsOpen ? '' : '-rotate-90'}`} />
+              </Button>
+            </CollapsibleTrigger>
           </div>
 
-          {/* Auto-fit toggle */}
-          <label className="flex items-center gap-2 text-[11px]">
-            <input
-              type="checkbox"
-              checked={autoFitOnUpdate}
-              onChange={(e) => onAutoFitToggle && onAutoFitToggle(e.target.checked)}
-            />
-            Auto-fit on update
-          </label>
-        </div>
+          <CollapsibleContent className="mt-2">
+            <div className="flex flex-col gap-2">
+              <div className="flex gap-1">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleZoomIn}
+                  title="Zoom In"
+                >
+                  <ZoomIn className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleZoomOut}
+                  title="Zoom Out"
+                >
+                  <ZoomOut className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleReset}
+                  title="Fit to View"
+                >
+                  <RotateCcw className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleExport}
+                  title="Export PNG"
+                >
+                  <Download className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleCSVExport}
+                  title="Export CSV"
+                >
+                  📊
+                </Button>
+              </div>
+              
+              <select
+                value={layoutName}
+                onChange={(e) => handleLayoutChange(e.target.value)}
+                className="text-xs p-1 border border-border rounded bg-background"
+              >
+                {layouts.map(layout => (
+                  <option key={layout.name} value={layout.name}>
+                    {layout.label}
+                  </option>
+                ))}
+              </select>
+
+              {/* Compactness control */}
+              <div className="mt-1">
+                <div className="text-[10px] text-muted-foreground mb-1">Compactness</div>
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={compactness}
+                  onChange={(e) => onCompactnessChange && onCompactnessChange(parseInt(e.target.value))}
+                  className="w-40"
+                />
+              </div>
+
+              {/* Auto-fit toggle */}
+              <label className="flex items-center gap-2 text-[11px]">
+                <input
+                  type="checkbox"
+                  checked={autoFitOnUpdate}
+                  onChange={(e) => onAutoFitToggle && onAutoFitToggle(e.target.checked)}
+                />
+                Auto-fit on update
+              </label>
+            </div>
+          </CollapsibleContent>
+        </Collapsible>
       </Card>
 
-      {/* Legend */}
-      <Card className="absolute bottom-4 left-4 p-3 bg-card/90 backdrop-blur-sm">
-        <h4 className="text-sm font-semibold mb-2">Node Types</h4>
-        <div className="space-y-1 text-xs">
-          <div className="flex items-center gap-2">
-            <div
-              className="w-3 h-3 rounded-full border border-gray-400"
-              style={{
-                backgroundColor: nodeColors.MolecularInitiatingEvent
-              }}
-            />
-            <span>MIE (Molecular Initiating Event)</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div
-              className="w-3 h-3 rounded-full border border-gray-400"
-              style={{ backgroundColor: nodeColors.KeyEvent }}
-            />
-            <span>KE (Key Event)</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div
-              className="w-3 h-3 rounded-full border border-gray-400"
-              style={{ backgroundColor: nodeColors.AdverseOutcome }}
-            />
-            <span>AO (Adverse Outcome)</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full border border-green-500 bg-green-200" />
-            <span>New elements (recently added)</span>
-          </div>
-        </div>
-      </Card>
+      {/* Legend removed per user request */}
 
       {/* Stats */}
       {data && (
